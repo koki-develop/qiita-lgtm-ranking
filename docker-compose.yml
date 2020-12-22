@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./containers/app/Dockerfile
+    volumes:
+      - .:/var/task
+      - ~/.aws:/root/.aws
+      - go:/go
+
+volumes:
+  go:
