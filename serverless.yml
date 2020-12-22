@@ -15,5 +15,5 @@ package:
     - ./build/**
 
 functions:
-  updateWeekly:
-    handler: build/updateWeekly
+  updateWeeklyPerTag:
+    handler: build/updateWeeklyPerTag
