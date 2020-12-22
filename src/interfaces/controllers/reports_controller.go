@@ -7,19 +7,19 @@ import (
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/gateways"
 )
 
-// IItemsController .
-type IItemsController interface {
+// IReportsController .
+type IReportsController interface {
 	UpdateWeeklyPerTag(t time.Time, reportID, tag string) error
 }
 
-// ItemsController .
-type ItemsController struct {
+// ReportsController .
+type ReportsController struct {
 	itemsRepository   gateways.IItemsRepository
 	reportsRepository gateways.IReportsRepository
 }
 
 // UpdateWeeklyPerTag .
-func (c *ItemsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string) error {
+func (c *ReportsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string) error {
 	items, err := c.itemsRepository.GetAll(t.AddDate(0, 0, -7), tag)
 	if err != nil {
 		return err

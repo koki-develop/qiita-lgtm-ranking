@@ -7,23 +7,23 @@ import (
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/gateways"
 )
 
-// ItemsControllerFactory .
-type ItemsControllerFactory struct {
+// ReportsControllerFactory .
+type ReportsControllerFactory struct {
 	osGetenv func(string) string
 }
 
-// NewItemsControllerFactory .
-func NewItemsControllerFactory() *ItemsControllerFactory {
-	return &ItemsControllerFactory{
+// NewReportsControllerFactory .
+func NewReportsControllerFactory() *ReportsControllerFactory {
+	return &ReportsControllerFactory{
 		osGetenv: os.Getenv,
 	}
 }
 
 // Create .
-func (f *ItemsControllerFactory) Create() IItemsController {
+func (f *ReportsControllerFactory) Create() IReportsController {
 	qapi := infrastructures.NewQiitaAPI(f.osGetenv("QIITA_ACCESS_TOKEN"))
 
-	return &ItemsController{
+	return &ReportsController{
 		itemsRepository:   gateways.NewItemsRepository(qapi),
 		reportsRepository: gateways.NewReportsRepository(qapi),
 	}

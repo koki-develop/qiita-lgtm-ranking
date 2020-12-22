@@ -15,7 +15,7 @@ type Event struct {
 
 // Handler .
 func Handler(ev *Event) error {
-	c := controllers.NewItemsControllerFactory().Create()
+	c := controllers.NewReportsControllerFactory().Create()
 	return c.UpdateWeeklyPerTag(time.Now(), ev.ReportID, ev.Tag)
 }
 
