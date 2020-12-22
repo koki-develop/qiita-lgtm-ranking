@@ -1,4 +1,4 @@
-service: task
+service: qiita-lgtm-ranking
 
 frameworkVersion: '2'
 
