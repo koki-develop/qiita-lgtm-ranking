@@ -17,6 +17,11 @@ type ItemsRepository struct {
 	qiitaAPI IQiitaAPI
 }
 
+// NewItemsRepository .
+func NewItemsRepository(api IQiitaAPI) *ItemsRepository {
+	return &ItemsRepository{qiitaAPI: api}
+}
+
 // GetAll .
 func (r *ItemsRepository) GetAll(from time.Time, tag string) (*domain.Items, error) {
 	items := &domain.Items{}
