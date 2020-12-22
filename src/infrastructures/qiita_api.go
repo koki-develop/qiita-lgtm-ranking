@@ -12,17 +12,19 @@ import (
 
 // QiitaAPI .
 type QiitaAPI struct {
-	accessToken string
-	httpClient  IHTTPClient
-	jsonDecoder IJSONDecoder
+	accessToken   string
+	httpClient    IHTTPClient
+	jsonDecoder   IJSONDecoder
+	jsonMarshaler IJSONMarshaler
 }
 
 // NewQiitaAPI .
 func NewQiitaAPI(accessToken string) *QiitaAPI {
 	return &QiitaAPI{
-		accessToken: accessToken,
-		httpClient:  NewHTTPClient(),
-		jsonDecoder: NewJSONDecoder(),
+		accessToken:   accessToken,
+		httpClient:    NewHTTPClient(),
+		jsonDecoder:   NewJSONDecoder(),
+		jsonMarshaler: NewJSONMarshaler(),
 	}
 }
 
@@ -57,4 +59,41 @@ func (api *QiitaAPI) GetItems(page, perPage int, query string) (*domain.Items, e
 	}
 
 	return items, nil
+}
+
+// UpdateItem .
+func (api *QiitaAPI) UpdateItem(id, title, body string, tags []string) error {
+	ts := []map[string]string{}
+	for _, tag := range tags {
+		ts = append(ts, map[string]string{"name": tag})
+	}
+
+	b, err := api.jsonMarshaler.Marshal(map[string]interface{}{
+		"title": title,
+		"body":  body,
+		"tags":  ts,
+	})
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest("PATCH", fmt.Sprintf("https://qiita.com/api/v2/items/%s", id), bytes.NewReader(b))
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", api.accessToken))
+
+	resp, err := api.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != 200 {
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(resp.Body)
+		return errors.New(buf.String())
+	}
+
+	return nil
 }
