@@ -5,6 +5,8 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: go1.x
+  environment:
+    QIITA_ACCESS_TOKEN: ${file(./secret.yml):qiitaAccessToken}
 
 package:
   exclude:
