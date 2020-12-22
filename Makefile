@@ -1,11 +1,17 @@
-.PHONY: build clean deploy
+.PHONY: test build clean deploy
 
-build:
-	export GO111MODULE=on
-	env GOOS=linux go build -ldflags="-s -w" -o build/update src/handlers/update/main.go
+init:
+	docker-compose build
+	docker-compose run --rm app yarn install --check-files
+
+test:
+	docker-compose run --rm app ./bin/test
+
+build: test
+	docker-compose run --rm app ./bin/build
 
 clean:
-	rm -rf ./build ./vendor go.sum
+	rm -rf ./build ./vendor
 
 deploy: clean build
-	sls deploy --verbose
+	docker-compose run --rm app yarn run sls deploy --verbose
