@@ -10,8 +10,8 @@ package:
   exclude:
     - ./**
   include:
-    - ./bin/**
+    - ./build/**
 
 functions:
   update:
-    handler: bin/update
+    handler: build/update

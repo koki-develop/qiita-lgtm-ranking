@@ -2,7 +2,7 @@
 .serverless
 
 # golang output binary directory
-bin
+build
 
 # golang vendor (dependencies) directory
 vendor
