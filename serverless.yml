@@ -13,6 +13,8 @@ package:
     - ./bin/**
 
 functions:
+  update:
+    handler: bin/update
   hello:
     handler: bin/hello
     events:
