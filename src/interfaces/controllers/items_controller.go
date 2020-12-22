@@ -14,7 +14,8 @@ type IItemsController interface {
 
 // ItemsController .
 type ItemsController struct {
-	itemsRepository gateways.IItemsRepository
+	itemsRepository   gateways.IItemsRepository
+	reportsRepository gateways.IReportsRepository
 }
 
 // UpdateWeeklyPerTag .
@@ -27,6 +28,10 @@ func (c *ItemsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string) 
 	// TODO: update item
 	for _, item := range *items {
 		fmt.Printf("%+v\n", item)
+	}
+
+	if err := c.reportsRepository.Update(reportID, "body", tag); err != nil {
+		return err
 	}
 
 	return nil

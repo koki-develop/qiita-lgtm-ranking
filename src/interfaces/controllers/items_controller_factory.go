@@ -21,9 +21,10 @@ func NewItemsControllerFactory() *ItemsControllerFactory {
 
 // Create .
 func (f *ItemsControllerFactory) Create() IItemsController {
+	qapi := infrastructures.NewQiitaAPI(f.osGetenv("QIITA_ACCESS_TOKEN"))
+
 	return &ItemsController{
-		itemsRepository: gateways.NewItemsRepository(
-			infrastructures.NewQiitaAPI(f.osGetenv("QIITA_ACCESS_TOKEN")),
-		),
+		itemsRepository:   gateways.NewItemsRepository(qapi),
+		reportsRepository: gateways.NewReportsRepository(qapi),
 	}
 }
