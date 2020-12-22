@@ -9,7 +9,7 @@ import (
 
 // IItemsController .
 type IItemsController interface {
-	UpdateWeekly(t time.Time, itemID, tag string) error
+	UpdateWeekly(t time.Time, reportID, tag string) error
 }
 
 // ItemsController .
@@ -18,7 +18,7 @@ type ItemsController struct {
 }
 
 // UpdateWeekly .
-func (c *ItemsController) UpdateWeekly(t time.Time, itemID, tag string) error {
+func (c *ItemsController) UpdateWeekly(t time.Time, reportID, tag string) error {
 	items, err := c.itemsRepository.GetAll(t.AddDate(0, 0, -7), tag)
 	if err != nil {
 		return err

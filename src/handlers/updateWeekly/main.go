@@ -9,14 +9,14 @@ import (
 
 // Event .
 type Event struct {
-	ItemID string `json:"item_id"`
-	Tag    string `json:"tag"`
+	ReportID string `json:"report_id"`
+	Tag      string `json:"tag"`
 }
 
 // Handler .
 func Handler(ev *Event) error {
 	c := controllers.NewItemsControllerFactory().Create()
-	return c.UpdateWeekly(time.Now(), ev.ItemID, ev.Tag)
+	return c.UpdateWeekly(time.Now(), ev.ReportID, ev.Tag)
 }
 
 func main() {
