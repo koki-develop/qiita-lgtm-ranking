@@ -13,5 +13,5 @@ package:
     - ./build/**
 
 functions:
-  update:
-    handler: build/update
+  updateWeekly:
+    handler: build/updateWeekly

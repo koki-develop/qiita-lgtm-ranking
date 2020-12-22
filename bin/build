@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+export GO111MODULE=on
+export GOOS=linux
+
+go build -ldflags="-s -w" -o build/updateWeekly src/handlers/updateWeekly/main.go
