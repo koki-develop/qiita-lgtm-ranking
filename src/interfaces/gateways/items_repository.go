@@ -27,7 +27,7 @@ func (r *ItemsRepository) GetAll(from time.Time, tag string) (*domain.Items, err
 	items := &domain.Items{}
 
 	for i := 1; i <= 100; i++ {
-		resp, err := r.qiitaAPI.GetItems(i, 100, fmt.Sprintf("created:>%s tag:%s", from.Format("2006-01-02"), tag))
+		resp, err := r.qiitaAPI.GetItems(i, 100, fmt.Sprintf("created:>%s stocks:>=1 tag:%s", from.Format("2006-01-02"), tag))
 		if err != nil {
 			return nil, err
 		}
