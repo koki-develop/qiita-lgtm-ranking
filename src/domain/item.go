@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	"sort"
+	"time"
+)
 
 // Item .
 type Item struct {
@@ -27,4 +30,24 @@ type Tags []*Tag
 type User struct {
 	ID              string `json:"id"`
 	ProfileImageURL string `json:"profile_image_url"`
+}
+
+// HasLGTM .
+func (items *Items) HasLGTM() *Items {
+	rtn := &Items{}
+
+	for _, item := range *items {
+		if item.LikesCount > 0 {
+			*rtn = append(*rtn, item)
+		}
+	}
+
+	return rtn
+}
+
+// SortByLikesCount .
+func (items *Items) SortByLikesCount() {
+	sort.SliceStable(*items, func(i, j int) bool {
+		return (*items)[i].LikesCount > (*items)[j].LikesCount
+	})
 }
