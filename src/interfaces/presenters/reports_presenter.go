@@ -46,10 +46,7 @@ func (p *ReportsPresenter) WeeklyPerTag(from time.Time, items *domain.Items, tag
 		rows = append(rows, "")
 
 		rows = append(rows, fmt.Sprintf("**%d** LGTM", item.LikesCount))
-		rows = append(rows, "")
-
-		rows = append(rows, fmt.Sprintf("[@%s](https://qiita.com/%s) ( %s の投稿 )", item.User.ID, item.User.ID, item.CreatedAt.Format("2006-01-02 15:04")))
-		rows = append(rows, "")
+		rows = append(rows, fmt.Sprintf("[@%s](https://qiita.com/%s) さん ( %s に投稿 )", item.User.ID, item.User.ID, item.CreatedAt.Format("2006-01-02 15:04")))
 	}
 
 	return strings.Join(rows, "\n"), nil
