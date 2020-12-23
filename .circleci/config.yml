@@ -8,6 +8,18 @@ executors:
           CGO_ENABLED: '0'
 
 commands:
+  setup_aws_config:
+    steps:
+      - run:
+          name: create aws/credentials aws/config
+          command: |
+            mkdir -p ~/.aws
+            echo '[default]'                                       > ~/.aws/credentials
+            echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}"         >> ~/.aws/credentials
+            echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
+            echo '[default]'                                       > ~/.aws/config
+            echo "region = us-east-1"                             >> ~/.aws/config
+
   go_mod_download:
     steps:
       - restore_cache:
@@ -17,6 +29,29 @@ commands:
           key: v1-{{ .Branch }}-{{ checksum "go.sum" }}
           paths:
             - /go/pkg/mod
+
+  install_nodejs:
+    steps:
+      - run:
+          name: install nodejs
+          command: |
+            curl -sL https://rpm.nodesource.com/setup_14.x | bash -
+            yum -y install nodejs
+      - run:
+          name: install yarn
+          command: |
+            echo 'export PATH=$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH' >> $BASH_ENV
+            curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.22.10
+
+  yarn_install:
+    steps:
+      - restore_cache:
+          key: v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run: yarn install --check-files
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
 
 jobs:
   test:
@@ -36,7 +71,28 @@ jobs:
           name: upload coverage reports to codecov
           command: curl -sL https://codecov.io/bash | bash -
 
+  deploy:
+    executor: go
+    parameters:
+      stage:
+        type: string
+    steps:
+      - checkout
+      - setup_aws_config
+      - install_nodejs
+      - yarn_install
+      - go_mod_download
+      - run: bin/build
+      - run:
+          name: serverless deploy
+          command: |
+            yarn run sls deploy --verbose --stage << parameters.stage >>
+
 workflows:
   build:
     jobs:
       - test
+      - deploy:
+          name: deploy_dev
+          stage: dev
+          requires: [test]
