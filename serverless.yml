@@ -33,3 +33,8 @@ functions:
           rate: cron(0 1 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/aws.${self:provider.stage}.json)}
+      - schedule:
+          name: ${self:custom.prefix}-docker
+          rate: cron(0 2 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/docker.${self:provider.stage}.json)}
