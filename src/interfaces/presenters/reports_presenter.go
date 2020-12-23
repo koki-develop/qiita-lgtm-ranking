@@ -25,6 +25,25 @@ func NewReportsPresenter() *ReportsPresenter {
 func (p *ReportsPresenter) WeeklyPerTag(from time.Time, items *domain.Items, tag string) (string, error) {
 	rows := []string{}
 
+	rows = append(rows, "# 他のタグ")
+	rows = append(rows, "")
+
+	tags := []string{
+		"[`AWS`](https://qiita.com/items/e24b6279326a462d456c)",
+		"[`Docker`](https://qiita.com/items/ae11fca7d2eba445b037)",
+		"[`iOS`](https://qiita.com/items/e61a29a383d0403e92fc)",
+		"[`JavaScript`](https://qiita.com/items/eaa7ac5b62a0a723edbb)",
+		"[`PHP`](https://qiita.com/items/3318cbdbc45c6ebd4014)",
+		"[`Python`](https://qiita.com/items/9d7f2ffeafb36cf59a77)",
+		"[`Rails`](https://qiita.com/items/93b9e7f7d143e9ce650e)",
+		"[`Ruby`](https://qiita.com/items/72c3d2e896bdc3e1a6b3)",
+		"[`TypeScript`](https://qiita.com/items/25b7c0870afa6d41d19b)",
+		"[`Vim`](https://qiita.com/items/f5361177baef95e447d1)",
+		"[`Vue.js`](https://qiita.com/items/2774e02c6eea5c830d99)",
+	}
+	rows = append(rows, strings.Join(tags, " "))
+	rows = append(rows, "")
+
 	rows = append(rows, "# 集計期間")
 	rows = append(rows, "")
 	rows = append(rows, fmt.Sprintf("%s ~ %s", from.Format("2006-01-02"), from.AddDate(0, 0, 7).Format("2006-01-02")))
