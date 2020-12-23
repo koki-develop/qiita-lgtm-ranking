@@ -2,9 +2,18 @@ service: qiita-lgtm-ranking
 
 frameworkVersion: '2'
 
+custom:
+  prefix: ${self:service}-${self:provider.stage}
+  schedule:
+    enabled:
+      dev: true # TODO: change to false
+
 provider:
   name: aws
+  region: us-east-1
+  profile: default
   runtime: go1.x
+  stage: ${opt:stage, "dev"}
   environment:
     QIITA_ACCESS_TOKEN: ${file(./secret.yml):qiitaAccessToken}
 
@@ -17,3 +26,10 @@ package:
 functions:
   updateWeeklyPerTag:
     handler: build/updateWeeklyPerTag
+    timeout: 900
+    events:
+      - schedule:
+          name: ${self:custom.prefix}-ruby
+          rate: cron(0 1 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/ruby.${self:provider.stage}.json)}
