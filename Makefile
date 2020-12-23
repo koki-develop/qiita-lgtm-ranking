@@ -15,3 +15,6 @@ clean:
 
 deploy: clean build
 	docker-compose run --rm app yarn run sls deploy --verbose
+
+deploy-prod: clean build
+	docker-compose run --rm app yarn run sls deploy --verbose --stage prod
