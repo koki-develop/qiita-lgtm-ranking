@@ -37,6 +37,7 @@ func (p *ReportsPresenter) WeeklyPerTag(from time.Time, items *domain.Items, tag
 		"[`PHP`](https://qiita.com/items/3318cbdbc45c6ebd4014)",
 		"[`Python`](https://qiita.com/items/9d7f2ffeafb36cf59a77)",
 		"[`Rails`](https://qiita.com/items/93b9e7f7d143e9ce650e)",
+		"[`React`](https://qiita.com/items/f9712f8acace22815b99)",
 		"[`Ruby`](https://qiita.com/items/72c3d2e896bdc3e1a6b3)",
 		"[`TypeScript`](https://qiita.com/items/25b7c0870afa6d41d19b)",
 		"[`Vim`](https://qiita.com/items/f5361177baef95e447d1)",
