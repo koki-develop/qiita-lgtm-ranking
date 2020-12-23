@@ -6,7 +6,7 @@ custom:
   prefix: ${self:service}-${self:provider.stage}
   schedule:
     enabled:
-      dev: true # TODO: change to false
+      dev: false
 
 provider:
   name: aws
