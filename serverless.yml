@@ -30,58 +30,86 @@ functions:
     handler: build/updateWeeklyPerTag
     timeout: 900
     events:
+      # AWS
       - schedule:
           name: ${self:custom.prefix}-aws
           rate: cron(0 1 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/aws.${self:provider.stage}.json)}
+
+      # Docker
       - schedule:
           name: ${self:custom.prefix}-docker
           rate: cron(0 2 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/docker.${self:provider.stage}.json)}
+
+      # iOS
       - schedule:
           name: ${self:custom.prefix}-ios
           rate: cron(0 3 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/ios.${self:provider.stage}.json)}
+
+      # JavaScript
       - schedule:
           name: ${self:custom.prefix}-javascript
           rate: cron(0 4 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/javascript.${self:provider.stage}.json)}
+
+      # PHP
       - schedule:
           name: ${self:custom.prefix}-php
           rate: cron(0 5 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/php.${self:provider.stage}.json)}
+
+      # Python
       - schedule:
           name: ${self:custom.prefix}-python
           rate: cron(0 6 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/python.${self:provider.stage}.json)}
+
+      # Rails
       - schedule:
           name: ${self:custom.prefix}-rails
           rate: cron(0 6 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/rails.${self:provider.stage}.json)}
+
+      # Ruby
       - schedule:
           name: ${self:custom.prefix}-typescript
           rate: cron(0 7 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/typescript.${self:provider.stage}.json)}
+
+      # Vim
       - schedule:
           name: ${self:custom.prefix}-vim
           rate: cron(0 8 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/vim.${self:provider.stage}.json)}
+
+      # Vue.js
       - schedule:
           name: ${self:custom.prefix}-vuejs
           rate: cron(0 9 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/vuejs.${self:provider.stage}.json)}
+
+      # Java
       - schedule:
           name: ${self:custom.prefix}-java
           rate: cron(0 10 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/java.${self:provider.stage}.json)}
+
+      # Swift
+      - schedule:
+          name: ${self:custom.prefix}-swift
+          rate: cron(0 11 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/swift.${self:provider.stage}.json)}
