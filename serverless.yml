@@ -68,3 +68,8 @@ functions:
           rate: cron(0 7 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/typescript.${self:provider.stage}.json)}
+      - schedule:
+          name: ${self:custom.prefix}-vim
+          rate: cron(0 8 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/vim.${self:provider.stage}.json)}
