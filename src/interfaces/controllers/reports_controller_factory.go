@@ -5,6 +5,7 @@ import (
 
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/infrastructures"
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/gateways"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/presenters"
 )
 
 // ReportsControllerFactory .
@@ -26,5 +27,6 @@ func (f *ReportsControllerFactory) Create() IReportsController {
 	return &ReportsController{
 		itemsRepository:   gateways.NewItemsRepository(qapi),
 		reportsRepository: gateways.NewReportsRepository(qapi),
+		reportsPresenter:  presenters.NewReportsPresenter(),
 	}
 }

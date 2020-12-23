@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/gateways"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/presenters"
 )
 
 // IReportsController .
@@ -16,21 +16,24 @@ type IReportsController interface {
 type ReportsController struct {
 	itemsRepository   gateways.IItemsRepository
 	reportsRepository gateways.IReportsRepository
+	reportsPresenter  presenters.IReportsPresenter
 }
 
 // UpdateWeeklyPerTag .
 func (c *ReportsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string) error {
-	items, err := c.itemsRepository.GetAll(t.AddDate(0, 0, -7), tag)
+	from := t.AddDate(0, 0, -7)
+
+	items, err := c.itemsRepository.GetAll(from, tag)
 	if err != nil {
 		return err
 	}
 
-	// TODO: update item
-	for _, item := range *items {
-		fmt.Printf("%+v\n", item)
+	body, err := c.reportsPresenter.WeeklyPerTag(from, items, tag)
+	if err != nil {
+		return err
 	}
 
-	if err := c.reportsRepository.Update(reportID, "body", tag); err != nil {
+	if err := c.reportsRepository.Update(reportID, body, tag); err != nil {
 		return err
 	}
 
