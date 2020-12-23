@@ -14,6 +14,7 @@ provider:
   region: us-east-1
   profile: default
   runtime: go1.x
+  memorySize: 256
   stage: ${opt:stage, "dev"}
   environment:
     QIITA_ACCESS_TOKEN: ${file(./secret.yml):qiitaAccessToken}
