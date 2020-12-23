@@ -8,6 +8,13 @@ executors:
           CGO_ENABLED: '0'
 
 commands:
+  create_secret_yml:
+    steps:
+      - run:
+          name: create secret.yml
+          command: |
+            echo "qiitaAccessToken: ${QIITA_ACCESS_TOKEN}" > secret.yml
+
   setup_aws_config:
     steps:
       - run:
@@ -76,6 +83,7 @@ jobs:
     steps:
       - checkout
       - setup_aws_config
+      - create_secret_yml
       - install_nodejs
       - yarn_install
       - go_mod_download
