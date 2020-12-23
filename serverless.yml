@@ -29,7 +29,7 @@ functions:
     timeout: 900
     events:
       - schedule:
-          name: ${self:custom.prefix}-ruby
+          name: ${self:custom.prefix}-aws
           rate: cron(0 1 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
-          input: ${file(./events/ruby.${self:provider.stage}.json)}
+          input: ${file(./events/aws.${self:provider.stage}.json)}
