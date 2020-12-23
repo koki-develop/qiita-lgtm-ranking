@@ -58,3 +58,8 @@ functions:
           rate: cron(0 6 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/python.${self:provider.stage}.json)}
+      - schedule:
+          name: ${self:custom.prefix}-rails
+          rate: cron(0 6 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/rails.${self:provider.stage}.json)}
