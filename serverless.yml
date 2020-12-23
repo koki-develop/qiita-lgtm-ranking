@@ -38,3 +38,8 @@ functions:
           rate: cron(0 2 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/docker.${self:provider.stage}.json)}
+      - schedule:
+          name: ${self:custom.prefix}-ios
+          rate: cron(0 3 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/ios.${self:provider.stage}.json)}
