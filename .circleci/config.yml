@@ -3,7 +3,7 @@ version: 2.1
 executors:
   go:
     docker:
-      - image: golang:1.15.5-alpine
+      - image: lambci/lambda:build-go1.x
         environment:
           CGO_ENABLED: '0'
 
