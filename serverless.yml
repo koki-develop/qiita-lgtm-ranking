@@ -113,3 +113,10 @@ functions:
           rate: cron(0 11 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/swift.${self:provider.stage}.json)}
+
+      # React
+      - schedule:
+          name: ${self:custom.prefix}-react
+          rate: cron(0 12 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/react.${self:provider.stage}.json)}
