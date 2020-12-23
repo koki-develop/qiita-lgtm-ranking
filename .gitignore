@@ -26,3 +26,7 @@ vendor
 
 # secret
 /secret.yml
+
+# circleci-env
+.circleci-env/circle-token
+.circleci-env/.env
