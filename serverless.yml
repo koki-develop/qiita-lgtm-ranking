@@ -73,3 +73,8 @@ functions:
           rate: cron(0 8 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/vim.${self:provider.stage}.json)}
+      - schedule:
+          name: ${self:custom.prefix}-vuejs
+          rate: cron(0 9 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/vuejs.${self:provider.stage}.json)}
