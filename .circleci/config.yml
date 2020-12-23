@@ -1,0 +1,42 @@
+version: 2.1
+
+executors:
+  go:
+    docker:
+      - image: golang:1.15.5-alpine
+        environment:
+          CGO_ENABLED: '0'
+
+commands:
+  go_mod_download:
+    steps:
+      - restore_cache:
+          key: v1-{{ .Branch }}-{{ checksum "go.sum" }}
+      - run: go mod download -x
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ checksum "go.sum" }}
+          paths:
+            - /go/pkg/mod
+
+jobs:
+  test:
+    executor: go
+    steps:
+      - run:
+          name: install required packages
+          command: apk add --update git bash curl
+      - checkout
+      - go_mod_download
+      - run:
+          name: go test
+          command: ./bin/test
+      - store_artifacts:
+          path: cover.html
+      - run:
+          name: upload coverage reports to codecov
+          command: curl -sL https://codecov.io/bash | bash -
+
+workflows:
+  build:
+    jobs:
+      - test
