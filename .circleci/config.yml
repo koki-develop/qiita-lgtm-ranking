@@ -101,3 +101,7 @@ workflows:
           name: deploy_dev
           stage: dev
           requires: [test]
+      - deploy:
+          name: deploy_prod
+          stage: prod
+          requires: [deploy_dev]
