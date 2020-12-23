@@ -32,6 +32,7 @@ func (p *ReportsPresenter) WeeklyPerTag(from time.Time, items *domain.Items, tag
 		"[`AWS`](https://qiita.com/items/e24b6279326a462d456c)",
 		"[`Docker`](https://qiita.com/items/ae11fca7d2eba445b037)",
 		"[`iOS`](https://qiita.com/items/e61a29a383d0403e92fc)",
+		"[`Java`](https://qiita.com/items/4c3f84836bfdbb137226)",
 		"[`JavaScript`](https://qiita.com/items/eaa7ac5b62a0a723edbb)",
 		"[`PHP`](https://qiita.com/items/3318cbdbc45c6ebd4014)",
 		"[`Python`](https://qiita.com/items/9d7f2ffeafb36cf59a77)",
