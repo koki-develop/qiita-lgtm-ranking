@@ -97,11 +97,24 @@ workflows:
   build:
     jobs:
       - test
+
+      - approval_deploy_dev:
+          type: approval
+          requires: [test]
+
       - deploy:
           name: deploy_dev
           stage: dev
+          requires: [approval_deploy_dev]
+
+      - approval_deploy_prod:
+          type: approval
           requires: [test]
+
       - deploy:
           name: deploy_prod
           stage: prod
-          requires: [deploy_dev]
+          requires: [approval_deploy_prod]
+          filters:
+            branches:
+              only: main
