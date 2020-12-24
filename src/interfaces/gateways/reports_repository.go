@@ -25,7 +25,7 @@ func NewReportsRepository(api IQiitaAPI) *ReportsRepository {
 
 // Update .
 func (r *ReportsRepository) Update(id, body, tag string) error {
-	if err := r.qiitaAPI.UpdateItem(id, fmt.Sprintf("【%s】Qiita 週間LGTM数ランキング【自動更新】", tag), body, domain.Tags{{Name: "qiita"}, {Name: tag}}); err != nil {
+	if err := r.qiitaAPI.UpdateItem(id, fmt.Sprintf("【%s】Qiita 週間LGTM数ランキング【自動更新】", tag), body, domain.Tags{{Name: "Qiita"}, {Name: tag}}); err != nil {
 		return err
 	}
 
