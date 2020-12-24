@@ -6,7 +6,7 @@ import (
 
 // IReportsRepository .
 type IReportsRepository interface {
-	Update(id, title, body, tag string) error
+	Update(id, title, body string, tags domain.Tags) error
 }
 
 // ReportsRepository .
@@ -22,8 +22,8 @@ func NewReportsRepository(api IQiitaAPI) *ReportsRepository {
 }
 
 // Update .
-func (r *ReportsRepository) Update(id, title, body, tag string) error {
-	if err := r.qiitaAPI.UpdateItem(id, title, body, domain.Tags{{Name: "Qiita"}, {Name: tag}}); err != nil {
+func (r *ReportsRepository) Update(id, title, body string, tags domain.Tags) error {
+	if err := r.qiitaAPI.UpdateItem(id, title, body, append(domain.Tags{{Name: "Qiita"}}, tags...)); err != nil {
 		return err
 	}
 
