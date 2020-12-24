@@ -9,7 +9,7 @@ import (
 
 // IItemsRepository .
 type IItemsRepository interface {
-	GetAll(from time.Time, tag string) (*domain.Items, error)
+	GetAllWithTag(from time.Time, tag string) (*domain.Items, error)
 }
 
 // ItemsRepository .
@@ -22,8 +22,8 @@ func NewItemsRepository(api IQiitaAPI) *ItemsRepository {
 	return &ItemsRepository{qiitaAPI: api}
 }
 
-// GetAll .
-func (r *ItemsRepository) GetAll(from time.Time, tag string) (*domain.Items, error) {
+// GetAllWithTag .
+func (r *ItemsRepository) GetAllWithTag(from time.Time, tag string) (*domain.Items, error) {
 	query := fmt.Sprintf("created:>%s stocks:>=1 tag:%s", from.Format("2006-01-02"), tag)
 	items, err := r.getAll(query)
 	if err != nil {

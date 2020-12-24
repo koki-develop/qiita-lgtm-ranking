@@ -23,10 +23,10 @@ func Test_NewItemsRepository(t *testing.T) {
 }
 
 /*
- * ItemsRepository.GetAll()
+ * ItemsRepository.GetAllWithTag()
  */
 
-func TestItemsRepository_GetAll_ReturnItemsWhenSucceeded(t *testing.T) {
+func TestItemsRepository_GetAllWithTag_ReturnItemsWhenSucceeded(t *testing.T) {
 	mapi := new(mockQiitaAPI)
 	mapi.On("GetItems", 1, 100, "created:>2020-01-01 stocks:>=1 tag:TAG").Return(&domain.Items{{Title: "TITLE_1"}}, nil)
 	mapi.On("GetItems", 2, 100, "created:>2020-01-01 stocks:>=1 tag:TAG").Return(&domain.Items{{Title: "TITLE_2"}}, nil)
@@ -34,7 +34,7 @@ func TestItemsRepository_GetAll_ReturnItemsWhenSucceeded(t *testing.T) {
 
 	r := &ItemsRepository{qiitaAPI: mapi}
 
-	items, err := r.GetAll(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), "TAG")
+	items, err := r.GetAllWithTag(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), "TAG")
 
 	assert.Equal(t, &domain.Items{
 		{Title: "TITLE_1"},
@@ -44,13 +44,13 @@ func TestItemsRepository_GetAll_ReturnItemsWhenSucceeded(t *testing.T) {
 	mapi.AssertNumberOfCalls(t, "GetItems", 3)
 }
 
-func TestItemsRepository_GetAll_ReturnErrorWhenGetItemsFailed(t *testing.T) {
+func TestItemsRepository_GetAllWithTag_ReturnErrorWhenGetItemsFailed(t *testing.T) {
 	mapi := new(mockQiitaAPI)
 	mapi.On("GetItems", 1, 100, "created:>2020-01-01 stocks:>=1 tag:TAG").Return((*domain.Items)(nil), errors.New("SOMETHING_WRONG"))
 
 	r := &ItemsRepository{qiitaAPI: mapi}
 
-	items, err := r.GetAll(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), "TAG")
+	items, err := r.GetAllWithTag(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), "TAG")
 
 	assert.Nil(t, items)
 	assert.EqualError(t, err, "SOMETHING_WRONG")

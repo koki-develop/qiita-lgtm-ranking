@@ -23,7 +23,7 @@ type ReportsController struct {
 func (c *ReportsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string) error {
 	from := t.AddDate(0, 0, -7)
 
-	items, err := c.itemsRepository.GetAll(from, tag)
+	items, err := c.itemsRepository.GetAllWithTag(from, tag)
 	if err != nil {
 		return err
 	}
