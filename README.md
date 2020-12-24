@@ -11,6 +11,7 @@
 The system that updates the ranking of the number of LGTM in Qiita articles every day.
 
 - [`AWS`](https://qiita.com/items/e24b6279326a462d456c)
+- [`Android`](https://qiita.com/items/8b3af051428d746f26c5)
 - [`Docker`](https://qiita.com/items/ae11fca7d2eba445b037)
 - [`Go`](https://qiita.com/items/49d4537d95f878b3e91a)
 - [`iOS`](https://qiita.com/items/e61a29a383d0403e92fc)
