@@ -11,6 +11,11 @@ type mockItemsRepository struct {
 	mock.Mock
 }
 
+func (m *mockItemsRepository) GetAll(from time.Time) (*domain.Items, error) {
+	args := m.Called(from)
+	return args.Get(0).(*domain.Items), args.Error(1)
+}
+
 func (m *mockItemsRepository) GetAllWithTag(from time.Time, tag string) (*domain.Items, error) {
 	args := m.Called(from, tag)
 	return args.Get(0).(*domain.Items), args.Error(1)
@@ -20,8 +25,8 @@ type mockReportsRepository struct {
 	mock.Mock
 }
 
-func (m *mockReportsRepository) Update(id, body, tag string) error {
-	args := m.Called(id, body, tag)
+func (m *mockReportsRepository) Update(id, title, body, tag string) error {
+	args := m.Called(id, title, body, tag)
 	return args.Error(0)
 }
 

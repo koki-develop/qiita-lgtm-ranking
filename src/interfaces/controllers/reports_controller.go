@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/gateways"
@@ -33,7 +34,7 @@ func (c *ReportsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string
 		return err
 	}
 
-	if err := c.reportsRepository.Update(reportID, body, tag); err != nil {
+	if err := c.reportsRepository.Update(reportID, fmt.Sprintf("【%s】Qiita 週間LGTM数ランキング【自動更新】", tag), body, tag); err != nil {
 		return err
 	}
 
