@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/domain"
 )
@@ -62,22 +63,17 @@ func (api *QiitaAPI) GetItems(page, perPage int, query string) (*domain.Items, e
 }
 
 // UpdateItem .
-func (api *QiitaAPI) UpdateItem(id, title, body string, tags []string) error {
-	ts := []map[string]string{}
-	for _, tag := range tags {
-		ts = append(ts, map[string]string{"name": tag})
-	}
-
+func (api *QiitaAPI) UpdateItem(id, title, body string, tags domain.Tags) error {
 	b, err := api.jsonMarshaler.Marshal(map[string]interface{}{
 		"title": title,
 		"body":  body,
-		"tags":  ts,
+		"tags":  tags,
 	})
 	if err != nil {
 		return err
 	}
 
-	req, err := http.NewRequest("PATCH", fmt.Sprintf("https://qiita.com/api/v2/items/%s", id), bytes.NewReader(b))
+	req, err := http.NewRequest("PATCH", fmt.Sprintf("https://qiita.com/api/v2/items/%s", id), strings.NewReader(string(b)))
 	if err != nil {
 		return err
 	}

@@ -7,5 +7,5 @@ import (
 // IQiitaAPI .
 type IQiitaAPI interface {
 	GetItems(page, perPage int, query string) (*domain.Items, error)
-	UpdateItem(id, title, body string, tags []string) error
+	UpdateItem(id, title, body string, tags domain.Tags) error
 }
