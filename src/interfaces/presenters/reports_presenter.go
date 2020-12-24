@@ -81,6 +81,7 @@ func (p *ReportsPresenter) tagsMarkdown() string {
 		"[`iOS`](https://qiita.com/items/e61a29a383d0403e92fc)",
 		"[`Java`](https://qiita.com/items/4c3f84836bfdbb137226)",
 		"[`JavaScript`](https://qiita.com/items/eaa7ac5b62a0a723edbb)",
+		"[`Linux`](https://qiita.com/items/362e81e53c3f9dee22f1)",
 		"[`PHP`](https://qiita.com/items/3318cbdbc45c6ebd4014)",
 		"[`Python`](https://qiita.com/items/9d7f2ffeafb36cf59a77)",
 		"[`Rails`](https://qiita.com/items/93b9e7f7d143e9ce650e)",
