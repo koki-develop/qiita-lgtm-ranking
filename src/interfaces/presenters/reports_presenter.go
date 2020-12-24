@@ -36,6 +36,9 @@ func (p *ReportsPresenter) Weekly(from time.Time, items *domain.Items) (string, 
 	rows = append(rows, fmt.Sprintf("- 期間: %s ~ %s", from.Format("2006-01-02"), from.AddDate(0, 0, 7).Format("2006-01-02")))
 	rows = append(rows, "- 条件: ストック数が **10** 以上の記事")
 	rows = append(rows, "")
+	rows = append(rows, "ソースコード:")
+	rows = append(rows, `<a href="https://github.com/kou-pg-0131/qiita-lgtm-ranking"><img src="https://github-link-card.s3.ap-northeast-1.amazonaws.com/kou-pg-0131/qiita-lgtm-ranking.png" width="460px"></a>`)
+	rows = append(rows, "")
 
 	rows = append(rows, "# LGTM 数ランキング")
 	rows = append(rows, "")
@@ -57,6 +60,9 @@ func (p *ReportsPresenter) WeeklyPerTag(from time.Time, items *domain.Items, tag
 	rows = append(rows, "")
 	rows = append(rows, fmt.Sprintf("- 期間: %s ~ %s", from.Format("2006-01-02"), from.AddDate(0, 0, 7).Format("2006-01-02")))
 	rows = append(rows, "- 条件: ストック数が **2** 以上の記事")
+	rows = append(rows, "")
+	rows = append(rows, "ソースコード:")
+	rows = append(rows, `<a href="https://github.com/kou-pg-0131/qiita-lgtm-ranking"><img src="https://github-link-card.s3.ap-northeast-1.amazonaws.com/kou-pg-0131/qiita-lgtm-ranking.png" width="460px"></a>`)
 	rows = append(rows, "")
 
 	rows = append(rows, "# LGTM 数ランキング")
