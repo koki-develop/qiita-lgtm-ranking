@@ -51,7 +51,7 @@ func (p *ReportsPresenter) Weekly(from time.Time, items *domain.Items) (string, 
 	rows = append(rows, "# 集計について")
 	rows = append(rows, "")
 	rows = append(rows, fmt.Sprintf("- 期間: %s ~ %s", from.Format("2006-01-02"), from.AddDate(0, 0, 7).Format("2006-01-02")))
-	rows = append(rows, "- 条件: ストック数が **15** 以上の記事")
+	rows = append(rows, "- 条件: ストック数が **10** 以上の記事")
 	rows = append(rows, "")
 
 	rows = append(rows, "# LGTM 数ランキング")
