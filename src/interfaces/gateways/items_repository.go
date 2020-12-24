@@ -25,7 +25,7 @@ func NewItemsRepository(api IQiitaAPI) *ItemsRepository {
 
 // GetAll .
 func (r *ItemsRepository) GetAll(from time.Time) (*domain.Items, error) {
-	query := fmt.Sprintf("created:>=%s stocks:>=1", from.Format("2006-01-02"))
+	query := fmt.Sprintf("created:>=%s stocks:>=10", from.Format("2006-01-02"))
 	items, err := r.getAll(query)
 	if err != nil {
 		return nil, err
