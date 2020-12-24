@@ -106,7 +106,7 @@ func TestReportsController_UpdateWeeklyPerTag_ReturnNilWhenSucceeded(t *testing.
 	mrp.On("WeeklyPerTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{{Title: "TITLE"}}, "TAG").Return("BODY", nil)
 
 	mrr := new(mockReportsRepository)
-	mrr.On("Update", "REPORT_ID", "【TAG】Qiita 週間LGTM数ランキング【自動更新】", "BODY", domain.Tags{{Name: "TAG"}}).Return(nil)
+	mrr.On("Update", "REPORT_ID", "【TAG】Qiita 週間 LGTM 数ランキング【自動更新】", "BODY", domain.Tags{{Name: "TAG"}}).Return(nil)
 
 	c := &ReportsController{
 		itemsRepository:   mir,
@@ -163,7 +163,7 @@ func TestReportsController_UpdateWeeklyPerTag_ReturnUpdateFailed(t *testing.T) {
 	mrp.On("WeeklyPerTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{{Title: "TITLE"}}, "TAG").Return("BODY", nil)
 
 	mrr := new(mockReportsRepository)
-	mrr.On("Update", "REPORT_ID", "【TAG】Qiita 週間LGTM数ランキング【自動更新】", "BODY", domain.Tags{{Name: "TAG"}}).Return(errors.New("SOMETHING_WRONG"))
+	mrr.On("Update", "REPORT_ID", "【TAG】Qiita 週間 LGTM 数ランキング【自動更新】", "BODY", domain.Tags{{Name: "TAG"}}).Return(errors.New("SOMETHING_WRONG"))
 
 	c := &ReportsController{
 		itemsRepository:   mir,
