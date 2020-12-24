@@ -32,7 +32,7 @@ functions:
     events:
       - schedule:
           name: ${self:custom.prefix}-weekly
-          rate: cron(0 0 * * ? *)
+          rate: cron(0 0,12 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeekly/input.${self:provider.stage}.json)}
 
@@ -42,132 +42,132 @@ functions:
       # AWS
       - schedule:
           name: ${self:custom.prefix}-weekly-aws
-          rate: cron(0 1 * * ? *)
+          rate: cron(0 0,6,12,18 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/aws.${self:provider.stage}.json)}
 
       # Android
       - schedule:
           name: ${self:custom.prefix}-weekly-android
-          rate: cron(0 14 * * ? *)
+          rate: cron(0 1,7,13,19 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/android.${self:provider.stage}.json)}
 
       # Docker
       - schedule:
           name: ${self:custom.prefix}-weekly-docker
-          rate: cron(0 2 * * ? *)
+          rate: cron(0 2,8,14,20 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/docker.${self:provider.stage}.json)}
 
       # Go
       - schedule:
           name: ${self:custom.prefix}-weekly-go
-          rate: cron(0 13 * * ? *)
+          rate: cron(0 3,9,15,21 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/go.${self:provider.stage}.json)}
 
       # Git
       - schedule:
           name: ${self:custom.prefix}-weekly-git
-          rate: cron(0 17 * * ? *)
+          rate: cron(0 4,10,16,22 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/git.${self:provider.stage}.json)}
 
       # iOS
       - schedule:
           name: ${self:custom.prefix}-weekly-ios
-          rate: cron(0 3 * * ? *)
+          rate: cron(0 5,11,17,23 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/ios.${self:provider.stage}.json)}
 
       # Java
       - schedule:
           name: ${self:custom.prefix}-weekly-java
-          rate: cron(0 10 * * ? *)
+          rate: cron(0 0,6,12,18 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/java.${self:provider.stage}.json)}
 
       # JavaScript
       - schedule:
           name: ${self:custom.prefix}-weekly-javascript
-          rate: cron(0 4 * * ? *)
+          rate: cron(0 1,7,13,19 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/javascript.${self:provider.stage}.json)}
 
       # Linux
       - schedule:
           name: ${self:custom.prefix}-weekly-linux
-          rate: cron(0 15 * * ? *)
+          rate: cron(0 2,8,14,20 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/linux.${self:provider.stage}.json)}
 
       # Node.js
       - schedule:
           name: ${self:custom.prefix}-weekly-nodejs
-          rate: cron(0 16 * * ? *)
+          rate: cron(0 3,9,15,21 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/nodejs.${self:provider.stage}.json)}
 
       # PHP
       - schedule:
           name: ${self:custom.prefix}-weekly-php
-          rate: cron(0 5 * * ? *)
+          rate: cron(0 4,10,16,22 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/php.${self:provider.stage}.json)}
 
       # Python
       - schedule:
           name: ${self:custom.prefix}-weekly-python
-          rate: cron(0 6 * * ? *)
+          rate: cron(0 5,11,17,23 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/python.${self:provider.stage}.json)}
 
       # Rails
       - schedule:
           name: ${self:custom.prefix}-weekly-rails
-          rate: cron(0 6 * * ? *)
+          rate: cron(0 0,6,12,18 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/rails.${self:provider.stage}.json)}
 
       # React
       - schedule:
           name: ${self:custom.prefix}-weekly-react
-          rate: cron(0 12 * * ? *)
+          rate: cron(0 1,7,13,19 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/react.${self:provider.stage}.json)}
 
       # Ruby
       - schedule:
           name: ${self:custom.prefix}-weekly-ruby
-          rate: cron(0 12 * * ? *)
+          rate: cron(0 2,8,14,20 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/ruby.${self:provider.stage}.json)}
 
       # Swift
       - schedule:
           name: ${self:custom.prefix}-weekly-swift
-          rate: cron(0 11 * * ? *)
+          rate: cron(0 3,9,15,21 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/swift.${self:provider.stage}.json)}
 
       # TypeScript
       - schedule:
           name: ${self:custom.prefix}-weekly-typescript
-          rate: cron(0 7 * * ? *)
+          rate: cron(0 4,10,16,22 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/typescript.${self:provider.stage}.json)}
 
       # Vim
       - schedule:
           name: ${self:custom.prefix}-weekly-vim
-          rate: cron(0 8 * * ? *)
+          rate: cron(0 5,11,17,23 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/vim.${self:provider.stage}.json)}
 
       # Vue.js
       - schedule:
           name: ${self:custom.prefix}-weekly-vuejs
-          rate: cron(0 9 * * ? *)
+          rate: cron(0 0,6,12,18 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/vuejs.${self:provider.stage}.json)}
