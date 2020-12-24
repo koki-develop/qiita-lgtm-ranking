@@ -16,6 +16,7 @@ func Test_NewReportsRepository(t *testing.T) {
 	mapi := new(mockQiitaAPI)
 	r := NewReportsRepository(mapi)
 
+	assert.NotNil(t, r)
 	assert.Equal(t, mapi, r.qiitaAPI)
 }
 
