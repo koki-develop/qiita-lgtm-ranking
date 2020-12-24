@@ -25,8 +25,9 @@ type ReportsController struct {
 // UpdateWeekly .
 func (c *ReportsController) UpdateWeekly(t time.Time, reportID string) error {
 	from := t.AddDate(0, 0, -7)
+	query := fmt.Sprintf("created:>=%s stocks:>=10", from.Format("2006-01-02"))
 
-	items, err := c.itemsRepository.GetAll(from)
+	items, err := c.itemsRepository.GetAll(query)
 	if err != nil {
 		return err
 	}
@@ -46,8 +47,9 @@ func (c *ReportsController) UpdateWeekly(t time.Time, reportID string) error {
 // UpdateWeeklyPerTag .
 func (c *ReportsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string) error {
 	from := t.AddDate(0, 0, -7)
+	query := fmt.Sprintf("created:>=%s stocks:>=2 tag:%s", from.Format("2006-01-02"), tag)
 
-	items, err := c.itemsRepository.GetAllWithTag(from, tag)
+	items, err := c.itemsRepository.GetAll(query)
 	if err != nil {
 		return err
 	}

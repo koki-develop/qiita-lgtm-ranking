@@ -11,13 +11,8 @@ type mockItemsRepository struct {
 	mock.Mock
 }
 
-func (m *mockItemsRepository) GetAll(from time.Time) (*domain.Items, error) {
-	args := m.Called(from)
-	return args.Get(0).(*domain.Items), args.Error(1)
-}
-
-func (m *mockItemsRepository) GetAllWithTag(from time.Time, tag string) (*domain.Items, error) {
-	args := m.Called(from, tag)
+func (m *mockItemsRepository) GetAll(query string) (*domain.Items, error) {
+	args := m.Called(query)
 	return args.Get(0).(*domain.Items), args.Error(1)
 }
 
