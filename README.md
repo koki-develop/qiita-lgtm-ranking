@@ -8,7 +8,7 @@
 
 ## Overview
 
-The system that updates the ranking of the number of LGTMs in Qiita articles every day.
+The system that updates the ranking of the number of LGTM in Qiita articles every day.
 
 - [`AWS`](https://qiita.com/items/e24b6279326a462d456c)
 - [`Docker`](https://qiita.com/items/ae11fca7d2eba445b037)
