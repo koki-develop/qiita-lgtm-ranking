@@ -109,7 +109,7 @@ workflows:
 
       - approval_deploy_prod:
           type: approval
-          requires: [test]
+          requires: [deploy_dev]
 
       - deploy:
           name: deploy_prod
