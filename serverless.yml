@@ -15,6 +15,7 @@ provider:
   profile: default
   runtime: go1.x
   memorySize: 256
+  timeout: 900
   stage: ${opt:stage, "dev"}
   environment:
     QIITA_ACCESS_TOKEN: ${file(./secret.yml):qiitaAccessToken}
@@ -28,7 +29,6 @@ package:
 functions:
   updateWeekly:
     handler: build/updateWeekly
-    timeout: 900
     events:
       - schedule:
           name: ${self:custom.prefix}-weekly
@@ -38,7 +38,6 @@ functions:
 
   updateWeeklyPerTag:
     handler: build/updateWeeklyPerTag
-    timeout: 900
     events:
       # AWS
       - schedule:

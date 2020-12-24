@@ -59,7 +59,7 @@ func (c *ReportsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string
 		return err
 	}
 
-	if err := c.reportsRepository.Update(reportID, fmt.Sprintf("【%s】Qiita 週間LGTM数ランキング【自動更新】", tag), body, domain.Tags{{Name: tag}}); err != nil {
+	if err := c.reportsRepository.Update(reportID, fmt.Sprintf("【%s】Qiita 週間 LGTM 数ランキング【自動更新】", tag), body, domain.Tags{{Name: tag}}); err != nil {
 		return err
 	}
 
