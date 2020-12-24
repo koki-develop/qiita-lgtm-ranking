@@ -171,3 +171,10 @@ functions:
           rate: cron(0 0,6,12,18 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyByTag/vuejs.${self:provider.stage}.json)}
+
+      # 初心者
+      - schedule:
+          name: ${self:custom.prefix}-weekly-beginner
+          rate: cron(0 1,7,13,19 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateWeeklyByTag/beginner.${self:provider.stage}.json)}
