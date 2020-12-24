@@ -95,6 +95,7 @@ func (p *ReportsPresenter) tagsMarkdown() string {
 		"[`TypeScript`](https://qiita.com/items/25b7c0870afa6d41d19b)",
 		"[`Vim`](https://qiita.com/items/f5361177baef95e447d1)",
 		"[`Vue.js`](https://qiita.com/items/2774e02c6eea5c830d99)",
+		"[`初心者`](https://qiita.com/items/402899ec543aff109505)",
 	}, " ")
 }
 
