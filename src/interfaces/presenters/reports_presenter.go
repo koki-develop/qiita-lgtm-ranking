@@ -11,7 +11,7 @@ import (
 // IReportsPresenter .
 type IReportsPresenter interface {
 	Weekly(from time.Time, items *domain.Items) (string, error)
-	WeeklyPerTag(from time.Time, items *domain.Items, tag string) (string, error)
+	WeeklyByTag(from time.Time, items *domain.Items, tag string) (string, error)
 }
 
 // ReportsPresenter .
@@ -43,8 +43,8 @@ func (p *ReportsPresenter) Weekly(from time.Time, items *domain.Items) (string, 
 	return strings.Join(rows, "\n"), nil
 }
 
-// WeeklyPerTag .
-func (p *ReportsPresenter) WeeklyPerTag(from time.Time, items *domain.Items, tag string) (string, error) {
+// WeeklyByTag .
+func (p *ReportsPresenter) WeeklyByTag(from time.Time, items *domain.Items, tag string) (string, error) {
 	rows := []string{}
 
 	rows = append(rows, "# 他のタグ")

@@ -34,7 +34,7 @@ func (m *mockReportsPresenter) Weekly(from time.Time, items *domain.Items) (stri
 	return args.String(0), args.Error(1)
 }
 
-func (m *mockReportsPresenter) WeeklyPerTag(from time.Time, items *domain.Items, tag string) (string, error) {
+func (m *mockReportsPresenter) WeeklyByTag(from time.Time, items *domain.Items, tag string) (string, error) {
 	args := m.Called(from, items, tag)
 	return args.String(0), args.Error(1)
 }

@@ -95,15 +95,15 @@ func TestReportsController_UpdateWeekly_ReturnErrorWhenUpdateFailed(t *testing.T
 }
 
 /*
- * ReportsController.UpdateWeeklyPerTag()
+ * ReportsController.UpdateWeeklyByTag()
  */
 
-func TestReportsController_UpdateWeeklyPerTag_ReturnNilWhenSucceeded(t *testing.T) {
+func TestReportsController_UpdateWeeklyByTag_ReturnNilWhenSucceeded(t *testing.T) {
 	mir := new(mockItemsRepository)
 	mir.On("GetAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return(&domain.Items{{Title: "TITLE"}}, nil)
 
 	mrp := new(mockReportsPresenter)
-	mrp.On("WeeklyPerTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{{Title: "TITLE"}}, "TAG").Return("BODY", nil)
+	mrp.On("WeeklyByTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{{Title: "TITLE"}}, "TAG").Return("BODY", nil)
 
 	mrr := new(mockReportsRepository)
 	mrr.On("Update", "REPORT_ID", "【TAG】Qiita 週間 LGTM 数ランキング【自動更新】", "BODY", domain.Tags{{Name: "TAG"}}).Return(nil)
@@ -114,15 +114,15 @@ func TestReportsController_UpdateWeeklyPerTag_ReturnNilWhenSucceeded(t *testing.
 		reportsRepository: mrr,
 	}
 
-	err := c.UpdateWeeklyPerTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
+	err := c.UpdateWeeklyByTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
 
 	assert.Nil(t, err)
 	mir.AssertNumberOfCalls(t, "GetAll", 1)
-	mrp.AssertNumberOfCalls(t, "WeeklyPerTag", 1)
+	mrp.AssertNumberOfCalls(t, "WeeklyByTag", 1)
 	mrr.AssertNumberOfCalls(t, "Update", 1)
 }
 
-func TestReportsController_UpdateWeeklyPerTag_ReturnErrorWhenGetAllFailed(t *testing.T) {
+func TestReportsController_UpdateWeeklyByTag_ReturnErrorWhenGetAllFailed(t *testing.T) {
 	mir := new(mockItemsRepository)
 	mir.On("GetAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return((*domain.Items)(nil), errors.New("SOMETHING_WRONG"))
 
@@ -130,37 +130,37 @@ func TestReportsController_UpdateWeeklyPerTag_ReturnErrorWhenGetAllFailed(t *tes
 		itemsRepository: mir,
 	}
 
-	err := c.UpdateWeeklyPerTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
+	err := c.UpdateWeeklyByTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
 	mir.AssertNumberOfCalls(t, "GetAll", 1)
 }
 
-func TestReportsController_UpdateWeeklyPerTag_ReturnErrorWhenPresenterFailed(t *testing.T) {
+func TestReportsController_UpdateWeeklyByTag_ReturnErrorWhenPresenterFailed(t *testing.T) {
 	mir := new(mockItemsRepository)
 	mir.On("GetAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return(&domain.Items{{Title: "TITLE"}}, nil)
 
 	mrp := new(mockReportsPresenter)
-	mrp.On("WeeklyPerTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{{Title: "TITLE"}}, "TAG").Return("", errors.New("SOMETHING_WRONG"))
+	mrp.On("WeeklyByTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{{Title: "TITLE"}}, "TAG").Return("", errors.New("SOMETHING_WRONG"))
 
 	c := &ReportsController{
 		itemsRepository:  mir,
 		reportsPresenter: mrp,
 	}
 
-	err := c.UpdateWeeklyPerTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
+	err := c.UpdateWeeklyByTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
 	mir.AssertNumberOfCalls(t, "GetAll", 1)
-	mrp.AssertNumberOfCalls(t, "WeeklyPerTag", 1)
+	mrp.AssertNumberOfCalls(t, "WeeklyByTag", 1)
 }
 
-func TestReportsController_UpdateWeeklyPerTag_ReturnUpdateFailed(t *testing.T) {
+func TestReportsController_UpdateWeeklyByTag_ReturnUpdateFailed(t *testing.T) {
 	mir := new(mockItemsRepository)
 	mir.On("GetAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return(&domain.Items{{Title: "TITLE"}}, nil)
 
 	mrp := new(mockReportsPresenter)
-	mrp.On("WeeklyPerTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{{Title: "TITLE"}}, "TAG").Return("BODY", nil)
+	mrp.On("WeeklyByTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{{Title: "TITLE"}}, "TAG").Return("BODY", nil)
 
 	mrr := new(mockReportsRepository)
 	mrr.On("Update", "REPORT_ID", "【TAG】Qiita 週間 LGTM 数ランキング【自動更新】", "BODY", domain.Tags{{Name: "TAG"}}).Return(errors.New("SOMETHING_WRONG"))
@@ -171,10 +171,10 @@ func TestReportsController_UpdateWeeklyPerTag_ReturnUpdateFailed(t *testing.T) {
 		reportsRepository: mrr,
 	}
 
-	err := c.UpdateWeeklyPerTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
+	err := c.UpdateWeeklyByTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
 	mir.AssertNumberOfCalls(t, "GetAll", 1)
-	mrp.AssertNumberOfCalls(t, "WeeklyPerTag", 1)
+	mrp.AssertNumberOfCalls(t, "WeeklyByTag", 1)
 	mrr.AssertNumberOfCalls(t, "Update", 1)
 }

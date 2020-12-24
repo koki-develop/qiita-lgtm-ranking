@@ -12,7 +12,7 @@ import (
 // IReportsController .
 type IReportsController interface {
 	UpdateWeekly(t time.Time, reportID string) error
-	UpdateWeeklyPerTag(t time.Time, reportID, tag string) error
+	UpdateWeeklyByTag(t time.Time, reportID, tag string) error
 }
 
 // ReportsController .
@@ -44,8 +44,8 @@ func (c *ReportsController) UpdateWeekly(t time.Time, reportID string) error {
 	return nil
 }
 
-// UpdateWeeklyPerTag .
-func (c *ReportsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string) error {
+// UpdateWeeklyByTag .
+func (c *ReportsController) UpdateWeeklyByTag(t time.Time, reportID, tag string) error {
 	from := t.AddDate(0, 0, -7)
 	query := fmt.Sprintf("created:>=%s stocks:>=2 tag:%s", from.Format("2006-01-02"), tag)
 
@@ -54,7 +54,7 @@ func (c *ReportsController) UpdateWeeklyPerTag(t time.Time, reportID, tag string
 		return err
 	}
 
-	body, err := c.reportsPresenter.WeeklyPerTag(from, items, tag)
+	body, err := c.reportsPresenter.WeeklyByTag(from, items, tag)
 	if err != nil {
 		return err
 	}

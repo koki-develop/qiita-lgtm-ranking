@@ -74,13 +74,13 @@ func TestReportsPresenter_Weekly(t *testing.T) {
 }
 
 /*
- * ReportsPresenter.WeeklyPerTag()
+ * ReportsPresenter.WeeklyByTag()
  */
 
-func TestReportsPresenter_WeeklyPerTag(t *testing.T) {
+func TestReportsPresenter_WeeklyByTag(t *testing.T) {
 	p := &ReportsPresenter{}
 
-	body, err := p.WeeklyPerTag(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{
+	body, err := p.WeeklyByTag(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &domain.Items{
 		{Title: "TITLE_HOGE", URL: "https://example.com/HOGE", LikesCount: 10, Tags: domain.Tags{{Name: "TAG_1"}, {Name: "TAG_2"}}, User: domain.User{ID: "USER_HOGE"}, CreatedAt: time.Date(2020, 1, 1, 12, 1, 0, 0, time.UTC)},
 		{Title: "TITLE_FUGA", URL: "https://example.com/FUGA", LikesCount: 13, Tags: domain.Tags{{Name: "TAG_1"}, {Name: "TAG_2"}}, User: domain.User{ID: "USER_FUGA"}, CreatedAt: time.Date(2020, 1, 7, 4, 36, 0, 0, time.UTC)},
 		{Title: "TITLE_FOO", URL: "https://example.com/FOO", Tags: domain.Tags{{Name: "TAG_1"}, {Name: "TAG_2"}}, LikesCount: 8, User: domain.User{ID: "USER_FOO"}, CreatedAt: time.Date(2020, 1, 3, 8, 28, 0, 0, time.UTC)},
