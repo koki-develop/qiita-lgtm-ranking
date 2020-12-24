@@ -158,3 +158,10 @@ functions:
           rate: cron(0 16 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/nodejs.${self:provider.stage}.json)}
+
+      # Git
+      - schedule:
+          name: ${self:custom.prefix}-git
+          rate: cron(0 17 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateWeeklyPerTag/git.${self:provider.stage}.json)}
