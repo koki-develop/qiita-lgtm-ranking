@@ -23,7 +23,7 @@ func NewReportsRepository(api IQiitaAPI) *ReportsRepository {
 
 // Update .
 func (r *ReportsRepository) Update(id, title, body string, tags domain.Tags) error {
-	if err := r.qiitaAPI.UpdateItem(id, title, body, append(domain.Tags{{Name: "Qiita"}}, tags...)); err != nil {
+	if err := r.qiitaAPI.UpdateItem(id, title, body, append(domain.Tags{{Name: "Qiita"}, {Name: "lgtm"}, {Name: "ランキング"}}, tags...)); err != nil {
 		return err
 	}
 
