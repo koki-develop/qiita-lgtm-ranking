@@ -24,10 +24,19 @@ func NewItemsRepository(api IQiitaAPI) *ItemsRepository {
 
 // GetAll .
 func (r *ItemsRepository) GetAll(from time.Time, tag string) (*domain.Items, error) {
+	query := fmt.Sprintf("created:>%s stocks:>=1 tag:%s", from.Format("2006-01-02"), tag)
+	items, err := r.getAll(query)
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+func (r *ItemsRepository) getAll(query string) (*domain.Items, error) {
 	items := &domain.Items{}
 
 	for i := 1; i <= 100; i++ {
-		resp, err := r.qiitaAPI.GetItems(i, 100, fmt.Sprintf("created:>%s stocks:>=1 tag:%s", from.Format("2006-01-02"), tag))
+		resp, err := r.qiitaAPI.GetItems(i, 100, query)
 		if err != nil {
 			return nil, err
 		}
