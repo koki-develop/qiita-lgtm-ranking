@@ -137,3 +137,10 @@ functions:
           rate: cron(0 13 * * ? *)
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateWeeklyPerTag/go.${self:provider.stage}.json)}
+
+      # Android
+      - schedule:
+          name: ${self:custom.prefix}-android
+          rate: cron(0 14 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateWeeklyPerTag/android.${self:provider.stage}.json)}
