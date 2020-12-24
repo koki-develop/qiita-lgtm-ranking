@@ -11,6 +11,7 @@ import (
 
 // IReportsController .
 type IReportsController interface {
+	UpdateWeekly(t time.Time, reportID string) error
 	UpdateWeeklyPerTag(t time.Time, reportID, tag string) error
 }
 
@@ -19,6 +20,27 @@ type ReportsController struct {
 	itemsRepository   gateways.IItemsRepository
 	reportsRepository gateways.IReportsRepository
 	reportsPresenter  presenters.IReportsPresenter
+}
+
+// UpdateWeekly .
+func (c *ReportsController) UpdateWeekly(t time.Time, reportID string) error {
+	from := t.AddDate(0, 0, -7)
+
+	items, err := c.itemsRepository.GetAll(from)
+	if err != nil {
+		return err
+	}
+
+	body, err := c.reportsPresenter.Weekly(from, items)
+	if err != nil {
+		return err
+	}
+
+	if err := c.reportsRepository.Update(reportID, "Qiita 週間 LGTM 数ランキング【自動更新】", body, domain.Tags{}); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // UpdateWeeklyPerTag .

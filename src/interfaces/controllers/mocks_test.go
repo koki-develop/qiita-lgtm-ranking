@@ -34,6 +34,11 @@ type mockReportsPresenter struct {
 	mock.Mock
 }
 
+func (m *mockReportsPresenter) Weekly(from time.Time, items *domain.Items) (string, error) {
+	args := m.Called(from, items)
+	return args.String(0), args.Error(1)
+}
+
 func (m *mockReportsPresenter) WeeklyPerTag(from time.Time, items *domain.Items, tag string) (string, error) {
 	args := m.Called(from, items, tag)
 	return args.String(0), args.Error(1)
