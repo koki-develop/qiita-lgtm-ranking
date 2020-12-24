@@ -28,9 +28,9 @@ func Test_NewItemsRepository(t *testing.T) {
 
 func TestItemsRepository_GetAll_ReturnItemsWhenSucceeded(t *testing.T) {
 	mapi := new(mockQiitaAPI)
-	mapi.On("GetItems", 1, 100, "created:>2020-01-01 stocks:>=1").Return(&domain.Items{{Title: "TITLE_1"}}, nil)
-	mapi.On("GetItems", 2, 100, "created:>2020-01-01 stocks:>=1").Return(&domain.Items{{Title: "TITLE_2"}}, nil)
-	mapi.On("GetItems", 3, 100, "created:>2020-01-01 stocks:>=1").Return(&domain.Items{}, nil)
+	mapi.On("GetItems", 1, 100, "created:>=2020-01-01 stocks:>=1").Return(&domain.Items{{Title: "TITLE_1"}}, nil)
+	mapi.On("GetItems", 2, 100, "created:>=2020-01-01 stocks:>=1").Return(&domain.Items{{Title: "TITLE_2"}}, nil)
+	mapi.On("GetItems", 3, 100, "created:>=2020-01-01 stocks:>=1").Return(&domain.Items{}, nil)
 
 	r := &ItemsRepository{qiitaAPI: mapi}
 
@@ -46,7 +46,7 @@ func TestItemsRepository_GetAll_ReturnItemsWhenSucceeded(t *testing.T) {
 
 func TestItemsRepository_GetAll_ReturnErrorWhenGetItemsFailed(t *testing.T) {
 	mapi := new(mockQiitaAPI)
-	mapi.On("GetItems", 1, 100, "created:>2020-01-01 stocks:>=1").Return((*domain.Items)(nil), errors.New("SOMETHING_WRONG"))
+	mapi.On("GetItems", 1, 100, "created:>=2020-01-01 stocks:>=1").Return((*domain.Items)(nil), errors.New("SOMETHING_WRONG"))
 
 	r := &ItemsRepository{qiitaAPI: mapi}
 
@@ -63,9 +63,9 @@ func TestItemsRepository_GetAll_ReturnErrorWhenGetItemsFailed(t *testing.T) {
 
 func TestItemsRepository_GetAllWithTag_ReturnItemsWhenSucceeded(t *testing.T) {
 	mapi := new(mockQiitaAPI)
-	mapi.On("GetItems", 1, 100, "created:>2020-01-01 stocks:>=1 tag:TAG").Return(&domain.Items{{Title: "TITLE_1"}}, nil)
-	mapi.On("GetItems", 2, 100, "created:>2020-01-01 stocks:>=1 tag:TAG").Return(&domain.Items{{Title: "TITLE_2"}}, nil)
-	mapi.On("GetItems", 3, 100, "created:>2020-01-01 stocks:>=1 tag:TAG").Return(&domain.Items{}, nil)
+	mapi.On("GetItems", 1, 100, "created:>=2020-01-01 stocks:>=1 tag:TAG").Return(&domain.Items{{Title: "TITLE_1"}}, nil)
+	mapi.On("GetItems", 2, 100, "created:>=2020-01-01 stocks:>=1 tag:TAG").Return(&domain.Items{{Title: "TITLE_2"}}, nil)
+	mapi.On("GetItems", 3, 100, "created:>=2020-01-01 stocks:>=1 tag:TAG").Return(&domain.Items{}, nil)
 
 	r := &ItemsRepository{qiitaAPI: mapi}
 
@@ -81,7 +81,7 @@ func TestItemsRepository_GetAllWithTag_ReturnItemsWhenSucceeded(t *testing.T) {
 
 func TestItemsRepository_GetAllWithTag_ReturnErrorWhenGetItemsFailed(t *testing.T) {
 	mapi := new(mockQiitaAPI)
-	mapi.On("GetItems", 1, 100, "created:>2020-01-01 stocks:>=1 tag:TAG").Return((*domain.Items)(nil), errors.New("SOMETHING_WRONG"))
+	mapi.On("GetItems", 1, 100, "created:>=2020-01-01 stocks:>=1 tag:TAG").Return((*domain.Items)(nil), errors.New("SOMETHING_WRONG"))
 
 	r := &ItemsRepository{qiitaAPI: mapi}
 
