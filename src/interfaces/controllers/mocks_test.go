@@ -25,8 +25,8 @@ type mockReportsRepository struct {
 	mock.Mock
 }
 
-func (m *mockReportsRepository) Update(id, title, body, tag string) error {
-	args := m.Called(id, title, body, tag)
+func (m *mockReportsRepository) Update(id, title, body string, tags domain.Tags) error {
+	args := m.Called(id, title, body, tags)
 	return args.Error(0)
 }
 
