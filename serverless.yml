@@ -26,6 +26,10 @@ package:
     - ./build/**
 
 functions:
+  updateWeekly:
+    handler: build/updateWeekly
+    timeout: 900
+
   updateWeeklyPerTag:
     handler: build/updateWeeklyPerTag
     timeout: 900
