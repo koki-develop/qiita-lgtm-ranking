@@ -33,3 +33,12 @@ func (m *mockReportsPresenter) WeeklyPerTag(from time.Time, items *domain.Items,
 	args := m.Called(from, items, tag)
 	return args.String(0), args.Error(1)
 }
+
+type mockOS struct {
+	mock.Mock
+}
+
+func (m *mockOS) Getenv(s string) string {
+	args := m.Called(s)
+	return args.String(0)
+}
