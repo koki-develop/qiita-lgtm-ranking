@@ -14,6 +14,7 @@ provider:
   region: us-east-1
   profile: default
   runtime: go1.x
+  lambdaHashingVersion: 20201221
   memorySize: 256
   timeout: 900
   stage: ${opt:stage, "dev"}
