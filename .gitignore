@@ -24,9 +24,6 @@ vendor
 # npm
 /node_modules
 
-# secret
-/secret.yml
-
 # dotenv
 /.env
 
