@@ -28,11 +28,11 @@ func (r *ItemsRepository) GetAll(query string) (*entities.Items, error) {
 		if err != nil {
 			return nil, err
 		}
-		if len(*resp) == 0 {
+		if len(resp) == 0 {
 			break
 		}
 
-		*items = append(*items, *resp...)
+		*items = append(*items, resp...)
 	}
 
 	return items, nil
