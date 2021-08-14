@@ -6,6 +6,6 @@ import (
 
 // IQiitaAPI .
 type IQiitaAPI interface {
-	GetItems(page, perPage int, query string) (*entities.Items, error)
+	GetItems(page, perPage int, query string) (entities.Items, error)
 	UpdateItem(id, title, body string, tags entities.Tags) error
 }

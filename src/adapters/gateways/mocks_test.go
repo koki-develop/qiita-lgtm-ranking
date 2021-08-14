@@ -9,9 +9,9 @@ type mockQiitaAPI struct {
 	mock.Mock
 }
 
-func (m *mockQiitaAPI) GetItems(page, perPage int, query string) (*entities.Items, error) {
+func (m *mockQiitaAPI) GetItems(page, perPage int, query string) (entities.Items, error) {
 	args := m.Called(page, perPage, query)
-	return args.Get(0).(*entities.Items), args.Error(1)
+	return args.Get(0).(entities.Items), args.Error(1)
 }
 
 func (m *mockQiitaAPI) UpdateItem(id, title, body string, tags entities.Tags) error {
