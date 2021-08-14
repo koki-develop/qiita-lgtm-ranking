@@ -3,12 +3,19 @@ service: qiita-lgtm-ranking
 frameworkVersion: '2'
 useDotenv: true
 
+plugins:
+  - serverless-prune-plugin
+
 custom:
   prefix: ${self:service}-${self:provider.stage}
   schedule:
     enabled:
       dev: false
       prod: true
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 3
 
 provider:
   name: aws
