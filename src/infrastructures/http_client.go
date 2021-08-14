@@ -6,11 +6,6 @@ import (
 	"net/http"
 )
 
-// HTTPAPI ...
-type HTTPAPI interface {
-	Do(req *http.Request) (*http.Response, error)
-}
-
 // HTTPResponse ...
 type HTTPResponse struct {
 	StatusCode int
