@@ -110,6 +110,9 @@ workflows:
       - approval_deploy_prod:
           type: approval
           requires: [deploy_dev]
+          filters:
+            branches:
+              only: main
 
       - deploy:
           name: deploy_prod

@@ -1,6 +1,7 @@
 {
   "license": "MIT",
   "devDependencies": {
-    "serverless": "^2.16.1"
+    "serverless": "^2.16.1",
+    "serverless-prune-plugin": "^1.5.1"
   }
 }

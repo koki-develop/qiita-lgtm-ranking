@@ -3,18 +3,26 @@ service: qiita-lgtm-ranking
 frameworkVersion: '2'
 useDotenv: true
 
+plugins:
+  - serverless-prune-plugin
+
 custom:
   prefix: ${self:service}-${self:provider.stage}
   schedule:
     enabled:
       dev: false
       prod: true
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 3
 
 provider:
   name: aws
   region: us-east-1
   profile: default
   runtime: go1.x
+  lambdaHashingVersion: 20201221
   memorySize: 256
   timeout: 900
   stage: ${opt:stage, "dev"}
@@ -22,9 +30,7 @@ provider:
     QIITA_ACCESS_TOKEN: ${env:QIITA_ACCESS_TOKEN}
 
 package:
-  exclude:
-    - ./**
-  include:
+  patterns:
     - ./build/**
 
 functions:
