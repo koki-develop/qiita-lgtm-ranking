@@ -1,12 +1,12 @@
 package gateways
 
 import (
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/domain"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/entities"
 )
 
 // IReportsRepository .
 type IReportsRepository interface {
-	Update(id, title, body string, tags domain.Tags) error
+	Update(id, title, body string, tags entities.Tags) error
 }
 
 // ReportsRepository .
@@ -22,8 +22,8 @@ func NewReportsRepository(api IQiitaAPI) *ReportsRepository {
 }
 
 // Update .
-func (r *ReportsRepository) Update(id, title, body string, tags domain.Tags) error {
-	if err := r.qiitaAPI.UpdateItem(id, title, body, append(domain.Tags{{Name: "Qiita"}, {Name: "lgtm"}, {Name: "ランキング"}}, tags...)); err != nil {
+func (r *ReportsRepository) Update(id, title, body string, tags entities.Tags) error {
+	if err := r.qiitaAPI.UpdateItem(id, title, body, append(entities.Tags{{Name: "Qiita"}, {Name: "lgtm"}, {Name: "ランキング"}}, tags...)); err != nil {
 		return err
 	}
 

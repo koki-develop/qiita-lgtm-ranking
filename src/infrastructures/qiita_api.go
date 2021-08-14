@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/domain"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/entities"
 )
 
 // QiitaAPI .
@@ -30,7 +30,7 @@ func NewQiitaAPI(accessToken string) *QiitaAPI {
 }
 
 // GetItems .
-func (api *QiitaAPI) GetItems(page, perPage int, query string) (*domain.Items, error) {
+func (api *QiitaAPI) GetItems(page, perPage int, query string) (*entities.Items, error) {
 	req, err := http.NewRequest("GET", "https://qiita.com/api/v2/items", nil)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (api *QiitaAPI) GetItems(page, perPage int, query string) (*domain.Items, e
 		return nil, errors.New(buf.String())
 	}
 
-	items := &domain.Items{}
+	items := &entities.Items{}
 	if err := api.jsonDecoder.Decode(resp.Body, items); err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (api *QiitaAPI) GetItems(page, perPage int, query string) (*domain.Items, e
 }
 
 // UpdateItem .
-func (api *QiitaAPI) UpdateItem(id, title, body string, tags domain.Tags) error {
+func (api *QiitaAPI) UpdateItem(id, title, body string, tags entities.Tags) error {
 	b, err := api.jsonMarshaler.Marshal(map[string]interface{}{
 		"title": title,
 		"body":  body,
