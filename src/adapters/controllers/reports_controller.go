@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/presenters"
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/entities"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/gateways"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/presenters"
 )
 
 // IReportsController .

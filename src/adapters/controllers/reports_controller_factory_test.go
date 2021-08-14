@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/gateways"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/presenters"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/presenters"
 	"github.com/stretchr/testify/assert"
 )
 
