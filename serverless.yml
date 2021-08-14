@@ -1,6 +1,7 @@
 service: qiita-lgtm-ranking
 
 frameworkVersion: '2'
+useDotenv: true
 
 custom:
   prefix: ${self:service}-${self:provider.stage}
@@ -19,7 +20,7 @@ provider:
   timeout: 900
   stage: ${opt:stage, "dev"}
   environment:
-    QIITA_ACCESS_TOKEN: ${file(./secret.yml):qiitaAccessToken}
+    QIITA_ACCESS_TOKEN: ${env:QIITA_ACCESS_TOKEN}
 
 package:
   patterns:
