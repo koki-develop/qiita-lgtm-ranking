@@ -103,7 +103,11 @@ func (p *ReportsPresenter) itemsToMarkdown(items *entities.Items) string {
 	rows := []string{}
 
 	items.SortByLikesCount()
-	for i, item := range *items.HasLGTM() {
+	for i, item := range *items {
+		if !item.HasLGTM() {
+			continue
+		}
+
 		rows = append(rows, fmt.Sprintf("## %d 位: [%s](%s)", i+1, item.Title, item.URL))
 		rows = append(rows, "")
 

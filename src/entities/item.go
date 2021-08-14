@@ -16,20 +16,12 @@ type Item struct {
 
 type Items []*Item
 
-func (items *Items) HasLGTM() *Items {
-	rtn := &Items{}
-
-	for _, item := range *items {
-		if item.LikesCount > 0 {
-			*rtn = append(*rtn, item)
-		}
-	}
-
-	return rtn
+func (item *Item) HasLGTM() bool {
+	return item.LikesCount > 0
 }
 
-func (items *Items) SortByLikesCount() {
-	sort.SliceStable(*items, func(i, j int) bool {
-		return (*items)[i].LikesCount > (*items)[j].LikesCount
+func (items Items) SortByLikesCount() {
+	sort.SliceStable(items, func(i, j int) bool {
+		return items[i].LikesCount > items[j].LikesCount
 	})
 }
