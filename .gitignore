@@ -24,8 +24,8 @@ vendor
 # npm
 /node_modules
 
-# secret
-/secret.yml
+# dotenv
+/.env
 
 # circleci-env
 .circleci-env/circle-token
