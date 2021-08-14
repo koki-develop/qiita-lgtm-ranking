@@ -11,11 +11,11 @@ type IReportsRepository interface {
 
 // ReportsRepository .
 type ReportsRepository struct {
-	qiitaAPI IQiitaAPI
+	qiitaAPI QiitaAPI
 }
 
 // NewReportsRepository .
-func NewReportsRepository(api IQiitaAPI) *ReportsRepository {
+func NewReportsRepository(api QiitaAPI) *ReportsRepository {
 	return &ReportsRepository{
 		qiitaAPI: api,
 	}

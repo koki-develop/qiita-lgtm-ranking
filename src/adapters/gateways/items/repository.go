@@ -11,7 +11,7 @@ type Repository struct {
 }
 
 type Config struct {
-	QiitaAPI gateways.IQiitaAPI
+	QiitaAPI gateways.QiitaAPI
 }
 
 func New(cfg *Config) *Repository {
