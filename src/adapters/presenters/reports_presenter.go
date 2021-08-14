@@ -5,13 +5,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/domain"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/entities"
 )
 
 // IReportsPresenter .
 type IReportsPresenter interface {
-	Weekly(from time.Time, items *domain.Items) (string, error)
-	WeeklyByTag(from time.Time, items *domain.Items, tag string) (string, error)
+	Weekly(from time.Time, items *entities.Items) (string, error)
+	WeeklyByTag(from time.Time, items *entities.Items, tag string) (string, error)
 }
 
 // ReportsPresenter .
@@ -23,7 +23,7 @@ func NewReportsPresenter() *ReportsPresenter {
 }
 
 // Weekly .
-func (p *ReportsPresenter) Weekly(from time.Time, items *domain.Items) (string, error) {
+func (p *ReportsPresenter) Weekly(from time.Time, items *entities.Items) (string, error) {
 	rows := []string{}
 
 	rows = append(rows, "# タグ別 LGTM 数ランキング")
@@ -44,7 +44,7 @@ func (p *ReportsPresenter) Weekly(from time.Time, items *domain.Items) (string, 
 }
 
 // WeeklyByTag .
-func (p *ReportsPresenter) WeeklyByTag(from time.Time, items *domain.Items, tag string) (string, error) {
+func (p *ReportsPresenter) WeeklyByTag(from time.Time, items *entities.Items, tag string) (string, error) {
 	rows := []string{}
 
 	rows = append(rows, "# 他のタグ")
@@ -99,7 +99,7 @@ func (p *ReportsPresenter) tagsMarkdown() string {
 	}, " ")
 }
 
-func (p *ReportsPresenter) itemsToMarkdown(items *domain.Items) string {
+func (p *ReportsPresenter) itemsToMarkdown(items *entities.Items) string {
 	rows := []string{}
 
 	items.SortByLikesCount()

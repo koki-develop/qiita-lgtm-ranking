@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/interfaces/controllers"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/controllers"
 )
 
 // Event .

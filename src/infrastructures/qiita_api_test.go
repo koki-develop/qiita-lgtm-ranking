@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/domain"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/entities"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -42,9 +42,9 @@ func TestQiitaAPI_GetItems_ReturnItemsWhenSucceeded(t *testing.T) {
 	}, nil)
 
 	mjd := new(mockJSONDecoder)
-	mjd.On("Decode", strings.NewReader("RESPONSE"), &domain.Items{}).Return(nil).Run(func(args mock.Arguments) {
-		items := args.Get(1).(*domain.Items)
-		*items = domain.Items{{Title: "TITLE"}}
+	mjd.On("Decode", strings.NewReader("RESPONSE"), &entities.Items{}).Return(nil).Run(func(args mock.Arguments) {
+		items := args.Get(1).(*entities.Items)
+		*items = entities.Items{{Title: "TITLE"}}
 	})
 
 	api := &QiitaAPI{
@@ -55,7 +55,7 @@ func TestQiitaAPI_GetItems_ReturnItemsWhenSucceeded(t *testing.T) {
 
 	items, err := api.GetItems(1, 1, "QUERY")
 
-	assert.Equal(t, &domain.Items{{Title: "TITLE"}}, items)
+	assert.Equal(t, &entities.Items{{Title: "TITLE"}}, items)
 	assert.Nil(t, err)
 	mhc.AssertNumberOfCalls(t, "Do", 1)
 	mjd.AssertNumberOfCalls(t, "Decode", 1)
@@ -113,7 +113,7 @@ func TestQiitaAPI_GetItems_ReturnErrorWhenJSONDecodeFailed(t *testing.T) {
 	}, nil)
 
 	mjd := new(mockJSONDecoder)
-	mjd.On("Decode", strings.NewReader("RESPONSE"), &domain.Items{}).Return(errors.New("SOMETHING_WRONG"))
+	mjd.On("Decode", strings.NewReader("RESPONSE"), &entities.Items{}).Return(errors.New("SOMETHING_WRONG"))
 
 	api := &QiitaAPI{
 		accessToken: "TOKEN",
@@ -138,7 +138,7 @@ func TestQiitaAPI_UpdateItem_ReturnNilWhenSucceeded(t *testing.T) {
 	mjm.On("Marshal", map[string]interface{}{
 		"title": "TITLE",
 		"body":  "BODY",
-		"tags":  domain.Tags{{Name: "TAG"}},
+		"tags":  entities.Tags{{Name: "TAG"}},
 	}).Return([]byte("BODY"), nil)
 
 	mhc := new(mockHTTPClient)
@@ -153,7 +153,7 @@ func TestQiitaAPI_UpdateItem_ReturnNilWhenSucceeded(t *testing.T) {
 		jsonMarshaler: mjm,
 	}
 
-	err := api.UpdateItem("ID", "TITLE", "BODY", domain.Tags{{Name: "TAG"}})
+	err := api.UpdateItem("ID", "TITLE", "BODY", entities.Tags{{Name: "TAG"}})
 
 	assert.Nil(t, err)
 	mjm.AssertNumberOfCalls(t, "Marshal", 1)
@@ -165,7 +165,7 @@ func TestQiitaAPI_UpdateItem_ReturnErrorWhenJSONMarshalFailed(t *testing.T) {
 	mjm.On("Marshal", map[string]interface{}{
 		"title": "TITLE",
 		"body":  "BODY",
-		"tags":  domain.Tags{{Name: "TAG"}},
+		"tags":  entities.Tags{{Name: "TAG"}},
 	}).Return(([]byte)(nil), errors.New("SOMETHING_WRONG"))
 
 	api := &QiitaAPI{
@@ -173,7 +173,7 @@ func TestQiitaAPI_UpdateItem_ReturnErrorWhenJSONMarshalFailed(t *testing.T) {
 		jsonMarshaler: mjm,
 	}
 
-	err := api.UpdateItem("ID", "TITLE", "BODY", domain.Tags{{Name: "TAG"}})
+	err := api.UpdateItem("ID", "TITLE", "BODY", entities.Tags{{Name: "TAG"}})
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
 	mjm.AssertNumberOfCalls(t, "Marshal", 1)
@@ -184,7 +184,7 @@ func TestQiitaAPI_UpdateItem_ReturnErrorWhenHTTPClientDoFailed(t *testing.T) {
 	mjm.On("Marshal", map[string]interface{}{
 		"title": "TITLE",
 		"body":  "BODY",
-		"tags":  domain.Tags{{Name: "TAG"}},
+		"tags":  entities.Tags{{Name: "TAG"}},
 	}).Return([]byte("BODY"), nil)
 
 	mhc := new(mockHTTPClient)
@@ -196,7 +196,7 @@ func TestQiitaAPI_UpdateItem_ReturnErrorWhenHTTPClientDoFailed(t *testing.T) {
 		jsonMarshaler: mjm,
 	}
 
-	err := api.UpdateItem("ID", "TITLE", "BODY", domain.Tags{{Name: "TAG"}})
+	err := api.UpdateItem("ID", "TITLE", "BODY", entities.Tags{{Name: "TAG"}})
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
 	mjm.AssertNumberOfCalls(t, "Marshal", 1)
@@ -208,7 +208,7 @@ func TestQiitaAPI_UpdateItem_ReturnErrorWhenReceivedHTTPFailedStatus(t *testing.
 	mjm.On("Marshal", map[string]interface{}{
 		"title": "TITLE",
 		"body":  "BODY",
-		"tags":  domain.Tags{{Name: "TAG"}},
+		"tags":  entities.Tags{{Name: "TAG"}},
 	}).Return([]byte("BODY"), nil)
 
 	mhc := new(mockHTTPClient)
@@ -223,7 +223,7 @@ func TestQiitaAPI_UpdateItem_ReturnErrorWhenReceivedHTTPFailedStatus(t *testing.
 		jsonMarshaler: mjm,
 	}
 
-	err := api.UpdateItem("ID", "TITLE", "BODY", domain.Tags{{Name: "TAG"}})
+	err := api.UpdateItem("ID", "TITLE", "BODY", entities.Tags{{Name: "TAG"}})
 
 	assert.EqualError(t, err, "RESPONSE")
 	mjm.AssertNumberOfCalls(t, "Marshal", 1)
