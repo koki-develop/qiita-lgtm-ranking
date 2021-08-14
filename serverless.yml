@@ -21,9 +21,7 @@ provider:
     QIITA_ACCESS_TOKEN: ${file(./secret.yml):qiitaAccessToken}
 
 package:
-  exclude:
-    - ./**
-  include:
+  patterns:
     - ./build/**
 
 functions:
