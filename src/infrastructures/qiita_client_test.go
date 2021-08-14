@@ -102,10 +102,45 @@ func TestQiitaClient_GetItems(t *testing.T) {
         }
       ]`)),
 			StatusCode: http.StatusOK,
-		}, nil)
+		}, nil).Run(func(args mock.Arguments) {
+			req := args.Get(0).(*http.Request)
+			assert.Equal(t, "https://qiita.com/api/v2/items?page=10&per_page=100&query=QUERY", req.URL.String())
+			assert.Equal(t, http.MethodGet, req.Method)
+			assert.Equal(t, http.Header{"Authorization": {"Bearer ACCESS_TOKEN"}}, req.Header)
+		})
 
 		items, err := c.GetItems(dummyPage, dummyPerPage, dummyQuery)
 		assert.Equal(t, dummyItems, items)
+		assert.NoError(t, err)
+		ms.AssertExpectations(t)
+	})
+}
+
+func TestQiitaClient_UpdateItem(t *testing.T) {
+	t.Run("return nil when succeeded", func(t *testing.T) {
+		c, ms := setupQiitaClientAndMocks()
+		dummyItemID := "ITEM_ID"
+		dummyTitle := "TITLE"
+		dummyBody := "BODY"
+		dummyTags := entities.Tags{{Name: "TAG"}}
+
+		ms.httpAPI.On("Do", mock.AnythingOfType("*http.Request")).Return(&http.Response{
+			Body:       ioutil.NopCloser(strings.NewReader("{}")),
+			StatusCode: http.StatusOK,
+		}, nil).Run(func(args mock.Arguments) {
+			req := args.Get(0).(*http.Request)
+			b, err := ioutil.ReadAll(req.Body)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			assert.Equal(t, "https://qiita.com/api/v2/items/ITEM_ID", req.URL.String())
+			assert.Equal(t, `{"body":"BODY","tags":[{"name":"TAG"}],"title":"TITLE"}`, string(b))
+			assert.Equal(t, http.MethodPatch, req.Method)
+			assert.Equal(t, http.Header{"Authorization": {"Bearer ACCESS_TOKEN"}, "Content-Type": {"application/json"}}, req.Header)
+		})
+
+		err := c.UpdateItem(dummyItemID, dummyTitle, dummyBody, dummyTags)
 		assert.NoError(t, err)
 		ms.AssertExpectations(t)
 	})
