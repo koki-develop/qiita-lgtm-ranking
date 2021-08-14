@@ -101,19 +101,23 @@ workflows:
       - approval_deploy_dev:
           type: approval
           requires: [test]
+          filters:
+            branches:
+              ignore: main
+      - approval_deploy_prod:
+          type: approval
+          requires: [test]
+          filters:
+            branches:
+              only: main
 
       - deploy:
           name: deploy_dev
           stage: dev
           requires: [approval_deploy_dev]
-
-      - approval_deploy_prod:
-          type: approval
-          requires: [deploy_dev]
           filters:
             branches:
-              only: main
-
+              ignore: main
       - deploy:
           name: deploy_prod
           stage: prod
