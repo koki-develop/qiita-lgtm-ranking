@@ -27,8 +27,24 @@ func TestItem_HasLGTM(t *testing.T) {
 	})
 }
 
+func TestItems_FilterOnlyHasLGTM(t *testing.T) {
+	t.Run("return items only has lgtm", func(t *testing.T) {
+		items := Items{
+			{Title: "TITLE_1", LikesCount: 1},
+			{Title: "TITLE_2", LikesCount: 0},
+			{Title: "TITLE_3", LikesCount: 100},
+			{Title: "TITLE_4", LikesCount: 1000},
+		}
+		assert.Equal(t, Items{
+			{Title: "TITLE_1", LikesCount: 1},
+			{Title: "TITLE_3", LikesCount: 100},
+			{Title: "TITLE_4", LikesCount: 1000},
+		}, items.FilterOnlyHasLGTM())
+	})
+}
+
 func TestItems_SortByLikesCount(t *testing.T) {
-	items := &Items{
+	items := Items{
 		{Title: "1", LikesCount: 1},
 		{Title: "2", LikesCount: 0},
 		{Title: "3", LikesCount: 10},
@@ -38,7 +54,7 @@ func TestItems_SortByLikesCount(t *testing.T) {
 
 	items.SortByLikesCount()
 
-	assert.Equal(t, &Items{
+	assert.Equal(t, Items{
 		{Title: "5", LikesCount: 100},
 		{Title: "3", LikesCount: 10},
 		{Title: "1", LikesCount: 1},

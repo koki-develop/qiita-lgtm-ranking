@@ -20,6 +20,16 @@ func (item *Item) HasLGTM() bool {
 	return item.LikesCount > 0
 }
 
+func (items Items) FilterOnlyHasLGTM() Items {
+	var rtn Items
+	for _, item := range items {
+		if item.HasLGTM() {
+			rtn = append(rtn, item)
+		}
+	}
+	return rtn
+}
+
 func (items Items) SortByLikesCount() {
 	sort.SliceStable(items, func(i, j int) bool {
 		return items[i].LikesCount > items[j].LikesCount
