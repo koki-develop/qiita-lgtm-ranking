@@ -17,7 +17,7 @@ type IReportsController interface {
 
 // ReportsController .
 type ReportsController struct {
-	itemsRepository   gateways.IItemsRepository
+	itemsRepository   ItemsRepository
 	reportsRepository gateways.IReportsRepository
 	reportsPresenter  presenters.IReportsPresenter
 }
@@ -27,12 +27,12 @@ func (c *ReportsController) UpdateWeekly(t time.Time, reportID string) error {
 	from := t.AddDate(0, 0, -7)
 	query := fmt.Sprintf("created:>=%s stocks:>=10", from.Format("2006-01-02"))
 
-	items, err := c.itemsRepository.GetAll(query)
+	items, err := c.itemsRepository.FindAll(query)
 	if err != nil {
 		return err
 	}
 
-	body, err := c.reportsPresenter.Weekly(from, items)
+	body, err := c.reportsPresenter.Weekly(from, &items)
 	if err != nil {
 		return err
 	}
@@ -49,12 +49,12 @@ func (c *ReportsController) UpdateWeeklyByTag(t time.Time, reportID, tag string)
 	from := t.AddDate(0, 0, -7)
 	query := fmt.Sprintf("created:>=%s stocks:>=2 tag:%s", from.Format("2006-01-02"), tag)
 
-	items, err := c.itemsRepository.GetAll(query)
+	items, err := c.itemsRepository.FindAll(query)
 	if err != nil {
 		return err
 	}
 
-	body, err := c.reportsPresenter.WeeklyByTag(from, items, tag)
+	body, err := c.reportsPresenter.WeeklyByTag(from, &items, tag)
 	if err != nil {
 		return err
 	}

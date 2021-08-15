@@ -9,13 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-/*
- * ReportsController.UpdateWeekly()
- */
-
 func TestReportsController_UpdateWeekly_ReturnNilWhenSucceeded(t *testing.T) {
 	mir := new(mockItemsRepository)
-	mir.On("GetAll", "created:>=2020-01-01 stocks:>=10").Return(&entities.Items{{Title: "TITLE"}}, nil)
+	mir.On("FindAll", "created:>=2020-01-01 stocks:>=10").Return(entities.Items{{Title: "TITLE"}}, nil)
 
 	mrp := new(mockReportsPresenter)
 	mrp.On("Weekly", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &entities.Items{{Title: "TITLE"}}).Return("BODY", nil)
@@ -32,14 +28,14 @@ func TestReportsController_UpdateWeekly_ReturnNilWhenSucceeded(t *testing.T) {
 	err := c.UpdateWeekly(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID")
 
 	assert.Nil(t, err)
-	mir.AssertNumberOfCalls(t, "GetAll", 1)
+	mir.AssertNumberOfCalls(t, "FindAll", 1)
 	mrp.AssertNumberOfCalls(t, "Weekly", 1)
 	mrr.AssertNumberOfCalls(t, "Update", 1)
 }
 
-func TestReportsController_UpdateWeekly_ReturnErrorWhenGetAllFailed(t *testing.T) {
+func TestReportsController_UpdateWeekly_ReturnErrorWhenFindAllFailed(t *testing.T) {
 	mir := new(mockItemsRepository)
-	mir.On("GetAll", "created:>=2020-01-01 stocks:>=10").Return((*entities.Items)(nil), errors.New("SOMETHING_WRONG"))
+	mir.On("FindAll", "created:>=2020-01-01 stocks:>=10").Return((entities.Items)(nil), errors.New("SOMETHING_WRONG"))
 
 	c := &ReportsController{
 		itemsRepository: mir,
@@ -48,12 +44,12 @@ func TestReportsController_UpdateWeekly_ReturnErrorWhenGetAllFailed(t *testing.T
 	err := c.UpdateWeekly(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID")
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
-	mir.AssertNumberOfCalls(t, "GetAll", 1)
+	mir.AssertNumberOfCalls(t, "FindAll", 1)
 }
 
 func TestReportsController_UpdateWeekly_ReturnErrorWhenWeeklyFailed(t *testing.T) {
 	mir := new(mockItemsRepository)
-	mir.On("GetAll", "created:>=2020-01-01 stocks:>=10").Return(&entities.Items{{Title: "TITLE"}}, nil)
+	mir.On("FindAll", "created:>=2020-01-01 stocks:>=10").Return(entities.Items{{Title: "TITLE"}}, nil)
 
 	mrp := new(mockReportsPresenter)
 	mrp.On("Weekly", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &entities.Items{{Title: "TITLE"}}).Return("", errors.New("SOMETHING_WRONG"))
@@ -66,13 +62,13 @@ func TestReportsController_UpdateWeekly_ReturnErrorWhenWeeklyFailed(t *testing.T
 	err := c.UpdateWeekly(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID")
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
-	mir.AssertNumberOfCalls(t, "GetAll", 1)
+	mir.AssertNumberOfCalls(t, "FindAll", 1)
 	mrp.AssertNumberOfCalls(t, "Weekly", 1)
 }
 
 func TestReportsController_UpdateWeekly_ReturnErrorWhenUpdateFailed(t *testing.T) {
 	mir := new(mockItemsRepository)
-	mir.On("GetAll", "created:>=2020-01-01 stocks:>=10").Return(&entities.Items{{Title: "TITLE"}}, nil)
+	mir.On("FindAll", "created:>=2020-01-01 stocks:>=10").Return(entities.Items{{Title: "TITLE"}}, nil)
 
 	mrp := new(mockReportsPresenter)
 	mrp.On("Weekly", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &entities.Items{{Title: "TITLE"}}).Return("BODY", nil)
@@ -89,18 +85,14 @@ func TestReportsController_UpdateWeekly_ReturnErrorWhenUpdateFailed(t *testing.T
 	err := c.UpdateWeekly(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID")
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
-	mir.AssertNumberOfCalls(t, "GetAll", 1)
+	mir.AssertNumberOfCalls(t, "FindAll", 1)
 	mrp.AssertNumberOfCalls(t, "Weekly", 1)
 	mrr.AssertNumberOfCalls(t, "Update", 1)
 }
 
-/*
- * ReportsController.UpdateWeeklyByTag()
- */
-
 func TestReportsController_UpdateWeeklyByTag_ReturnNilWhenSucceeded(t *testing.T) {
 	mir := new(mockItemsRepository)
-	mir.On("GetAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return(&entities.Items{{Title: "TITLE"}}, nil)
+	mir.On("FindAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return(entities.Items{{Title: "TITLE"}}, nil)
 
 	mrp := new(mockReportsPresenter)
 	mrp.On("WeeklyByTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &entities.Items{{Title: "TITLE"}}, "TAG").Return("BODY", nil)
@@ -117,14 +109,14 @@ func TestReportsController_UpdateWeeklyByTag_ReturnNilWhenSucceeded(t *testing.T
 	err := c.UpdateWeeklyByTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
 
 	assert.Nil(t, err)
-	mir.AssertNumberOfCalls(t, "GetAll", 1)
+	mir.AssertNumberOfCalls(t, "FindAll", 1)
 	mrp.AssertNumberOfCalls(t, "WeeklyByTag", 1)
 	mrr.AssertNumberOfCalls(t, "Update", 1)
 }
 
-func TestReportsController_UpdateWeeklyByTag_ReturnErrorWhenGetAllFailed(t *testing.T) {
+func TestReportsController_UpdateWeeklyByTag_ReturnErrorWhenFindAllFailed(t *testing.T) {
 	mir := new(mockItemsRepository)
-	mir.On("GetAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return((*entities.Items)(nil), errors.New("SOMETHING_WRONG"))
+	mir.On("FindAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return((entities.Items)(nil), errors.New("SOMETHING_WRONG"))
 
 	c := &ReportsController{
 		itemsRepository: mir,
@@ -133,12 +125,12 @@ func TestReportsController_UpdateWeeklyByTag_ReturnErrorWhenGetAllFailed(t *test
 	err := c.UpdateWeeklyByTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
-	mir.AssertNumberOfCalls(t, "GetAll", 1)
+	mir.AssertNumberOfCalls(t, "FindAll", 1)
 }
 
 func TestReportsController_UpdateWeeklyByTag_ReturnErrorWhenPresenterFailed(t *testing.T) {
 	mir := new(mockItemsRepository)
-	mir.On("GetAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return(&entities.Items{{Title: "TITLE"}}, nil)
+	mir.On("FindAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return(entities.Items{{Title: "TITLE"}}, nil)
 
 	mrp := new(mockReportsPresenter)
 	mrp.On("WeeklyByTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &entities.Items{{Title: "TITLE"}}, "TAG").Return("", errors.New("SOMETHING_WRONG"))
@@ -151,13 +143,13 @@ func TestReportsController_UpdateWeeklyByTag_ReturnErrorWhenPresenterFailed(t *t
 	err := c.UpdateWeeklyByTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
-	mir.AssertNumberOfCalls(t, "GetAll", 1)
+	mir.AssertNumberOfCalls(t, "FindAll", 1)
 	mrp.AssertNumberOfCalls(t, "WeeklyByTag", 1)
 }
 
 func TestReportsController_UpdateWeeklyByTag_ReturnUpdateFailed(t *testing.T) {
 	mir := new(mockItemsRepository)
-	mir.On("GetAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return(&entities.Items{{Title: "TITLE"}}, nil)
+	mir.On("FindAll", "created:>=2020-01-01 stocks:>=2 tag:TAG").Return(entities.Items{{Title: "TITLE"}}, nil)
 
 	mrp := new(mockReportsPresenter)
 	mrp.On("WeeklyByTag", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC), &entities.Items{{Title: "TITLE"}}, "TAG").Return("BODY", nil)
@@ -174,7 +166,7 @@ func TestReportsController_UpdateWeeklyByTag_ReturnUpdateFailed(t *testing.T) {
 	err := c.UpdateWeeklyByTag(time.Date(2020, 1, 8, 0, 0, 0, 0, time.UTC), "REPORT_ID", "TAG")
 
 	assert.EqualError(t, err, "SOMETHING_WRONG")
-	mir.AssertNumberOfCalls(t, "GetAll", 1)
+	mir.AssertNumberOfCalls(t, "FindAll", 1)
 	mrp.AssertNumberOfCalls(t, "WeeklyByTag", 1)
 	mrr.AssertNumberOfCalls(t, "Update", 1)
 }
