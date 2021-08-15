@@ -28,6 +28,7 @@ func (b *ReportBuilder) Weekly(from time.Time, items entities.Items) (*entities.
 	}
 
 	buf := new(bytes.Buffer)
+	items.SortByLikesCount()
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"min_stock": 10,
 		"from":      from,
@@ -55,6 +56,7 @@ func (b *ReportBuilder) WeeklyByTag(from time.Time, items entities.Items, tag st
 	}
 
 	buf := new(bytes.Buffer)
+	items.SortByLikesCount()
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"min_stock": 2,
 		"from":      from,
