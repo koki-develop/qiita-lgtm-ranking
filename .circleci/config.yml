@@ -91,7 +91,7 @@ jobs:
       - run:
           name: serverless deploy
           command: |
-            yarn run sls deploy --verbose --stage << parameters.stage >>
+            yarn run deploy --stage << parameters.stage >>
 
 workflows:
   build:
