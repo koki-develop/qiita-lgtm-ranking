@@ -6,7 +6,7 @@
 [![LICENSE](https://img.shields.io/github/license/kou-pg-0131/qiita-lgtm-ranking?style=plastic)](./LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/kou_pg_0131?style=social)](https://twitter.com/kou_pg_0131)
 
-## Overview
+## 概要
 
 Qiita の LGTM ランキング記事を毎日自動更新するシステム。
 
