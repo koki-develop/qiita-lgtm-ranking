@@ -3,17 +3,16 @@
 ![Serverless](http://public.serverless.com/badges/v3.svg)
 [![CircleCI](https://circleci.com/gh/kou-pg-0131/qiita-lgtm-ranking.svg?style=shield)](https://circleci.com/gh/kou-pg-0131/qiita-lgtm-ranking)
 [![Maintainability](https://api.codeclimate.com/v1/badges/01ed875cf9867616715b/maintainability)](https://codeclimate.com/github/kou-pg-0131/qiita-lgtm-ranking/maintainability)
-[![codecov](https://codecov.io/gh/kou-pg-0131/qiita-lgtm-ranking/branch/main/graph/badge.svg?token=MKZ073C5ML)](https://codecov.io/gh/kou-pg-0131/qiita-lgtm-ranking)
 [![LICENSE](https://img.shields.io/github/license/kou-pg-0131/qiita-lgtm-ranking?style=plastic)](./LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/kou_pg_0131?style=social)](https://twitter.com/kou_pg_0131)
 
 ## Overview
 
-The system that updates the ranking of the number of LGTM in Qiita articles every day.
+Qiita の LGTM ランキング記事を毎日自動更新するシステム。
 
 [Qiita 週間 LGTM 数ランキング](https://qiita.com/kou_pg_0131/items/b6cfc81906990b3a3e72)
 
-By Tag:
+タグ別:
 
 [`AWS`](https://qiita.com/items/e24b6279326a462d456c)
 [`Android`](https://qiita.com/items/8b3af051428d746f26c5)
@@ -35,6 +34,10 @@ By Tag:
 [`Vim`](https://qiita.com/items/f5361177baef95e447d1)
 [`Vue.js`](https://qiita.com/items/2774e02c6eea5c830d99)
 [`初心者`](https://qiita.com/items/402899ec543aff109505)
+
+## アーキテクチャ図
+
+![architecture](./README/architecture.jpg)
 
 ## LICENSE
 
