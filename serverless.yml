@@ -32,6 +32,7 @@ provider:
 package:
   patterns:
     - ./build/**
+    - ./src/static/**
 
 functions:
   updateWeekly:
