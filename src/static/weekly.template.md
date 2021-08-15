@@ -7,8 +7,10 @@
 - 期間: {{ .from.Format "2006-01-02" }} ~ {{ .to.Format "2006-01-02" }}
 - 条件: ストック数が **{{ .min_stock }}** 以上の記事
 
-ソースコード:
+# GitHub
+
 <a href="https://github.com/kou-pg-0131/qiita-lgtm-ranking"><img src="https://github-link-card.s3.ap-northeast-1.amazonaws.com/kou-pg-0131/qiita-lgtm-ranking.png" width="460px"></a>
+スターをもらえるととっても励みになります :bow:
 
 # LGTM 数ランキング
 
