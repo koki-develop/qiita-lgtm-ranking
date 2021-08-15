@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/controllers"
+	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/controllers/reports"
 )
 
 // Event .
@@ -14,8 +14,8 @@ type Event struct {
 
 // Handler .
 func Handler(ev *Event) error {
-	c := controllers.NewReportsControllerFactory().Create()
-	return c.UpdateWeekly(time.Now(), ev.ReportID)
+	ctrl := reports.New()
+	return ctrl.UpdateWeekly(time.Now(), ev.ReportID)
 }
 
 func main() {

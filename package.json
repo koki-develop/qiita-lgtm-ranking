@@ -1,5 +1,9 @@
 {
   "license": "MIT",
+  "scripts": {
+    "predeploy": "./bin/build",
+    "deploy": "serverless deploy --verbose"
+  },
   "devDependencies": {
     "serverless": "^2.16.1",
     "serverless-prune-plugin": "^1.5.1"
