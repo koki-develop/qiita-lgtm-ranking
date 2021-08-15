@@ -5,9 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways"
 	itemsrepo "github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways/items"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/presenters"
+	rptsrepo "github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways/reports"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,8 +32,6 @@ func TestReportsControllerFactory_Create(t *testing.T) {
 	assert.NotNil(t, c.itemsRepository)
 	assert.IsType(t, &itemsrepo.Repository{}, c.itemsRepository)
 	assert.NotNil(t, c.reportsRepository)
-	assert.IsType(t, &gateways.ReportsRepository{}, c.reportsRepository)
-	assert.NotNil(t, c.reportsPresenter)
-	assert.IsType(t, &presenters.ReportsPresenter{}, c.reportsPresenter)
+	assert.IsType(t, &rptsrepo.Repository{}, c.reportsRepository)
 	mos.AssertNumberOfCalls(t, "Getenv", 1)
 }

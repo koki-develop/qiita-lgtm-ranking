@@ -3,9 +3,8 @@ package controllers
 import (
 	"os"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways"
 	itemsrepo "github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways/items"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/presenters"
+	rptsrepo "github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways/reports"
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/infrastructures"
 )
 
@@ -24,10 +23,10 @@ func NewReportsControllerFactory() *ReportsControllerFactory {
 // Create .
 func (f *ReportsControllerFactory) Create() IReportsController {
 	qapi := infrastructures.NewQiitaClient(f.osGetenv("QIITA_ACCESS_TOKEN"))
+	rptb := infrastructures.NewReportBuilder()
 
 	return &ReportsController{
 		itemsRepository:   itemsrepo.New(&itemsrepo.Config{QiitaAPI: qapi}),
-		reportsRepository: gateways.NewReportsRepository(qapi),
-		reportsPresenter:  presenters.NewReportsPresenter(),
+		reportsRepository: rptsrepo.New(&rptsrepo.Config{QiitaAPI: qapi, ReportBuilder: rptb}),
 	}
 }
