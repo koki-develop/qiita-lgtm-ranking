@@ -21,8 +21,7 @@ func New(cfg *Config) *Repository {
 	return &Repository{config: cfg}
 }
 
-func (repo *Repository) UpdateWeekly(t time.Time, id string, items entities.Items) error {
-	from := t.AddDate(0, 0, -7)
+func (repo *Repository) UpdateWeekly(from time.Time, id string, items entities.Items) error {
 	rpt, err := repo.config.ReportBuilder.Weekly(from, items)
 	if err != nil {
 		return errors.WithStack(err)
@@ -35,8 +34,7 @@ func (repo *Repository) UpdateWeekly(t time.Time, id string, items entities.Item
 	return nil
 }
 
-func (repo *Repository) UpdateWeeklyByTag(t time.Time, id string, items entities.Items, tag string) error {
-	from := t.AddDate(0, 0, -7)
+func (repo *Repository) UpdateWeeklyByTag(from time.Time, id string, items entities.Items, tag string) error {
 	rpt, err := repo.config.ReportBuilder.WeeklyByTag(from, items, tag)
 	if err != nil {
 		return errors.WithStack(err)
