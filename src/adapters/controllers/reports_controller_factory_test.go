@@ -5,14 +5,10 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/presenters"
+	itemsrepo "github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways/items"
+	rptsrepo "github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways/reports"
 	"github.com/stretchr/testify/assert"
 )
-
-/*
- * NewReportsControllerFactory()
- */
 
 func Test_NewReportsControllerFactory(t *testing.T) {
 	f := NewReportsControllerFactory()
@@ -20,10 +16,6 @@ func Test_NewReportsControllerFactory(t *testing.T) {
 	assert.NotNil(t, f)
 	assert.Equal(t, reflect.ValueOf(os.Getenv).Pointer(), reflect.ValueOf(f.osGetenv).Pointer())
 }
-
-/*
- * ReportsControllerFactory.Create()
- */
 
 func TestReportsControllerFactory_Create(t *testing.T) {
 	mos := new(mockOS)
@@ -38,10 +30,8 @@ func TestReportsControllerFactory_Create(t *testing.T) {
 
 	assert.NotNil(t, c)
 	assert.NotNil(t, c.itemsRepository)
-	assert.IsType(t, &gateways.ItemsRepository{}, c.itemsRepository)
+	assert.IsType(t, &itemsrepo.Repository{}, c.itemsRepository)
 	assert.NotNil(t, c.reportsRepository)
-	assert.IsType(t, &gateways.ReportsRepository{}, c.reportsRepository)
-	assert.NotNil(t, c.reportsPresenter)
-	assert.IsType(t, &presenters.ReportsPresenter{}, c.reportsPresenter)
+	assert.IsType(t, &rptsrepo.Repository{}, c.reportsRepository)
 	mos.AssertNumberOfCalls(t, "Getenv", 1)
 }

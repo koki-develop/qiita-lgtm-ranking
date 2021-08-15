@@ -11,9 +11,9 @@ type mockItemsRepository struct {
 	mock.Mock
 }
 
-func (m *mockItemsRepository) GetAll(query string) (*entities.Items, error) {
+func (m *mockItemsRepository) FindAll(query string) (entities.Items, error) {
 	args := m.Called(query)
-	return args.Get(0).(*entities.Items), args.Error(1)
+	return args.Get(0).(entities.Items), args.Error(1)
 }
 
 type mockReportsRepository struct {

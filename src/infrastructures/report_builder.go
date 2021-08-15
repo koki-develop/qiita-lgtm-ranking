@@ -1,4 +1,4 @@
-package presenters
+package infrastructures
 
 import (
 	"fmt"
@@ -8,63 +8,61 @@ import (
 	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/entities"
 )
 
-// IReportsPresenter .
-type IReportsPresenter interface {
-	Weekly(from time.Time, items *entities.Items) (string, error)
-	WeeklyByTag(from time.Time, items *entities.Items, tag string) (string, error)
+type ReportBuilder struct{}
+
+func NewReportBuilder() *ReportBuilder {
+	return &ReportBuilder{}
 }
 
-// ReportsPresenter .
-type ReportsPresenter struct{}
-
-// NewReportsPresenter .
-func NewReportsPresenter() *ReportsPresenter {
-	return new(ReportsPresenter)
-}
-
-// Weekly .
-func (p *ReportsPresenter) Weekly(from time.Time, items *entities.Items) (string, error) {
+func (b *ReportBuilder) Weekly(from time.Time, items entities.Items) (*entities.Report, error) {
 	rows := []string{}
 
 	rows = append(rows, "# タグ別 LGTM 数ランキング")
 	rows = append(rows, "")
-	rows = append(rows, p.tagsMarkdown())
+	rows = append(rows, b.tagsMarkdown())
 	rows = append(rows, "")
 
 	rows = append(rows, "# 集計について")
 	rows = append(rows, "")
-	rows = append(rows, p.aboutAggregateMarkdown(from, from.AddDate(0, 0, 7), 10))
+	rows = append(rows, b.aboutAggregateMarkdown(from, from.AddDate(0, 0, 7), 10))
 	rows = append(rows, "")
 
 	rows = append(rows, "# LGTM 数ランキング")
 	rows = append(rows, "")
-	rows = append(rows, p.itemsToMarkdown(items))
+	rows = append(rows, b.itemsToMarkdown(items))
 
-	return strings.Join(rows, "\n"), nil
+	return &entities.Report{
+		Title: "Qiita 週間 LGTM 数ランキング【自動更新】",
+		Body:  strings.Join(rows, "\n"),
+		Tags:  entities.Tags{{Name: "Qiita"}, {Name: "lgtm"}, {Name: "ランキング"}},
+	}, nil
 }
 
-// WeeklyByTag .
-func (p *ReportsPresenter) WeeklyByTag(from time.Time, items *entities.Items, tag string) (string, error) {
+func (b *ReportBuilder) WeeklyByTag(from time.Time, items entities.Items, tag string) (*entities.Report, error) {
 	rows := []string{}
 
 	rows = append(rows, "# 他のタグ")
 	rows = append(rows, "")
-	rows = append(rows, p.tagsMarkdown())
+	rows = append(rows, b.tagsMarkdown())
 	rows = append(rows, "")
 
 	rows = append(rows, "# 集計について")
 	rows = append(rows, "")
-	rows = append(rows, p.aboutAggregateMarkdown(from, from.AddDate(0, 0, 7), 2))
+	rows = append(rows, b.aboutAggregateMarkdown(from, from.AddDate(0, 0, 7), 2))
 	rows = append(rows, "")
 
 	rows = append(rows, "# LGTM 数ランキング")
 	rows = append(rows, "")
-	rows = append(rows, p.itemsToMarkdown(items))
+	rows = append(rows, b.itemsToMarkdown(items))
 
-	return strings.Join(rows, "\n"), nil
+	return &entities.Report{
+		Title: fmt.Sprintf("【%s】Qiita 週間 LGTM 数ランキング【自動更新】", tag),
+		Body:  strings.Join(rows, "\n"),
+		Tags:  entities.Tags{{Name: "Qiita"}, {Name: "lgtm"}, {Name: "ランキング"}, {Name: tag}},
+	}, nil
 }
 
-func (p *ReportsPresenter) aboutAggregateMarkdown(from, to time.Time, minStocks int) string {
+func (b *ReportBuilder) aboutAggregateMarkdown(from, to time.Time, minStocks int) string {
 	return fmt.Sprintf(`- 期間: %s ~ %s
 - 条件: ストック数が **%d** 以上の記事
 
@@ -74,7 +72,7 @@ func (p *ReportsPresenter) aboutAggregateMarkdown(from, to time.Time, minStocks 
 	)
 }
 
-func (p *ReportsPresenter) tagsMarkdown() string {
+func (b *ReportBuilder) tagsMarkdown() string {
 	return strings.Join([]string{
 		"[`AWS`](https://qiita.com/items/e24b6279326a462d456c)",
 		"[`Android`](https://qiita.com/items/8b3af051428d746f26c5)",
@@ -99,11 +97,15 @@ func (p *ReportsPresenter) tagsMarkdown() string {
 	}, " ")
 }
 
-func (p *ReportsPresenter) itemsToMarkdown(items *entities.Items) string {
+func (b *ReportBuilder) itemsToMarkdown(items entities.Items) string {
 	rows := []string{}
 
 	items.SortByLikesCount()
-	for i, item := range *items.HasLGTM() {
+	for i, item := range items {
+		if !item.HasLGTM() {
+			continue
+		}
+
 		rows = append(rows, fmt.Sprintf("## %d 位: [%s](%s)", i+1, item.Title, item.URL))
 		rows = append(rows, "")
 
