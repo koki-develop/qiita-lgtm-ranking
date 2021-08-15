@@ -45,25 +45,28 @@ func (b *ReportBuilder) Weekly(from time.Time, items entities.Items) (*entities.
 }
 
 func (b *ReportBuilder) WeeklyByTag(from time.Time, items entities.Items, tag string) (*entities.Report, error) {
-	rows := []string{}
+	tpl, err := template.New("weeklyByTag.template.md").Funcs(template.FuncMap{
+		"inc": func(i int) int {
+			return i + 1
+		},
+	}).ParseFiles("./src/static/weeklyByTag.template.md")
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
 
-	rows = append(rows, "# 他のタグ")
-	rows = append(rows, "")
-	rows = append(rows, b.tagsMarkdown())
-	rows = append(rows, "")
-
-	rows = append(rows, "# 集計について")
-	rows = append(rows, "")
-	rows = append(rows, b.aboutAggregateMarkdown(from, from.AddDate(0, 0, 7), 2))
-	rows = append(rows, "")
-
-	rows = append(rows, "# LGTM 数ランキング")
-	rows = append(rows, "")
-	rows = append(rows, b.itemsToMarkdown(items))
+	buf := new(bytes.Buffer)
+	if err := tpl.Execute(buf, map[string]interface{}{
+		"min_stock": 2,
+		"from":      from,
+		"to":        from.AddDate(0, 0, 7),
+		"items":     items,
+	}); err != nil {
+		return nil, errors.WithStack(err)
+	}
 
 	return &entities.Report{
 		Title: fmt.Sprintf("【%s】Qiita 週間 LGTM 数ランキング【自動更新】", tag),
-		Body:  strings.Join(rows, "\n"),
+		Body:  buf.String(),
 		Tags:  entities.Tags{{Name: "Qiita"}, {Name: "lgtm"}, {Name: "ランキング"}, {Name: tag}},
 	}, nil
 }
