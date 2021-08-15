@@ -1,6 +1,7 @@
 {
   "license": "MIT",
   "scripts": {
+    "predeploy": "./bin/build",
     "deploy": "serverless deploy --verbose"
   },
   "devDependencies": {

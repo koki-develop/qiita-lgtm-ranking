@@ -87,9 +87,8 @@ jobs:
       - install_nodejs
       - yarn_install
       - go_mod_download
-      - run: bin/build
       - run:
-          name: serverless deploy
+          name: deploy
           command: |
             yarn run deploy --stage << parameters.stage >>
 
