@@ -4,13 +4,13 @@
 [![CircleCI](https://circleci.com/gh/kou-pg-0131/qiita-lgtm-ranking.svg?style=shield)](https://circleci.com/gh/kou-pg-0131/qiita-lgtm-ranking)
 [![Maintainability](https://api.codeclimate.com/v1/badges/01ed875cf9867616715b/maintainability)](https://codeclimate.com/github/kou-pg-0131/qiita-lgtm-ranking/maintainability)
 [![LICENSE](https://img.shields.io/github/license/kou-pg-0131/qiita-lgtm-ranking?style=plastic)](./LICENSE)
-[![Twitter Follow](https://img.shields.io/twitter/follow/kou_pg_0131?style=social)](https://twitter.com/kou_pg_0131)
+[![Twitter Follow](https://img.shields.io/twitter/follow/koki_develop?style=social)](https://twitter.com/koki_develop)
 
 ## 概要
 
 Qiita の LGTM ランキング記事を毎日自動更新するシステム。
 
-[Qiita 週間 LGTM 数ランキング](https://qiita.com/kou_pg_0131/items/b6cfc81906990b3a3e72)
+[Qiita 週間 LGTM 数ランキング](https://qiita.com/items/b6cfc81906990b3a3e72)
 
 タグ別:
 
