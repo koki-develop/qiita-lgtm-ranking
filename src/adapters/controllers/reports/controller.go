@@ -5,10 +5,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/controllers"
-	itemsrepo "github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways/items"
-	rptsrepo "github.com/kou-pg-0131/qiita-lgtm-ranking/src/adapters/gateways/reports"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/infrastructures"
+	"github.com/koki-develop/qiita-lgtm-ranking/src/adapters/controllers"
+	itemsrepo "github.com/koki-develop/qiita-lgtm-ranking/src/adapters/gateways/items"
+	rptsrepo "github.com/koki-develop/qiita-lgtm-ranking/src/adapters/gateways/reports"
+	"github.com/koki-develop/qiita-lgtm-ranking/src/infrastructures"
 	"github.com/pkg/errors"
 )
 

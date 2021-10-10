@@ -7,7 +7,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/entities"
+	"github.com/koki-develop/qiita-lgtm-ranking/src/entities"
 	"github.com/pkg/errors"
 )
 
@@ -78,7 +78,7 @@ func (b *ReportBuilder) aboutAggregateMarkdown(from, to time.Time, minStocks int
 - 条件: ストック数が **%d** 以上の記事
 
 ソースコード:
-<a href="https://github.com/kou-pg-0131/qiita-lgtm-ranking"><img src="https://github-link-card.s3.ap-northeast-1.amazonaws.com/kou-pg-0131/qiita-lgtm-ranking.png" width="460px"></a>`,
+<a href="https://github.com/koki-develop/qiita-lgtm-ranking"><img src="https://github-link-card.s3.ap-northeast-1.amazonaws.com/koki-develop/qiita-lgtm-ranking.png" width="460px"></a>`,
 		from.Format("2006-01-02"), to.Format("2006-01-02"), minStocks,
 	)
 }

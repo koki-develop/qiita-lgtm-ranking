@@ -1,4 +1,4 @@
-module github.com/kou-pg-0131/qiita-lgtm-ranking
+module github.com/koki-develop/qiita-lgtm-ranking
 
 go 1.15
 

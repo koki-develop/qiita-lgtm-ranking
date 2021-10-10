@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/entities"
-	"github.com/kou-pg-0131/qiita-lgtm-ranking/src/infrastructures/mocks"
+	"github.com/koki-develop/qiita-lgtm-ranking/src/entities"
+	"github.com/koki-develop/qiita-lgtm-ranking/src/infrastructures/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

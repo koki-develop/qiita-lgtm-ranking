@@ -9,7 +9,7 @@
 
 # GitHub
 
-<a href="https://github.com/kou-pg-0131/qiita-lgtm-ranking"><img src="https://github-link-card.s3.ap-northeast-1.amazonaws.com/kou-pg-0131/qiita-lgtm-ranking.png" width="460px"></a>
+<a href="https://github.com/koki-develop/qiita-lgtm-ranking"><img src="https://github-link-card.s3.ap-northeast-1.amazonaws.com/koki-develop/qiita-lgtm-ranking.png" width="460px"></a>
 スターをもらえるととっても励みになります :bow:
 
 # LGTM 数ランキング

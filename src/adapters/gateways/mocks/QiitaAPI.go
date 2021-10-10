@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	entities "github.com/kou-pg-0131/qiita-lgtm-ranking/src/entities"
+	entities "github.com/koki-develop/qiita-lgtm-ranking/src/entities"
 
 	mock "github.com/stretchr/testify/mock"
 )

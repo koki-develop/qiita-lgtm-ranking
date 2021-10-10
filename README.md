@@ -1,9 +1,9 @@
 # Qiita LGTM Ranking
 
 ![Serverless](http://public.serverless.com/badges/v3.svg)
-[![CircleCI](https://circleci.com/gh/kou-pg-0131/qiita-lgtm-ranking.svg?style=shield)](https://circleci.com/gh/kou-pg-0131/qiita-lgtm-ranking)
-[![Maintainability](https://api.codeclimate.com/v1/badges/01ed875cf9867616715b/maintainability)](https://codeclimate.com/github/kou-pg-0131/qiita-lgtm-ranking/maintainability)
-[![LICENSE](https://img.shields.io/github/license/kou-pg-0131/qiita-lgtm-ranking?style=plastic)](./LICENSE)
+[![CircleCI](https://circleci.com/gh/koki-develop/qiita-lgtm-ranking.svg?style=shield)](https://circleci.com/gh/koki-develop/qiita-lgtm-ranking)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a3d838384eb09c611b44/maintainability)](https://codeclimate.com/github/koki-develop/qiita-lgtm-ranking/maintainability)
+[![LICENSE](https://img.shields.io/github/license/koki-develop/qiita-lgtm-ranking?style=plastic)](./LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/koki_develop?style=social)](https://twitter.com/koki_develop)
 
 ## 概要
