@@ -16,7 +16,7 @@
 
 {{ range $i, $item := .items }}## {{ inc $i }} 位: [{{ $item.Title }}]({{ $item.URL }})
 
-{{ range $item.Tags }}[`{{ .Name }}`](https://qiita.com/tags/{{ .Name }}){{ end }}
+{{ range $item.Tags }}[`{{ .Name }}`](https://qiita.com/tags/{{ .Name }}) {{ end }}
 
 **{{ $item.LikesCount }}** LGTM
 [@{{ $item.User.ID }}](https://qiita.com/{{ $item.User.ID }}) さん ( {{ $item.CreatedAt.Format "2006-01-02 15:04" }} に投稿 )
