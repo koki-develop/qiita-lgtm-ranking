@@ -2,6 +2,7 @@
 
 export GO111MODULE=on
 export GOOS=linux
+export GOARCH=amd64
 
 go build -ldflags="-s -w" -o build/updateWeeklyByTag  src/handlers/updateWeeklyByTag/main.go
 go build -ldflags="-s -w" -o build/updateWeekly       src/handlers/updateWeekly/main.go
