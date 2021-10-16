@@ -33,5 +33,15 @@ func (repo *Repository) FindAll(query string) (entities.Items, error) {
 		items = append(items, resp.FilterOnlyHasLGTM()...)
 	}
 
+	for _, item := range items {
+		for i := 1; i <= 100; i++ {
+			stks, err := repo.config.QiitaAPI.GetStockersOfItem(item.ID, i, 100)
+			if err != nil {
+				return nil, errors.WithStack(err)
+			}
+			item.Stockers = stks
+		}
+	}
+
 	return items, nil
 }

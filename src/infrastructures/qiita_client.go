@@ -25,7 +25,7 @@ func NewQiitaClient(accessToken string) *QiitaClient {
 }
 
 func (c *QiitaClient) GetItems(page, perPage int, query string) (entities.Items, error) {
-	req, err := http.NewRequest("GET", "https://qiita.com/api/v2/items", nil)
+	req, err := http.NewRequest(http.MethodGet, "https://qiita.com/api/v2/items", nil)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -60,6 +60,41 @@ func (c *QiitaClient) GetItems(page, perPage int, query string) (entities.Items,
 	return items, nil
 }
 
+func (c *QiitaClient) GetStockersOfItem(id string, page, perPage int) (entities.Users, error) {
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://qiita.com/api/v2/items/%s/stockers", id), nil)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	q := req.URL.Query()
+	q.Add("page", strconv.Itoa(page))
+	q.Add("per_page", strconv.Itoa(perPage))
+	req.URL.RawQuery = q.Encode()
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.accessToken))
+
+	resp, err := c.httpAPI.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		b, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+		return nil, errors.New(string(b))
+	}
+
+	fmt.Printf("Rate Limit Remaining: %s\n", resp.Header.Get("rate-remaining"))
+
+	var users entities.Users
+	if err := json.NewDecoder(resp.Body).Decode(&users); err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	return users, nil
+}
+
 func (c *QiitaClient) UpdateItem(id, title, body string, tags entities.Tags) error {
 	p, err := json.Marshal(map[string]interface{}{
 		"title": title,
@@ -70,7 +105,7 @@ func (c *QiitaClient) UpdateItem(id, title, body string, tags entities.Tags) err
 		return errors.WithStack(err)
 	}
 
-	req, err := http.NewRequest("PATCH", fmt.Sprintf("https://qiita.com/api/v2/items/%s", id), bytes.NewReader(p))
+	req, err := http.NewRequest(http.MethodPatch, fmt.Sprintf("https://qiita.com/api/v2/items/%s", id), bytes.NewReader(p))
 	if err != nil {
 		return errors.WithStack(err)
 	}
