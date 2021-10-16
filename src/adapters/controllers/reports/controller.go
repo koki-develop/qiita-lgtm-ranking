@@ -32,6 +32,21 @@ func New() *Controller {
 	}
 }
 
+func (ctrl *Controller) UpdateDaily(t time.Time, rptID string) error {
+	from := t.AddDate(0, 0, -1)
+	query := fmt.Sprintf("created:>=%s", from.Format("2006-01-02"))
+
+	items, err := ctrl.itemsRepository.FindAll(query)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	if err := ctrl.reportsRepository.UpdateDaily(from, rptID, items); err != nil {
+		return errors.WithStack(err)
+	}
+	return nil
+}
+
 func (ctrl *Controller) UpdateWeekly(t time.Time, rptID string) error {
 	from := t.AddDate(0, 0, -7)
 	query := fmt.Sprintf("created:>=%s stocks:>=10", from.Format("2006-01-02"))

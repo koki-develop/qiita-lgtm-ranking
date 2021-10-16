@@ -107,7 +107,7 @@ resource "aws_cloudwatch_metric_alarm" "weekly_errors" {
   period             = 300
   statistic          = "Sum"
   threshold          = 1
-  treat_missing_data = "missing"
+  treat_missing_data = "notBreaching"
   ok_actions         = [aws_sns_topic.default.arn]
   alarm_actions      = [aws_sns_topic.default.arn]
 }
@@ -127,7 +127,7 @@ resource "aws_cloudwatch_metric_alarm" "weekly_by_tag_errors" {
   period             = 300
   statistic          = "Sum"
   threshold          = 1
-  treat_missing_data = "missing"
+  treat_missing_data = "notBreaching"
   ok_actions         = [aws_sns_topic.default.arn]
   alarm_actions      = [aws_sns_topic.default.arn]
 }
