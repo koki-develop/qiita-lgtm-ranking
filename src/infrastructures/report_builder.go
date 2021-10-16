@@ -31,6 +31,7 @@ func (b *ReportBuilder) Daily(from time.Time, items entities.Items) (*entities.R
 	items.SortByLikesCount()
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"from":  from,
+		"to":    from.AddDate(0, 0, 1),
 		"items": items,
 	}); err != nil {
 		return nil, errors.WithStack(err)
