@@ -47,6 +47,14 @@ functions:
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateDaily/input.${self:provider.stage}.json)}
 
+  updateDailyByTag:
+    handler: build/updateDailyByTag
+    package:
+      patterns:
+        - "!./**"
+        - ./build/updateDailyByTag
+        - ./src/static/**
+
   updateWeekly:
     handler: build/updateWeekly
     package:
