@@ -87,9 +87,6 @@ jobs:
 
   terraform_plan:
     executor: terraform
-    parameters:
-      stage:
-        type: string
     steps:
       - checkout
       - setup_aws_config
@@ -102,6 +99,15 @@ jobs:
       - terraform:
           path: ./terraform/envs/dev
           command: plan
+      - terraform:
+          path: ./terraform/envs/prod
+          command: init
+      - terraform:
+          path: ./terraform/envs/prod
+          command: validate
+      - terraform:
+          path: ./terraform/envs/prod
+          command: plan
 
   terraform_apply:
     executor: terraform
@@ -112,10 +118,10 @@ jobs:
       - checkout
       - setup_aws_config
       - terraform:
-          path: ./terraform/envs/dev
+          path: ./terraform/envs/<< parameters.stage >>
           command: init
       - terraform:
-          path: ./terraform/envs/dev
+          path: ./terraform/envs/<< parameters.stage >>
           command: apply -auto-approve
 
   deploy:
@@ -139,13 +145,11 @@ workflows:
   build:
     jobs:
       - test
-      - terraform_plan:
-          name: terraform_plan_dev
-          stage: dev
+      - terraform_plan
 
       - approval_deploy:
           type: approval
-          requires: [test]
+          requires: [test, terraform_plan]
 
       - deploy:
           name: deploy_dev
@@ -166,3 +170,7 @@ workflows:
           filters:
             branches:
               only: main
+      - terraform_apply:
+          name: terraform_apply_prod
+          stage: prod
+          requires: [deploy_prod]
