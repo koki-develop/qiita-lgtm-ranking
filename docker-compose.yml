@@ -9,6 +9,8 @@ services:
       - .:/var/task
       - ~/.aws:/root/.aws
       - go:/go
+      - node_modules:/var/task/node_modules
 
 volumes:
   go:
+  node_modules:

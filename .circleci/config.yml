@@ -3,9 +3,7 @@ version: 2.1
 executors:
   go:
     docker:
-      - image: lambci/lambda:build-go1.x
-        environment:
-          CGO_ENABLED: '0'
+      - image: golang:1.16
 
 commands:
   create_dotenv:
@@ -30,10 +28,10 @@ commands:
   go_mod_download:
     steps:
       - restore_cache:
-          key: v1-{{ .Branch }}-{{ checksum "go.sum" }}
+          key: go-mod-v1-{{ .Branch }}-{{ checksum "go.sum" }}
       - run: go mod download -x
       - save_cache:
-          key: v1-{{ .Branch }}-{{ checksum "go.sum" }}
+          key: go-mod-v1-{{ .Branch }}-{{ checksum "go.sum" }}
           paths:
             - /go/pkg/mod
 
@@ -42,13 +40,12 @@ commands:
       - run:
           name: install nodejs
           command: |
-            curl -sL https://rpm.nodesource.com/setup_14.x | bash -
-            yum -y install nodejs
+            curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+            apt install -y nodejs
       - run:
           name: install yarn
           command: |
-            echo 'export PATH=$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH' >> $BASH_ENV
-            curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.22.10
+            npm install --global yarn
 
   yarn_install:
     steps:
@@ -71,9 +68,6 @@ jobs:
           command: ./bin/test
       - store_artifacts:
           path: cover.html
-      - run:
-          name: upload coverage reports to codecov
-          command: curl -sL https://codecov.io/bash | bash -
 
   deploy:
     executor: go
