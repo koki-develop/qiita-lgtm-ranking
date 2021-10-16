@@ -3,9 +3,7 @@ version: 2.1
 executors:
   go:
     docker:
-      - image: lambci/lambda:build-go1.x
-        environment:
-          CGO_ENABLED: '0'
+      - image: golang:1.16
 
 commands:
   create_dotenv:
@@ -42,13 +40,12 @@ commands:
       - run:
           name: install nodejs
           command: |
-            curl -sL https://rpm.nodesource.com/setup_14.x | bash -
-            yum -y install nodejs
+            curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+            apt install -y nodejs
       - run:
           name: install yarn
           command: |
-            echo 'export PATH=$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH' >> $BASH_ENV
-            curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.22.10
+            npm install --global yarn
 
   yarn_install:
     steps:
