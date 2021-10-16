@@ -35,6 +35,20 @@ func (items Items) FilterOnlyHasLGTM() Items {
 
 func (items Items) SortByLikesCount() {
 	sort.SliceStable(items, func(i, j int) bool {
-		return items[i].LikesCount > items[j].LikesCount
+		if items[i].LikesCount > items[j].LikesCount {
+			return true
+		}
+		if items[i].LikesCount == items[j].LikesCount {
+			if len(items[i].Stockers) > len(items[j].Stockers) {
+				return true
+			}
+			if len(items[i].Stockers) == len(items[j].Stockers) {
+				if items[i].CreatedAt.Before(items[j].CreatedAt) {
+					return true
+				}
+			}
+		}
+
+		return false
 	})
 }
