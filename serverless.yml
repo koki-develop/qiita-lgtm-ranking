@@ -30,14 +30,16 @@ provider:
     QIITA_ACCESS_TOKEN: ${env:QIITA_ACCESS_TOKEN}
 
 package:
-  patterns:
-    - "!./**"
-    - ./build/**
-    - ./src/static/**
+  individually: true
 
 functions:
   updateDaily:
     handler: build/updateDaily
+    package:
+      patterns:
+        - "!./**"
+        - ./build/updateDaily
+        - ./src/static/**
     events:
       - schedule:
           name: ${self:custom.prefix}-daily
@@ -47,6 +49,11 @@ functions:
 
   updateWeekly:
     handler: build/updateWeekly
+    package:
+      patterns:
+        - "!./**"
+        - ./build/updateWeekly
+        - ./src/static/**
     events:
       - schedule:
           name: ${self:custom.prefix}-weekly
@@ -56,6 +63,11 @@ functions:
 
   updateWeeklyByTag:
     handler: build/updateWeeklyByTag
+    package:
+      patterns:
+        - "!./**"
+        - ./build/updateWeeklyByTag
+        - ./src/static/**
     events:
       # AWS
       - schedule:
