@@ -47,6 +47,154 @@ functions:
           enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
           input: ${file(./events/updateDaily/input.${self:provider.stage}.json)}
 
+  updateDailyByTag:
+    handler: build/updateDailyByTag
+    package:
+      patterns:
+        - "!./**"
+        - ./build/updateDailyByTag
+        - ./src/static/**
+    events:
+      # AWS
+      - schedule:
+          name: ${self:custom.prefix}-daily-aws
+          rate: cron(0 0,6,12,18 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/aws.${self:provider.stage}.json)}
+
+      # Android
+      - schedule:
+          name: ${self:custom.prefix}-daily-android
+          rate: cron(0 1,7,13,19 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/android.${self:provider.stage}.json)}
+
+      # Docker
+      - schedule:
+          name: ${self:custom.prefix}-daily-docker
+          rate: cron(0 2,8,14,20 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/docker.${self:provider.stage}.json)}
+
+      # Go
+      - schedule:
+          name: ${self:custom.prefix}-daily-go
+          rate: cron(0 3,9,15,21 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/go.${self:provider.stage}.json)}
+
+      # Git
+      - schedule:
+          name: ${self:custom.prefix}-daily-git
+          rate: cron(0 4,10,16,22 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/git.${self:provider.stage}.json)}
+
+      # iOS
+      - schedule:
+          name: ${self:custom.prefix}-daily-ios
+          rate: cron(0 5,11,17,23 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/ios.${self:provider.stage}.json)}
+
+      # Java
+      - schedule:
+          name: ${self:custom.prefix}-daily-java
+          rate: cron(0 0,6,12,18 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/java.${self:provider.stage}.json)}
+
+      # JavaScript
+      - schedule:
+          name: ${self:custom.prefix}-daily-javascript
+          rate: cron(0 1,7,13,19 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/javascript.${self:provider.stage}.json)}
+
+      # Linux
+      - schedule:
+          name: ${self:custom.prefix}-daily-linux
+          rate: cron(0 2,8,14,20 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/linux.${self:provider.stage}.json)}
+
+      # Node.js
+      - schedule:
+          name: ${self:custom.prefix}-daily-nodejs
+          rate: cron(0 3,9,15,21 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/nodejs.${self:provider.stage}.json)}
+
+      # PHP
+      - schedule:
+          name: ${self:custom.prefix}-daily-php
+          rate: cron(0 4,10,16,22 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/php.${self:provider.stage}.json)}
+
+      # Python
+      - schedule:
+          name: ${self:custom.prefix}-daily-python
+          rate: cron(0 5,11,17,23 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/python.${self:provider.stage}.json)}
+
+      # Rails
+      - schedule:
+          name: ${self:custom.prefix}-daily-rails
+          rate: cron(0 0,6,12,18 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/rails.${self:provider.stage}.json)}
+
+      # React
+      - schedule:
+          name: ${self:custom.prefix}-daily-react
+          rate: cron(0 1,7,13,19 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/react.${self:provider.stage}.json)}
+
+      # Ruby
+      - schedule:
+          name: ${self:custom.prefix}-daily-ruby
+          rate: cron(0 2,8,14,20 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/ruby.${self:provider.stage}.json)}
+
+      # Swift
+      - schedule:
+          name: ${self:custom.prefix}-daily-swift
+          rate: cron(0 3,9,15,21 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/swift.${self:provider.stage}.json)}
+
+      # TypeScript
+      - schedule:
+          name: ${self:custom.prefix}-daily-typescript
+          rate: cron(0 4,10,16,22 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/typescript.${self:provider.stage}.json)}
+
+      # Vim
+      - schedule:
+          name: ${self:custom.prefix}-daily-vim
+          rate: cron(0 5,11,17,23 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/vim.${self:provider.stage}.json)}
+
+      # Vue.js
+      - schedule:
+          name: ${self:custom.prefix}-daily-vuejs
+          rate: cron(0 0,6,12,18 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/vuejs.${self:provider.stage}.json)}
+
+      # 初心者
+      - schedule:
+          name: ${self:custom.prefix}-daily-beginner
+          rate: cron(0 1,7,13,19 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDailyByTag/beginner.${self:provider.stage}.json)}
+
   updateWeekly:
     handler: build/updateWeekly
     package:

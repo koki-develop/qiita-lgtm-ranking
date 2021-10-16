@@ -8,6 +8,7 @@ import (
 
 type ReportsRepository interface {
 	UpdateDaily(t time.Time, id string, items entities.Items) error
+	UpdateDailyByTag(t time.Time, id string, items entities.Items, tag string) error
 	UpdateWeekly(t time.Time, id string, items entities.Items) error
 	UpdateWeeklyByTag(t time.Time, id string, items entities.Items, tag string) error
 }

@@ -31,6 +31,7 @@ func (b *ReportBuilder) Daily(from time.Time, items entities.Items) (*entities.R
 	items.SortByLikesCount()
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"from":  from,
+		"to":    from.AddDate(0, 0, 1),
 		"items": items,
 	}); err != nil {
 		return nil, errors.WithStack(err)
@@ -40,6 +41,33 @@ func (b *ReportBuilder) Daily(from time.Time, items entities.Items) (*entities.R
 		Title: "Qiita デイリー LGTM 数ランキング【自動更新】",
 		Body:  buf.String(),
 		Tags:  entities.Tags{{Name: "Qiita"}, {Name: "lgtm"}, {Name: "ランキング"}},
+	}, nil
+}
+
+func (b *ReportBuilder) DailyByTag(from time.Time, items entities.Items, tag string) (*entities.Report, error) {
+	tpl, err := template.New("dailyByTag.template.md").Funcs(template.FuncMap{
+		"inc": func(i int) int {
+			return i + 1
+		},
+	}).ParseFiles("./src/static/dailyByTag.template.md")
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	buf := new(bytes.Buffer)
+	items.SortByLikesCount()
+	if err := tpl.Execute(buf, map[string]interface{}{
+		"from":  from,
+		"to":    from.AddDate(0, 0, 1),
+		"items": items,
+	}); err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	return &entities.Report{
+		Title: fmt.Sprintf("【%s】Qiita デイリー LGTM 数ランキング【自動更新】", tag),
+		Body:  buf.String(),
+		Tags:  entities.Tags{{Name: "Qiita"}, {Name: "lgtm"}, {Name: "ランキング"}, {Name: tag}},
 	}, nil
 }
 
