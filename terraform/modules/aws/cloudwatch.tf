@@ -27,19 +27,11 @@ resource "aws_cloudwatch_dashboard" "default" {
       },
       {
         properties = {
-          metrics = [
-            [
-              "AWS/Lambda",
-              "Errors",
-              "FunctionName",
-              data.aws_lambda_function.update_weekly.function_name,
-              "Resource",
-              data.aws_lambda_function.update_weekly.function_name,
-              {
-                color = "#d62728"
-              },
-            ],
-          ]
+          annotations = {
+            alarms = [
+              aws_cloudwatch_metric_alarm.weekly_errors.arn
+            ]
+          }
           period  = 300
           region  = "us-east-1"
           stacked = false
@@ -78,19 +70,11 @@ resource "aws_cloudwatch_dashboard" "default" {
       },
       {
         properties = {
-          metrics = [
-            [
-              "AWS/Lambda",
-              "Errors",
-              "FunctionName",
-              data.aws_lambda_function.update_weekly_by_tag.function_name,
-              "Resource",
-              data.aws_lambda_function.update_weekly_by_tag.function_name,
-              {
-                color = "#d62728"
-              },
-            ],
-          ]
+          annotations = {
+            alarms = [
+              aws_cloudwatch_metric_alarm.weekly_by_tag_errors.arn
+            ]
+          }
           period  = 300
           region  = "us-east-1"
           stacked = false
@@ -108,7 +92,7 @@ resource "aws_cloudwatch_dashboard" "default" {
   })
 }
 
-resource "aws_cloudwatch_metric_alarm" "weekly" {
+resource "aws_cloudwatch_metric_alarm" "weekly_errors" {
   alarm_name          = "${local.prefix}-weekly-errors"
   actions_enabled     = true
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -126,7 +110,7 @@ resource "aws_cloudwatch_metric_alarm" "weekly" {
   treat_missing_data = "missing"
 }
 
-resource "aws_cloudwatch_metric_alarm" "weekly_by_tag" {
+resource "aws_cloudwatch_metric_alarm" "weekly_by_tag_errors" {
   alarm_name          = "${local.prefix}-weekly-by-tag-errors"
   actions_enabled     = true
   comparison_operator = "GreaterThanOrEqualToThreshold"
