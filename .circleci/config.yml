@@ -68,9 +68,6 @@ jobs:
           command: ./bin/test
       - store_artifacts:
           path: cover.html
-      - run:
-          name: upload coverage reports to codecov
-          command: curl -sL https://codecov.io/bash | bash -
 
   deploy:
     executor: go
