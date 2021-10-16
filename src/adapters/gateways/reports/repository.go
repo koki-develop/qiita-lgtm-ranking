@@ -33,6 +33,18 @@ func (repo *Repository) UpdateDaily(from time.Time, id string, items entities.It
 	return nil
 }
 
+func (repo *Repository) UpdateDailyByTag(from time.Time, id string, items entities.Items, tag string) error {
+	rpt, err := repo.config.ReportBuilder.DailyByTag(from, items, tag)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	if err := repo.update(id, rpt); err != nil {
+		return errors.WithStack(err)
+	}
+	return nil
+}
+
 func (repo *Repository) UpdateWeekly(from time.Time, id string, items entities.Items) error {
 	rpt, err := repo.config.ReportBuilder.Weekly(from, items)
 	if err != nil {
