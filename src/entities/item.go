@@ -6,12 +6,15 @@ import (
 )
 
 type Item struct {
+	ID         string    `json:"id"`
 	Title      string    `json:"title"`
 	LikesCount int       `json:"likes_count"`
 	URL        string    `json:"url"`
 	User       User      `json:"user"`
 	Tags       Tags      `json:"tags"`
 	CreatedAt  time.Time `json:"created_at"`
+
+	Stockers Users `json:"-"`
 }
 
 type Items []*Item
@@ -30,8 +33,22 @@ func (items Items) FilterOnlyHasLGTM() Items {
 	return rtn
 }
 
-func (items Items) SortByLikesCount() {
+func (items Items) Sort() {
 	sort.SliceStable(items, func(i, j int) bool {
-		return items[i].LikesCount > items[j].LikesCount
+		if items[i].LikesCount > items[j].LikesCount {
+			return true
+		}
+		if items[i].LikesCount == items[j].LikesCount {
+			if len(items[i].Stockers) > len(items[j].Stockers) {
+				return true
+			}
+			if len(items[i].Stockers) == len(items[j].Stockers) {
+				if items[i].CreatedAt.After(items[j].CreatedAt) {
+					return true
+				}
+			}
+		}
+
+		return false
 	})
 }

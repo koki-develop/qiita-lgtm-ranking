@@ -2,6 +2,7 @@ package entities
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -43,22 +44,35 @@ func TestItems_FilterOnlyHasLGTM(t *testing.T) {
 	})
 }
 
-func TestItems_SortByLikesCount(t *testing.T) {
+func TestItems_Sort(t *testing.T) {
 	items := Items{
-		{Title: "1", LikesCount: 1},
-		{Title: "2", LikesCount: 0},
-		{Title: "3", LikesCount: 10},
-		{Title: "4", LikesCount: 0},
-		{Title: "5", LikesCount: 100},
+		{Title: "1", LikesCount: 1, Stockers: Users{}},
+		{Title: "2", LikesCount: 0, Stockers: Users{}},
+		{Title: "3", LikesCount: 10, Stockers: Users{}},
+		{Title: "4", LikesCount: 0, Stockers: Users{}},
+		{Title: "5", LikesCount: 100, Stockers: Users{}},
+		{Title: "6", LikesCount: 1, Stockers: Users{}},
+		{Title: "7", LikesCount: 1, Stockers: Users{}},
+		{Title: "8", LikesCount: 1, Stockers: Users{{}}, CreatedAt: time.Date(1998, 1, 30, 0, 0, 0, 0, time.UTC)},
+		{Title: "9", LikesCount: 1, Stockers: Users{{}}, CreatedAt: time.Date(1998, 1, 31, 0, 0, 0, 0, time.UTC)},
 	}
 
-	items.SortByLikesCount()
+	items.Sort()
 
-	assert.Equal(t, Items{
-		{Title: "5", LikesCount: 100},
-		{Title: "3", LikesCount: 10},
-		{Title: "1", LikesCount: 1},
-		{Title: "2", LikesCount: 0},
-		{Title: "4", LikesCount: 0},
-	}, items)
+	var ttls []string
+	for _, item := range items {
+		ttls = append(ttls, item.Title)
+	}
+
+	assert.Equal(t, []string{
+		"5",
+		"3",
+		"9",
+		"8",
+		"1",
+		"6",
+		"7",
+		"2",
+		"4",
+	}, ttls)
 }

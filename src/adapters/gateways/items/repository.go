@@ -29,8 +29,28 @@ func (repo *Repository) FindAll(query string) (entities.Items, error) {
 		if len(resp) == 0 {
 			break
 		}
-
 		items = append(items, resp.FilterOnlyHasLGTM()...)
+
+		if len(resp) < 100 {
+			break
+		}
+	}
+
+	for _, item := range items {
+		for i := 1; i <= 100; i++ {
+			stks, err := repo.config.QiitaAPI.GetStockersOfItem(item.ID, i, 100)
+			if err != nil {
+				return nil, errors.WithStack(err)
+			}
+			if len(stks) == 0 {
+				break
+			}
+			item.Stockers = append(item.Stockers, stks...)
+
+			if len(stks) < 100 {
+				break
+			}
+		}
 	}
 
 	return items, nil
