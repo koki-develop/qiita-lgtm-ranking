@@ -104,7 +104,7 @@ resource "aws_cloudwatch_metric_alarm" "weekly_errors" {
   evaluation_periods = 1
   metric_name        = "Errors"
   namespace          = "AWS/Lambda"
-  period             = 300
+  period             = 3600
   statistic          = "Sum"
   threshold          = 1
   treat_missing_data = "notBreaching"
@@ -124,7 +124,7 @@ resource "aws_cloudwatch_metric_alarm" "weekly_by_tag_errors" {
   evaluation_periods = 1
   metric_name        = "Errors"
   namespace          = "AWS/Lambda"
-  period             = 300
+  period             = 3600
   statistic          = "Sum"
   threshold          = 1
   treat_missing_data = "notBreaching"
