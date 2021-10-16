@@ -143,23 +143,14 @@ workflows:
           name: terraform_plan_dev
           stage: dev
 
-      - approval_deploy_dev:
+      - approval_deploy:
           type: approval
           requires: [test]
-          filters:
-            branches:
-              ignore: main
-      - approval_deploy_prod:
-          type: approval
-          requires: [test]
-          filters:
-            branches:
-              only: main
 
       - deploy:
           name: deploy_dev
           stage: dev
-          requires: [approval_deploy_dev]
+          requires: [approval_deploy]
           filters:
             branches:
               ignore: main
@@ -171,7 +162,7 @@ workflows:
       - deploy:
           name: deploy_prod
           stage: prod
-          requires: [approval_deploy_prod]
+          requires: [approval_deploy]
           filters:
             branches:
               only: main
