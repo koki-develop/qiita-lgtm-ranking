@@ -2,6 +2,7 @@
 
 STAGE=$1
 
+yarn run sls invoke -f updateDaily        --stage ${STAGE} --log --path events/updateDaily/input.${STAGE}.json
 yarn run sls invoke -f updateWeekly       --stage ${STAGE} --log --path events/updateWeekly/input.${STAGE}.json
 yarn run sls invoke -f updateWeeklyByTag  --stage ${STAGE} --log --path events/updateWeeklyByTag/android.${STAGE}.json
 yarn run sls invoke -f updateWeeklyByTag  --stage ${STAGE} --log --path events/updateWeeklyByTag/aws.${STAGE}.json
