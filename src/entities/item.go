@@ -33,7 +33,7 @@ func (items Items) FilterOnlyHasLGTM() Items {
 	return rtn
 }
 
-func (items Items) SortByLikesCount() {
+func (items Items) Sort() {
 	sort.SliceStable(items, func(i, j int) bool {
 		if items[i].LikesCount > items[j].LikesCount {
 			return true

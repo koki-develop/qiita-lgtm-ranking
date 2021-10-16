@@ -28,7 +28,7 @@ func (b *ReportBuilder) Daily(from time.Time, items entities.Items) (*entities.R
 	}
 
 	buf := new(bytes.Buffer)
-	items.SortByLikesCount()
+	items.Sort()
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"from":  from,
 		"to":    from.AddDate(0, 0, 1),
@@ -55,7 +55,7 @@ func (b *ReportBuilder) DailyByTag(from time.Time, items entities.Items, tag str
 	}
 
 	buf := new(bytes.Buffer)
-	items.SortByLikesCount()
+	items.Sort()
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"from":  from,
 		"to":    from.AddDate(0, 0, 1),
@@ -82,7 +82,7 @@ func (b *ReportBuilder) Weekly(from time.Time, items entities.Items) (*entities.
 	}
 
 	buf := new(bytes.Buffer)
-	items.SortByLikesCount()
+	items.Sort()
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"min_stock": 10,
 		"from":      from,
@@ -110,7 +110,7 @@ func (b *ReportBuilder) WeeklyByTag(from time.Time, items entities.Items, tag st
 	}
 
 	buf := new(bytes.Buffer)
-	items.SortByLikesCount()
+	items.Sort()
 	if err := tpl.Execute(buf, map[string]interface{}{
 		"min_stock": 2,
 		"from":      from,
@@ -165,7 +165,7 @@ func (b *ReportBuilder) tagsMarkdown() string {
 func (b *ReportBuilder) itemsToMarkdown(items entities.Items) string {
 	rows := []string{}
 
-	items.SortByLikesCount()
+	items.Sort()
 	for i, item := range items {
 		if !item.HasLGTM() {
 			continue

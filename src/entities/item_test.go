@@ -44,7 +44,7 @@ func TestItems_FilterOnlyHasLGTM(t *testing.T) {
 	})
 }
 
-func TestItems_SortByLikesCount(t *testing.T) {
+func TestItems_Sort(t *testing.T) {
 	items := Items{
 		{Title: "1", LikesCount: 1, Stockers: Users{}},
 		{Title: "2", LikesCount: 0, Stockers: Users{}},
@@ -57,7 +57,7 @@ func TestItems_SortByLikesCount(t *testing.T) {
 		{Title: "9", LikesCount: 1, Stockers: Users{{}}, CreatedAt: time.Date(1998, 1, 30, 0, 0, 0, 0, time.UTC)},
 	}
 
-	items.SortByLikesCount()
+	items.Sort()
 
 	var ttls []string
 	for _, item := range items {
