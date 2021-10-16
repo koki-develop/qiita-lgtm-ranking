@@ -107,3 +107,39 @@ resource "aws_cloudwatch_dashboard" "default" {
     ]
   })
 }
+
+resource "aws_cloudwatch_metric_alarm" "weekly" {
+  alarm_name          = "${local.prefix}-weekly-errors"
+  actions_enabled     = true
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  datapoints_to_alarm = 1
+  dimensions = {
+    "FunctionName" = data.aws_lambda_function.update_weekly.function_name
+    "Resource"     = data.aws_lambda_function.update_weekly.function_name
+  }
+  evaluation_periods = 1
+  metric_name        = "Errors"
+  namespace          = "AWS/Lambda"
+  period             = 300
+  statistic          = "Sum"
+  threshold          = 1
+  treat_missing_data = "missing"
+}
+
+resource "aws_cloudwatch_metric_alarm" "weekly_by_tag" {
+  alarm_name          = "${local.prefix}-weekly-by-tag-errors"
+  actions_enabled     = true
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  datapoints_to_alarm = 1
+  dimensions = {
+    "FunctionName" = data.aws_lambda_function.update_weekly_by_tag.function_name
+    "Resource"     = data.aws_lambda_function.update_weekly_by_tag.function_name
+  }
+  evaluation_periods = 1
+  metric_name        = "Errors"
+  namespace          = "AWS/Lambda"
+  period             = 300
+  statistic          = "Sum"
+  threshold          = 1
+  treat_missing_data = "missing"
+}
