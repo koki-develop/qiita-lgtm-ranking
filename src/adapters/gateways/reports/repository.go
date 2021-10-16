@@ -21,6 +21,18 @@ func New(cfg *Config) *Repository {
 	return &Repository{config: cfg}
 }
 
+func (repo *Repository) UpdateDaily(from time.Time, id string, items entities.Items) error {
+	rpt, err := repo.config.ReportBuilder.Daily(from, items)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	if err := repo.update(id, rpt); err != nil {
+		return errors.WithStack(err)
+	}
+	return nil
+}
+
 func (repo *Repository) UpdateWeekly(from time.Time, id string, items entities.Items) error {
 	rpt, err := repo.config.ReportBuilder.Weekly(from, items)
 	if err != nil {
