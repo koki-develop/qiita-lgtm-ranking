@@ -53,6 +53,50 @@ resource "aws_cloudwatch_dashboard" "default" {
               "AWS/Lambda",
               "Invocations",
               "FunctionName",
+              data.aws_lambda_function.update_daily_by_tag.function_name,
+            ],
+          ]
+          period  = 300
+          region  = "us-east-1"
+          stacked = false
+          stat    = "Sum"
+          title   = "デイリーランキング ( タグ別 ) - 実行回数"
+          view    = "timeSeries"
+        }
+        type   = "metric"
+        width  = 12
+        height = 6
+        x      = 0
+        y      = 6
+      },
+      {
+        properties = {
+          annotations = {
+            alarms = [
+              aws_cloudwatch_metric_alarm.daily_by_tag_errors.arn
+            ]
+          }
+          period  = 300
+          region  = "us-east-1"
+          stacked = false
+          stat    = "Sum"
+          title   = "デイリーランキング ( タグ別 ) - エラー回数"
+          view    = "timeSeries"
+        }
+        type   = "metric"
+        width  = 12
+        height = 6
+        x      = 12
+        y      = 6
+      },
+
+      {
+        properties = {
+          metrics = [
+            [
+              "AWS/Lambda",
+              "Invocations",
+              "FunctionName",
               data.aws_lambda_function.update_weekly.function_name,
             ],
           ]
@@ -67,7 +111,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         width  = 12
         height = 6
         x      = 0
-        y      = 6
+        y      = 12
       },
       {
         properties = {
@@ -87,7 +131,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         width  = 12
         height = 6
         x      = 12
-        y      = 6
+        y      = 12
       },
 
       {
@@ -111,7 +155,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         width  = 12
         height = 6
         x      = 0
-        y      = 12
+        y      = 18
       },
       {
         properties = {
@@ -131,7 +175,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         width  = 12
         height = 6
         x      = 12
-        y      = 12
+        y      = 18
       },
     ]
   })
@@ -145,6 +189,26 @@ resource "aws_cloudwatch_metric_alarm" "daily_errors" {
   dimensions = {
     "FunctionName" = data.aws_lambda_function.update_daily.function_name
     "Resource"     = data.aws_lambda_function.update_daily.function_name
+  }
+  evaluation_periods = 1
+  metric_name        = "Errors"
+  namespace          = "AWS/Lambda"
+  period             = 3600
+  statistic          = "Sum"
+  threshold          = 1
+  treat_missing_data = "notBreaching"
+  ok_actions         = [aws_sns_topic.default.arn]
+  alarm_actions      = [aws_sns_topic.default.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "daily_by_tag_errors" {
+  alarm_name          = "${local.prefix}-daily-by-tag-errors"
+  actions_enabled     = true
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  datapoints_to_alarm = 1
+  dimensions = {
+    "FunctionName" = data.aws_lambda_function.update_daily_by_tag.function_name
+    "Resource"     = data.aws_lambda_function.update_daily_by_tag.function_name
   }
   evaluation_periods = 1
   metric_name        = "Errors"
