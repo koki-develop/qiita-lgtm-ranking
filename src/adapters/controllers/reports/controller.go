@@ -47,6 +47,21 @@ func (ctrl *Controller) UpdateDaily(t time.Time, rptID string) error {
 	return nil
 }
 
+func (ctrl *Controller) UpdateDailyByTag(t time.Time, rptID, tag string) error {
+	from := t.AddDate(0, 0, -1)
+	query := fmt.Sprintf("created:>=%s tag:%s", from.Format("2006-01-02"), tag)
+
+	items, err := ctrl.itemsRepository.FindAll(query)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	if err := ctrl.reportsRepository.UpdateDailyByTag(from, rptID, items, tag); err != nil {
+		return errors.WithStack(err)
+	}
+	return nil
+}
+
 func (ctrl *Controller) UpdateWeekly(t time.Time, rptID string) error {
 	from := t.AddDate(0, 0, -7)
 	query := fmt.Sprintf("created:>=%s stocks:>=10", from.Format("2006-01-02"))
