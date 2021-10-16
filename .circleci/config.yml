@@ -28,10 +28,10 @@ commands:
   go_mod_download:
     steps:
       - restore_cache:
-          key: v1-{{ .Branch }}-{{ checksum "go.sum" }}
+          key: go-mod-v1-{{ .Branch }}-{{ checksum "go.sum" }}
       - run: go mod download -x
       - save_cache:
-          key: v1-{{ .Branch }}-{{ checksum "go.sum" }}
+          key: go-mod-v1-{{ .Branch }}-{{ checksum "go.sum" }}
           paths:
             - /go/pkg/mod
 
