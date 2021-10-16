@@ -29,8 +29,11 @@ func (repo *Repository) FindAll(query string) (entities.Items, error) {
 		if len(resp) == 0 {
 			break
 		}
-
 		items = append(items, resp.FilterOnlyHasLGTM()...)
+
+		if len(resp) < 100 {
+			break
+		}
 	}
 
 	for _, item := range items {
@@ -39,7 +42,14 @@ func (repo *Repository) FindAll(query string) (entities.Items, error) {
 			if err != nil {
 				return nil, errors.WithStack(err)
 			}
-			item.Stockers = stks
+			if len(stks) == 0 {
+				break
+			}
+			item.Stockers = append(item.Stockers, stks...)
+
+			if len(stks) < 100 {
+				break
+			}
 		}
 	}
 
