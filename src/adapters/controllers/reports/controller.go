@@ -34,7 +34,7 @@ func New() *Controller {
 
 func (ctrl *Controller) UpdateDaily(t time.Time, rptID string) error {
 	from := t.AddDate(0, 0, -1)
-	query := fmt.Sprintf("created:>=%s stocks:>=1", from.Format("2006-01-02"))
+	query := fmt.Sprintf("created:>=%s", from.Format("2006-01-02"))
 
 	items, err := ctrl.itemsRepository.FindAll(query)
 	if err != nil {
