@@ -4,6 +4,9 @@ executors:
   go:
     docker:
       - image: golang:1.16
+  terraform:
+    docker:
+      - image: hashicorp/terraform:1.0.4
 
 commands:
   create_dotenv:
@@ -57,6 +60,19 @@ commands:
           paths:
             - node_modules
 
+  terraform:
+    parameters:
+      path:
+        type: string
+      command:
+        type: string
+    steps:
+      - run:
+          name: terraform << parameters.command >> at << parameters.path >>
+          command: |
+            cd << parameters.path >>
+            terraform << parameters.command >>
+
 jobs:
   test:
     executor: go
@@ -68,6 +84,24 @@ jobs:
           command: ./bin/test
       - store_artifacts:
           path: cover.html
+
+  terraform_plan:
+    executor: terraform
+    parameters:
+      stage:
+        type: string
+    steps:
+      - checkout
+      - setup_aws_config
+      - terraform:
+          path: ./terraform/envs/dev
+          command: init
+      - terraform:
+          path: ./terraform/envs/dev
+          command: validate
+      - terraform:
+          path: ./terraform/envs/dev
+          command: plan
 
   deploy:
     executor: go
@@ -90,6 +124,9 @@ workflows:
   build:
     jobs:
       - test
+      - terraform_plan:
+          name: terraform_plan_dev
+          stage: dev
 
       - approval_deploy_dev:
           type: approval
