@@ -103,6 +103,21 @@ jobs:
           path: ./terraform/envs/dev
           command: plan
 
+  terraform_apply:
+    executor: terraform
+    parameters:
+      stage:
+        type: string
+    steps:
+      - checkout
+      - setup_aws_config
+      - terraform:
+          path: ./terraform/envs/dev
+          command: init
+      - terraform:
+          path: ./terraform/envs/dev
+          command: apply -auto-approve
+
   deploy:
     executor: go
     parameters:
@@ -148,6 +163,11 @@ workflows:
           filters:
             branches:
               ignore: main
+      - terraform_apply:
+          name: terraform_apply_dev
+          stage: dev
+          requires: [deploy_dev]
+
       - deploy:
           name: deploy_prod
           stage: prod
