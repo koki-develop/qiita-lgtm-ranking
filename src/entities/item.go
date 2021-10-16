@@ -43,7 +43,7 @@ func (items Items) Sort() {
 				return true
 			}
 			if len(items[i].Stockers) == len(items[j].Stockers) {
-				if items[i].CreatedAt.Before(items[j].CreatedAt) {
+				if items[i].CreatedAt.After(items[j].CreatedAt) {
 					return true
 				}
 			}

@@ -53,8 +53,8 @@ func TestItems_Sort(t *testing.T) {
 		{Title: "5", LikesCount: 100, Stockers: Users{}},
 		{Title: "6", LikesCount: 1, Stockers: Users{}},
 		{Title: "7", LikesCount: 1, Stockers: Users{}},
-		{Title: "8", LikesCount: 1, Stockers: Users{{}}, CreatedAt: time.Date(1998, 1, 31, 0, 0, 0, 0, time.UTC)},
-		{Title: "9", LikesCount: 1, Stockers: Users{{}}, CreatedAt: time.Date(1998, 1, 30, 0, 0, 0, 0, time.UTC)},
+		{Title: "8", LikesCount: 1, Stockers: Users{{}}, CreatedAt: time.Date(1998, 1, 30, 0, 0, 0, 0, time.UTC)},
+		{Title: "9", LikesCount: 1, Stockers: Users{{}}, CreatedAt: time.Date(1998, 1, 31, 0, 0, 0, 0, time.UTC)},
 	}
 
 	items.Sort()
