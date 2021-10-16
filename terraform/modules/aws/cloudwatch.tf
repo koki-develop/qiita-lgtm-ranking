@@ -9,6 +9,50 @@ resource "aws_cloudwatch_dashboard" "default" {
               "AWS/Lambda",
               "Invocations",
               "FunctionName",
+              data.aws_lambda_function.update_daily.function_name,
+            ],
+          ]
+          period  = 300
+          region  = "us-east-1"
+          stacked = false
+          stat    = "Sum"
+          title   = "デイリーランキング - 実行回数"
+          view    = "timeSeries"
+        }
+        type   = "metric"
+        width  = 12
+        height = 6
+        x      = 0
+        y      = 0
+      },
+      {
+        properties = {
+          annotations = {
+            alarms = [
+              aws_cloudwatch_metric_alarm.daily_errors.arn
+            ]
+          }
+          period  = 300
+          region  = "us-east-1"
+          stacked = false
+          stat    = "Sum"
+          title   = "デイリーランキング - エラー回数"
+          view    = "timeSeries"
+        }
+        type   = "metric"
+        width  = 12
+        height = 6
+        x      = 12
+        y      = 0
+      },
+
+      {
+        properties = {
+          metrics = [
+            [
+              "AWS/Lambda",
+              "Invocations",
+              "FunctionName",
               data.aws_lambda_function.update_weekly.function_name,
             ],
           ]
@@ -23,7 +67,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         width  = 12
         height = 6
         x      = 0
-        y      = 0
+        y      = 6
       },
       {
         properties = {
@@ -43,8 +87,9 @@ resource "aws_cloudwatch_dashboard" "default" {
         width  = 12
         height = 6
         x      = 12
-        y      = 0
+        y      = 6
       },
+
       {
         properties = {
           metrics = [
@@ -66,7 +111,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         width  = 12
         height = 6
         x      = 0
-        y      = 6
+        y      = 12
       },
       {
         properties = {
@@ -86,10 +131,30 @@ resource "aws_cloudwatch_dashboard" "default" {
         width  = 12
         height = 6
         x      = 12
-        y      = 6
+        y      = 12
       },
     ]
   })
+}
+
+resource "aws_cloudwatch_metric_alarm" "daily_errors" {
+  alarm_name          = "${local.prefix}-daily-errors"
+  actions_enabled     = true
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  datapoints_to_alarm = 1
+  dimensions = {
+    "FunctionName" = data.aws_lambda_function.update_daily.function_name
+    "Resource"     = data.aws_lambda_function.update_daily.function_name
+  }
+  evaluation_periods = 1
+  metric_name        = "Errors"
+  namespace          = "AWS/Lambda"
+  period             = 3600
+  statistic          = "Sum"
+  threshold          = 1
+  treat_missing_data = "notBreaching"
+  ok_actions         = [aws_sns_topic.default.arn]
+  alarm_actions      = [aws_sns_topic.default.arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "weekly_errors" {
@@ -104,7 +169,7 @@ resource "aws_cloudwatch_metric_alarm" "weekly_errors" {
   evaluation_periods = 1
   metric_name        = "Errors"
   namespace          = "AWS/Lambda"
-  period             = 300
+  period             = 3600
   statistic          = "Sum"
   threshold          = 1
   treat_missing_data = "notBreaching"
@@ -124,7 +189,7 @@ resource "aws_cloudwatch_metric_alarm" "weekly_by_tag_errors" {
   evaluation_periods = 1
   metric_name        = "Errors"
   namespace          = "AWS/Lambda"
-  period             = 300
+  period             = 3600
   statistic          = "Sum"
   threshold          = 1
   treat_missing_data = "notBreaching"
