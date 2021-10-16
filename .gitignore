@@ -26,7 +26,3 @@ vendor
 
 # dotenv
 /.env
-
-# circleci-env
-.circleci-env/circle-token
-.circleci-env/.env
