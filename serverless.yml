@@ -36,6 +36,15 @@ package:
     - ./src/static/**
 
 functions:
+  updateDaily:
+    handler: build/updateDaily
+    events:
+      - schedule:
+          name: ${self:custom.prefix}-daily
+          rate: cron(0 6,18 * * ? *)
+          enabled: ${self:custom.schedule.enabled.${self:provider.stage}}
+          input: ${file(./events/updateDaily/input.${self:provider.stage}.json)}
+
   updateWeekly:
     handler: build/updateWeekly
     events:
