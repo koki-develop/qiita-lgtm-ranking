@@ -17,6 +17,33 @@ func NewReportBuilder() *ReportBuilder {
 	return &ReportBuilder{}
 }
 
+func (b *ReportBuilder) Daily(from time.Time, items entities.Items) (*entities.Report, error) {
+	tpl, err := template.New("daily.template.md").Funcs(template.FuncMap{
+		"inc": func(i int) int {
+			return i + 1
+		},
+	}).ParseFiles("./src/static/daily.template.md")
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	buf := new(bytes.Buffer)
+	items.SortByLikesCount()
+	if err := tpl.Execute(buf, map[string]interface{}{
+		"min_stock": 2,
+		"from":      from,
+		"items":     items,
+	}); err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	return &entities.Report{
+		Title: "Qiita デイリー LGTM 数ランキング【自動更新】",
+		Body:  buf.String(),
+		Tags:  entities.Tags{{Name: "Qiita"}, {Name: "lgtm"}, {Name: "ランキング"}},
+	}, nil
+}
+
 func (b *ReportBuilder) Weekly(from time.Time, items entities.Items) (*entities.Report, error) {
 	tpl, err := template.New("weekly.template.md").Funcs(template.FuncMap{
 		"inc": func(i int) int {
