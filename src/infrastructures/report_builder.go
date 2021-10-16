@@ -30,7 +30,7 @@ func (b *ReportBuilder) Daily(from time.Time, items entities.Items) (*entities.R
 	buf := new(bytes.Buffer)
 	items.SortByLikesCount()
 	if err := tpl.Execute(buf, map[string]interface{}{
-		"min_stock": 2,
+		"min_stock": 1,
 		"from":      from,
 		"items":     items,
 	}); err != nil {
