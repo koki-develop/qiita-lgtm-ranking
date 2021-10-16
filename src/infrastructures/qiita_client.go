@@ -50,6 +50,8 @@ func (c *QiitaClient) GetItems(page, perPage int, query string) (entities.Items,
 		return nil, errors.New(string(b))
 	}
 
+	fmt.Printf("Rate Limit Remaining: %s\n", resp.Header.Get("rate-remaining"))
+
 	var items entities.Items
 	if err := json.NewDecoder(resp.Body).Decode(&items); err != nil {
 		return nil, errors.WithStack(err)
