@@ -1,4 +1,6 @@
 resource "aws_cloudwatch_dashboard" "default" {
+  count = var.stage == "prod" ? 1 : 0
+
   dashboard_name = local.prefix
   dashboard_body = jsonencode({
     widgets = [
@@ -29,7 +31,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         properties = {
           annotations = {
             alarms = [
-              aws_cloudwatch_metric_alarm.daily_errors.arn
+              aws_cloudwatch_metric_alarm.daily_errors[0].arn
             ]
           }
           period  = 300
@@ -73,7 +75,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         properties = {
           annotations = {
             alarms = [
-              aws_cloudwatch_metric_alarm.daily_by_tag_errors.arn
+              aws_cloudwatch_metric_alarm.daily_by_tag_errors[0].arn
             ]
           }
           period  = 300
@@ -117,7 +119,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         properties = {
           annotations = {
             alarms = [
-              aws_cloudwatch_metric_alarm.weekly_errors.arn
+              aws_cloudwatch_metric_alarm.weekly_errors[0].arn
             ]
           }
           period  = 300
@@ -161,7 +163,7 @@ resource "aws_cloudwatch_dashboard" "default" {
         properties = {
           annotations = {
             alarms = [
-              aws_cloudwatch_metric_alarm.weekly_by_tag_errors.arn
+              aws_cloudwatch_metric_alarm.weekly_by_tag_errors[0].arn
             ]
           }
           period  = 300
@@ -182,6 +184,8 @@ resource "aws_cloudwatch_dashboard" "default" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "daily_errors" {
+  count = var.stage == "prod" ? 1 : 0
+
   alarm_name          = "${local.prefix}-daily-errors"
   actions_enabled     = true
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -197,11 +201,13 @@ resource "aws_cloudwatch_metric_alarm" "daily_errors" {
   statistic          = "Sum"
   threshold          = 1
   treat_missing_data = "notBreaching"
-  ok_actions         = [aws_sns_topic.default.arn]
-  alarm_actions      = [aws_sns_topic.default.arn]
+  ok_actions         = [aws_sns_topic.default[0].arn]
+  alarm_actions      = [aws_sns_topic.default[0].arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "daily_by_tag_errors" {
+  count = var.stage == "prod" ? 1 : 0
+
   alarm_name          = "${local.prefix}-daily-by-tag-errors"
   actions_enabled     = true
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -217,11 +223,13 @@ resource "aws_cloudwatch_metric_alarm" "daily_by_tag_errors" {
   statistic          = "Sum"
   threshold          = 1
   treat_missing_data = "notBreaching"
-  ok_actions         = [aws_sns_topic.default.arn]
-  alarm_actions      = [aws_sns_topic.default.arn]
+  ok_actions         = [aws_sns_topic.default[0].arn]
+  alarm_actions      = [aws_sns_topic.default[0].arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "weekly_errors" {
+  count = var.stage == "prod" ? 1 : 0
+
   alarm_name          = "${local.prefix}-weekly-errors"
   actions_enabled     = true
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -237,11 +245,13 @@ resource "aws_cloudwatch_metric_alarm" "weekly_errors" {
   statistic          = "Sum"
   threshold          = 1
   treat_missing_data = "notBreaching"
-  ok_actions         = [aws_sns_topic.default.arn]
-  alarm_actions      = [aws_sns_topic.default.arn]
+  ok_actions         = [aws_sns_topic.default[0].arn]
+  alarm_actions      = [aws_sns_topic.default[0].arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "weekly_by_tag_errors" {
+  count = var.stage == "prod" ? 1 : 0
+
   alarm_name          = "${local.prefix}-weekly-by-tag-errors"
   actions_enabled     = true
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -257,6 +267,6 @@ resource "aws_cloudwatch_metric_alarm" "weekly_by_tag_errors" {
   statistic          = "Sum"
   threshold          = 1
   treat_missing_data = "notBreaching"
-  ok_actions         = [aws_sns_topic.default.arn]
-  alarm_actions      = [aws_sns_topic.default.arn]
+  ok_actions         = [aws_sns_topic.default[0].arn]
+  alarm_actions      = [aws_sns_topic.default[0].arn]
 }
