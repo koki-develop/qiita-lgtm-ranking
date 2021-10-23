@@ -2,6 +2,7 @@ version: '3'
 
 services:
   app:
+    image: qiita-lgtm-ranking-app
     build:
       context: .
       dockerfile: ./containers/app/Dockerfile
