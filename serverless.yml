@@ -23,7 +23,7 @@ provider:
   profile: default
   runtime: go1.x
   lambdaHashingVersion: 20201221
-  memorySize: 256
+  memorySize: 128
   timeout: 900
   stage: ${opt:stage, "dev"}
   environment:
