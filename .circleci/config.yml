@@ -17,6 +17,12 @@ commands:
           version: '1.15'
       - go/mod-download-cached
 
+  setup-go-task:
+    steps:
+      - run:
+          name: install go-task
+          command: go install github.com/go-task/task/v3/cmd/task@latest
+
   setup-node:
     steps:
       - node/install:
@@ -39,16 +45,19 @@ commands:
             echo "QIITA_ACCESS_TOKEN=${QIITA_ACCESS_TOKEN}" > .env
 
 jobs:
-  test:
+  build:
     executor: ubuntu
     steps:
       - checkout
+      - setup-node
       - setup-go
+      - setup-go-task
       - run:
           name: go test
-          command: ./bin/test
-      - store_artifacts:
-          path: cover.html
+          command: task test
+      - run:
+          name: build
+          command: task build
 
   deploy:
     executor: ubuntu
@@ -63,17 +72,16 @@ jobs:
       - setup-go
       - run:
           name: deploy
-          command: |
-            yarn run deploy --stage << parameters.stage >>
+          command: task deploy -- --stage << parameters.stage >>
 
 workflows:
   build:
     jobs:
-      - test
+      - build
 
       - approval_deploy:
           type: approval
-          requires: [test]
+          requires: [build]
 
       - deploy:
           context: aws
