@@ -14,7 +14,7 @@ commands:
   setup-go:
     steps:
       - go/install:
-          version: '1.15'
+          version: '1.16'
       - go/mod-download-cached
 
   setup-go-task:
