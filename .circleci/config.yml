@@ -76,6 +76,7 @@ workflows:
           requires: [test]
 
       - deploy:
+          context: aws
           name: deploy_dev
           stage: dev
           requires: [approval_deploy]
@@ -84,6 +85,7 @@ workflows:
               ignore: main
 
       - deploy:
+          context: aws
           name: deploy_prod
           stage: prod
           requires: [approval_deploy]
