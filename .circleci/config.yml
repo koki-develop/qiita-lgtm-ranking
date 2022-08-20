@@ -70,6 +70,7 @@ jobs:
       - create-dotenv
       - setup-node
       - setup-go
+      - setup-go-task
       - run:
           name: deploy
           command: task deploy -- --stage << parameters.stage >>
