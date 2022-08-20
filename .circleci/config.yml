@@ -2,64 +2,48 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@3.1.1
+  go: circleci/go@1.7.1
+  node: circleci/node@5.0.2
 
 executors:
-  go:
-    docker:
-      - image: golang:1.16
+  ubuntu:
+    machine:
+      image: ubuntu-2004:current
 
 commands:
-  create_dotenv:
+  setup-go:
+    steps:
+      - go/install:
+          version: '1.15'
+      - go/mod-download-cached
+
+  setup-node:
+    steps:
+      - node/install:
+          install-yarn: true
+          node-version: '14'
+      - node/install-packages:
+          pkg-manager: yarn
+
+  setup-aws:
+    steps:
+      - aws-cli/install
+      - aws-cli/assume-role-with-web-identity:
+          role-arn: ${AWS_IAM_ROLE_ARN}
+
+  create-dotenv:
     steps:
       - run:
           name: create .env
           command: |
             echo "QIITA_ACCESS_TOKEN=${QIITA_ACCESS_TOKEN}" > .env
 
-  setup_aws_config:
-    steps:
-      - aws-cli/install
-      - aws-cli/assume-role-with-web-identity:
-          role-arn: ${AWS_IAM_ROLE_ARN}
-
-  go_mod_download:
-    steps:
-      - restore_cache:
-          key: go-mod-v1-{{ .Branch }}-{{ checksum "go.sum" }}
-      - run: go mod download -x
-      - save_cache:
-          key: go-mod-v1-{{ .Branch }}-{{ checksum "go.sum" }}
-          paths:
-            - /go/pkg/mod
-
-  install_nodejs:
-    steps:
-      - run:
-          name: install nodejs
-          command: |
-            curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-            apt install -y nodejs
-      - run:
-          name: install yarn
-          command: |
-            npm install --global yarn
-
-  yarn_install:
-    steps:
-      - restore_cache:
-          key: v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn install --check-files
-      - save_cache:
-          key: v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
 jobs:
   test:
-    executor: go
+    executor: ubuntu
     steps:
       - checkout
-      - go_mod_download
+      - setup-go
       - run:
           name: go test
           command: ./bin/test
@@ -67,17 +51,16 @@ jobs:
           path: cover.html
 
   deploy:
-    executor: go
+    executor: ubuntu
     parameters:
       stage:
         type: string
     steps:
       - checkout
-      - setup_aws_config
-      - create_dotenv
-      - install_nodejs
-      - yarn_install
-      - go_mod_download
+      - setup-aws
+      - create-dotenv
+      - setup-node
+      - setup-go
       - run:
           name: deploy
           command: |
