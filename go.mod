@@ -1,6 +1,6 @@
 module github.com/koki-develop/qiita-lgtm-ranking
 
-go 1.15
+go 1.16
 
 require (
 	github.com/aws/aws-lambda-go v1.21.0
