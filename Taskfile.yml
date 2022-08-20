@@ -21,6 +21,10 @@ tasks:
       - go build -ldflags="-s -w" -o build/updateWeekly      src/handlers/updateWeekly/main.go
       - go build -ldflags="-s -w" -o build/updateWeeklyByTag src/handlers/updateWeeklyByTag/main.go
 
+  diff:
+    cmds:
+      - yarn run serverless diff --stage dev
+
   deploy:
     deps: [build]
     cmds:
