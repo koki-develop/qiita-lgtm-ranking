@@ -4,6 +4,7 @@ frameworkVersion: '2'
 useDotenv: true
 
 plugins:
+  - serverless-plugin-diff
   - serverless-prune-plugin
 
 custom:
