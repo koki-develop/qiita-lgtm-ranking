@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  aws-cli: circleci/aws-cli@3.1.1
+
 executors:
   go:
     docker:
@@ -15,15 +18,8 @@ commands:
 
   setup_aws_config:
     steps:
-      - run:
-          name: create aws/credentials aws/config
-          command: |
-            mkdir -p ~/.aws
-            echo '[default]'                                       > ~/.aws/credentials
-            echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}"         >> ~/.aws/credentials
-            echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
-            echo '[default]'                                       > ~/.aws/config
-            echo "region = us-east-1"                             >> ~/.aws/config
+      - aws-cli/assume-role-with-web-identity:
+          role-arn: ${AWS_IAM_ROLE_ARN}
 
   go_mod_download:
     steps:
