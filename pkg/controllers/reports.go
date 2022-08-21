@@ -35,10 +35,18 @@ func (ctrl *ReportController) UpdateDaily(rptID string) error {
 		if err != nil {
 			return err
 		}
-		items = append(items, rslt...)
+		items = append(items, rslt.FilterWithMinLiked(1)...)
 		if len(rslt) < 100 {
 			break
 		}
+	}
+
+	for _, item := range items {
+		cnt, err := ctrl.qiitaClient.GetStockersCount(item.ID)
+		if err != nil {
+			return err
+		}
+		item.StockersCount = cnt
 	}
 
 	rpt, err := ctrl.builder.Build(from, now, items)
