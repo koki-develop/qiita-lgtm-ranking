@@ -48,6 +48,8 @@ func (cl *Client) GetItems(opts *GetItemsOptions) (Items, error) {
 	}
 	defer resp.Body.Close()
 
+	fmt.Printf("rate limit remaining: %s\n", resp.Header.Get("rate-remaining"))
+
 	if resp.StatusCode != http.StatusOK {
 		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
