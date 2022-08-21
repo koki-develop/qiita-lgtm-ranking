@@ -4,8 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"path"
 	"strconv"
 
 	"github.com/pkg/errors"
@@ -30,11 +33,10 @@ type GetItemsOptions struct {
 }
 
 func (cl *Client) GetItems(opts *GetItemsOptions) (Items, error) {
-	req, err := http.NewRequest(http.MethodGet, "https://qiita.com/api/v2/items", nil)
+	req, err := cl.newRequest(http.MethodGet, "/items", nil)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cl.token))
 
 	q := req.URL.Query()
 	q.Add("page", strconv.Itoa(opts.Page))
@@ -67,11 +69,10 @@ func (cl *Client) GetItems(opts *GetItemsOptions) (Items, error) {
 }
 
 func (cl *Client) GetStockersCount(itemid string) (int, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://qiita.com/api/v2/items/%s/stockers", itemid), nil)
+	req, err := cl.newRequest(http.MethodGet, fmt.Sprintf("/items/%s/stockers", itemid), nil)
 	if err != nil {
 		return 0, errors.WithStack(err)
 	}
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cl.token))
 
 	resp, err := cl.httpAPI.Do(req)
 	if err != nil {
@@ -100,12 +101,10 @@ func (cl *Client) UpdateItem(id string, p *UpdateItemPayload) error {
 		return errors.WithStack(err)
 	}
 
-	req, err := http.NewRequest(http.MethodPatch, fmt.Sprintf("https://qiita.com/api/v2/items/%s", id), bytes.NewReader(b))
+	req, err := cl.newRequest(http.MethodPatch, fmt.Sprintf("/items/%s", id), bytes.NewReader(b))
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cl.token))
 
 	resp, err := cl.httpAPI.Do(req)
 	if err != nil {
@@ -122,4 +121,24 @@ func (cl *Client) UpdateItem(id string, p *UpdateItemPayload) error {
 	}
 
 	return nil
+}
+
+func (cl *Client) newRequest(method, p string, body io.Reader) (*http.Request, error) {
+	u, err := url.Parse("https://qiita.com/api/v2")
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	u.Path = path.Join(u.Path, p)
+
+	req, err := http.NewRequest(method, u.String(), body)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cl.token))
+
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
+
+	return req, nil
 }
