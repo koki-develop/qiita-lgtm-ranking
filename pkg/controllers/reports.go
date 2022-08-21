@@ -38,7 +38,7 @@ func (ctrl *ReportController) UpdateDaily(rptID string) error {
 		return err
 	}
 
-	tags, err := ctrl.loadTags("./events/updateDailyByTag/*.prod.json")
+	tags, err := ctrl.loadDailyTags()
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func (ctrl *ReportController) UpdateDailyByTag(rptID, tag string) error {
 		return err
 	}
 
-	tags, err := ctrl.loadTags("./events/updateDailyByTag/*.prod.json")
+	tags, err := ctrl.loadDailyTags()
 	if err != nil {
 		return err
 	}
@@ -121,7 +121,7 @@ func (ctrl *ReportController) UpdateWeekly(rptID string) error {
 		return err
 	}
 
-	tags, err := ctrl.loadTags("./events/updateWeeklyByTag/*.prod.json")
+	tags, err := ctrl.loadWeeklyTags()
 	if err != nil {
 		return err
 	}
@@ -163,7 +163,7 @@ func (ctrl *ReportController) UpdateWeeklyByTag(rptID, tag string) error {
 		return err
 	}
 
-	tags, err := ctrl.loadTags("./events/updateWeeklyByTag/*.prod.json")
+	tags, err := ctrl.loadWeeklyTags()
 	if err != nil {
 		return err
 	}
@@ -245,4 +245,12 @@ func (ctrl *ReportController) loadTags(glob string) (report.Tags, error) {
 	}
 
 	return tags, nil
+}
+
+func (ctrl *ReportController) loadDailyTags() (report.Tags, error) {
+	return ctrl.loadTags("./events/updateDailyByTag/*.prod.json")
+}
+
+func (ctrl *ReportController) loadWeeklyTags() (report.Tags, error) {
+	return ctrl.loadTags("./events/updateWeeklyByTag/*.prod.json")
 }
