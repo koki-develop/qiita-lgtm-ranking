@@ -4,6 +4,7 @@ frameworkVersion: '2'
 useDotenv: true
 
 plugins:
+  - serverless-plugin-diff
   - serverless-prune-plugin
 
 custom:
@@ -25,6 +26,8 @@ provider:
   memorySize: 128
   timeout: 900
   stage: ${opt:stage, "dev"}
+  stackTags:
+    App: qiita-lgtm-ranking
   environment:
     QIITA_ACCESS_TOKEN: ${env:QIITA_ACCESS_TOKEN}
 
@@ -38,7 +41,8 @@ functions:
       patterns:
         - "!./**"
         - ./build/updateDaily
-        - ./src/static/**
+        - ./events/updateDailyByTag/*.prod.json
+        - ./templates/**
     events:
       - schedule:
           name: ${self:custom.prefix}-daily
@@ -52,7 +56,8 @@ functions:
       patterns:
         - "!./**"
         - ./build/updateDailyByTag
-        - ./src/static/**
+        - ./events/updateDailyByTag/*.prod.json
+        - ./templates/**
     events:
       # AWS
       - schedule:
@@ -200,7 +205,8 @@ functions:
       patterns:
         - "!./**"
         - ./build/updateWeekly
-        - ./src/static/**
+        - ./events/updateWeeklyByTag/*.prod.json
+        - ./templates/**
     events:
       - schedule:
           name: ${self:custom.prefix}-weekly
@@ -214,7 +220,8 @@ functions:
       patterns:
         - "!./**"
         - ./build/updateWeeklyByTag
-        - ./src/static/**
+        - ./events/updateWeeklyByTag/*.prod.json
+        - ./templates/**
     events:
       # AWS
       - schedule:

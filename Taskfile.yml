@@ -3,7 +3,24 @@ version: '3'
 tasks:
   test:
     cmds:
-      - go test ./src/...
+      - go test ./pkg/...
+
+  invokeDailyAll:
+    vars:
+      STAGE: '{{ default "dev" .STAGE }}'
+    cmds:
+      - |
+        yarn run serverless invoke -f updateDaily \
+          --stage {{ .STAGE }} \
+          --log \
+          --path ./events/updateDaily/input.{{ .STAGE }}.json
+      - |
+        for path in $(ls ./events/updateDailyByTag/*.{{ .STAGE }}.json); do
+          yarn run serverless invoke -f updateDailyByTag \
+            --stage {{ .STAGE }} \
+            --log \
+            --path "${path}"
+        done
 
   clean:
     cmds:
@@ -16,10 +33,17 @@ tasks:
       GOOS: linux
       GOARCH: amd64
     cmds:
-      - go build -ldflags="-s -w" -o build/updateDaily       src/handlers/updateDaily/main.go
-      - go build -ldflags="-s -w" -o build/updateDailyByTag  src/handlers/updateDailyByTag/main.go
-      - go build -ldflags="-s -w" -o build/updateWeekly      src/handlers/updateWeekly/main.go
-      - go build -ldflags="-s -w" -o build/updateWeeklyByTag src/handlers/updateWeeklyByTag/main.go
+      - go build -ldflags="-s -w" -o build/updateDaily       ./pkg/handlers/daily
+      - go build -ldflags="-s -w" -o build/updateDailyByTag  ./pkg/handlers/dailybytag
+      - go build -ldflags="-s -w" -o build/updateWeekly      ./pkg/handlers/weekly
+      - go build -ldflags="-s -w" -o build/updateWeeklyByTag ./pkg/handlers/weeklybytag
+
+  diff:
+    vars:
+      STAGE: '{{ default "dev" .STAGE }}'
+    cmds:
+      - yarn run serverless package --stage {{ .STAGE }}
+      - yarn run serverless diff --stage {{ .STAGE }}
 
   deploy:
     deps: [build]
