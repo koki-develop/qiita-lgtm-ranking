@@ -22,7 +22,13 @@ func New(token string) *Client {
 	}
 }
 
-func (cl *Client) GetItems(page, perPage int, query string) (Items, error) {
+type GetItemsOptions struct {
+	Page    int
+	PerPage int
+	Query   string
+}
+
+func (cl *Client) GetItems(opts *GetItemsOptions) (Items, error) {
 	req, err := http.NewRequest(http.MethodGet, "https://qiita.com/api/v2/items", nil)
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -30,9 +36,9 @@ func (cl *Client) GetItems(page, perPage int, query string) (Items, error) {
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cl.token))
 
 	q := req.URL.Query()
-	q.Add("page", strconv.Itoa(page))
-	q.Add("per_page", strconv.Itoa(perPage))
-	q.Add("query", query)
+	q.Add("page", strconv.Itoa(opts.Page))
+	q.Add("per_page", strconv.Itoa(opts.PerPage))
+	q.Add("query", opts.Query)
 	req.URL.RawQuery = q.Encode()
 
 	resp, err := cl.httpAPI.Do(req)
