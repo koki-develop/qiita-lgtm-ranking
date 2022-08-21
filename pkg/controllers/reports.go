@@ -68,3 +68,49 @@ func (ctrl *ReportController) UpdateDaily(rptID string) error {
 
 	return nil
 }
+
+func (ctrl *ReportController) UpdateDailyByTag(rptID, tag string) error {
+	now := time.Now()
+	from := now.AddDate(0, 0, -1)
+	query := fmt.Sprintf("created:>=%s tag:%s", from.Format("2006-01-02"), tag)
+
+	var items qiita.Items
+	for i := 0; i < 100; i++ {
+		rslt, err := ctrl.qiitaClient.GetItems(&qiita.GetItemsOptions{Page: i + 1, PerPage: 100, Query: query})
+		if err != nil {
+			return err
+		}
+		items = append(items, rslt.FilterWithMinLiked(1)...)
+		if len(rslt) < 100 {
+			break
+		}
+	}
+
+	for _, item := range items {
+		cnt, err := ctrl.qiitaClient.GetStockersCount(item.ID)
+		if err != nil {
+			return err
+		}
+		item.StockersCount = cnt
+	}
+
+	rpt, err := ctrl.builder.Build(from, now, items)
+	if err != nil {
+		return err
+	}
+
+	if err := ctrl.qiitaClient.UpdateItem(rptID, &qiita.UpdateItemPayload{
+		Title: fmt.Sprintf("【%s】Qiita デイリー LGTM 数ランキング【自動更新】", tag),
+		Body:  rpt,
+		Tags: qiita.Tags{
+			{Name: "Qiita"},
+			{Name: "lgtm"},
+			{Name: "ランキング"},
+			{Name: tag},
+		},
+	}); err != nil {
+		return err
+	}
+
+	return nil
+}
