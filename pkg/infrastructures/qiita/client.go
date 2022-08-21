@@ -56,3 +56,25 @@ func (cl *Client) GetItems(page, perPage int, query string) (Items, error) {
 
 	return items, nil
 }
+
+func (cl *Client) GetStockersCount(itemid string) (int, error) {
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://qiita.com/api/v2/items/%s/stockers", itemid), nil)
+	if err != nil {
+		return 0, errors.WithStack(err)
+	}
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cl.token))
+
+	resp, err := cl.httpAPI.Do(req)
+	if err != nil {
+		return 0, errors.WithStack(err)
+	}
+	defer resp.Body.Close()
+
+	cstr := resp.Header.Get("total-count")
+	c, err := strconv.Atoi(cstr)
+	if err != nil {
+		return 0, errors.WithStack(err)
+	}
+
+	return c, nil
+}
