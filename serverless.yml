@@ -41,6 +41,7 @@ functions:
         - "!./**"
         - ./build/updateDaily
         - ./src/static/**
+        - ./events/updateDailyByTag/*.${self:provider.stage}.json
         - ./templates/**
     events:
       - schedule:
@@ -56,6 +57,7 @@ functions:
         - "!./**"
         - ./build/updateDailyByTag
         - ./src/static/**
+        - ./events/updateDailyByTag/*.${self:provider.stage}.json
         - ./templates/**
     events:
       # AWS
