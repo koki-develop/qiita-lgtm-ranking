@@ -1,6 +1,9 @@
 package qiita
 
-import "time"
+import (
+	"sort"
+	"time"
+)
 
 type Item struct {
 	ID         string    `json:"id"`
@@ -11,10 +14,40 @@ type Item struct {
 	Tags       Tags      `json:"tags"`
 	CreatedAt  time.Time `json:"created_at"`
 
-	Stockers Users `json:"-"`
+	StockersCount int `json:"-"`
 }
 
 type Items []*Item
+
+func (items Items) FilterWithMinLiked(min int) Items {
+	var rslt Items
+	for _, item := range items {
+		if item.LikesCount >= min {
+			rslt = append(rslt, item)
+		}
+	}
+	return rslt
+}
+
+func (items Items) Sort() {
+	sort.SliceStable(items, func(i, j int) bool {
+		if items[i].LikesCount > items[j].LikesCount {
+			return true
+		}
+		if items[i].LikesCount == items[j].LikesCount {
+			if items[i].StockersCount > items[j].StockersCount {
+				return true
+			}
+			if items[i].StockersCount == items[j].StockersCount {
+				if items[i].CreatedAt.After(items[j].CreatedAt) {
+					return true
+				}
+			}
+		}
+
+		return false
+	})
+}
 
 type User struct {
 	ID              string `json:"id"`
