@@ -39,8 +39,11 @@ tasks:
       - go build -ldflags="-s -w" -o build/updateWeeklyByTag ./pkg/handlers/weeklybytag
 
   diff:
+    vars:
+      STAGE: '{{ default "dev" .STAGE }}'
     cmds:
-      - yarn run serverless diff --stage dev
+      - yarn run serverless package --stage {{ .STAGE }}
+      - yarn run serverless diff --stage {{ .STAGE }}
 
   deploy:
     deps: [build]
