@@ -14,7 +14,7 @@ type Event struct {
 
 func Handler(e *Event) error {
 	ctrl := controllers.NewReportController(&controllers.ReportControllerConfig{
-		QiitaAccessToken: os.Getenv("QIITA_ACCESS_TOKEN:"),
+		QiitaAccessToken: os.Getenv("QIITA_ACCESS_TOKEN"),
 	})
 
 	if err := ctrl.UpdateDaily(e.ReportID); err != nil {
