@@ -1,11 +1,15 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/koki-develop/qiita-lgtm-ranking/pkg/infrastructures/qiita"
 	"github.com/koki-develop/qiita-lgtm-ranking/pkg/infrastructures/report"
+	"github.com/pkg/errors"
 )
 
 type ReportController struct {
@@ -49,7 +53,32 @@ func (ctrl *ReportController) UpdateDaily(rptID string) error {
 		item.StockersCount = cnt
 	}
 
-	rpt, err := ctrl.builder.Build(from, now, items)
+	files, err := filepath.Glob("./events/updateDailyByTag/*.prod.json")
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	var tags report.Tags
+	for _, file := range files {
+		f, err := os.Open(file)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		defer f.Close()
+		var tag report.Tag
+		if err := json.NewDecoder(f).Decode(&tag); err != nil {
+			return errors.WithStack(err)
+		}
+		tags = append(tags, &tag)
+	}
+
+	rpt, err := ctrl.builder.Build(&report.BuildOptions{
+		Tags: tags,
+		Conditions: report.Conditions{
+			{Key: "期間", Value: fmt.Sprintf("%s ~ %s", from.Format("2006-01-02"), now.Format("2006-01-02"))},
+		},
+		Items: items,
+	})
 	if err != nil {
 		return err
 	}
@@ -94,7 +123,32 @@ func (ctrl *ReportController) UpdateDailyByTag(rptID, tag string) error {
 		item.StockersCount = cnt
 	}
 
-	rpt, err := ctrl.builder.Build(from, now, items)
+	files, err := filepath.Glob("./events/updateDailyByTag/*.prod.json")
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	var tags report.Tags
+	for _, file := range files {
+		f, err := os.Open(file)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		defer f.Close()
+		var tag report.Tag
+		if err := json.NewDecoder(f).Decode(&tag); err != nil {
+			return errors.WithStack(err)
+		}
+		tags = append(tags, &tag)
+	}
+
+	rpt, err := ctrl.builder.Build(&report.BuildOptions{
+		Tags: tags,
+		Conditions: report.Conditions{
+			{Key: "期間", Value: fmt.Sprintf("%s ~ %s", from.Format("2006-01-02"), now.Format("2006-01-02"))},
+		},
+		Items: items,
+	})
 	if err != nil {
 		return err
 	}

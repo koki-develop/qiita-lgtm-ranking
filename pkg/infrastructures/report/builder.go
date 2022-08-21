@@ -3,7 +3,6 @@ package report
 import (
 	"bytes"
 	"text/template"
-	"time"
 
 	"github.com/koki-develop/qiita-lgtm-ranking/pkg/infrastructures/qiita"
 	"github.com/pkg/errors"
@@ -15,7 +14,13 @@ func NewBuilder() *Builder {
 	return &Builder{}
 }
 
-func (b *Builder) Build(from, to time.Time, items qiita.Items) (string, error) {
+type BuildOptions struct {
+	Tags       Tags
+	Conditions Conditions
+	Items      qiita.Items
+}
+
+func (b *Builder) Build(opts *BuildOptions) (string, error) {
 	tpl, err := template.New("daily.template.md").Funcs(template.FuncMap{
 		"inc": func(i int) int {
 			return i + 1
@@ -26,14 +31,28 @@ func (b *Builder) Build(from, to time.Time, items qiita.Items) (string, error) {
 	}
 
 	buf := new(bytes.Buffer)
-	items.Sort()
+	opts.Items.Sort()
 	if err := tpl.Execute(buf, map[string]interface{}{
-		"from":  from,
-		"to":    to,
-		"items": items,
+		"tags":       opts.Tags,
+		"conditions": opts.Conditions,
+		"items":      opts.Items,
 	}); err != nil {
 		return "", errors.WithStack(err)
 	}
 
 	return buf.String(), nil
 }
+
+type Tag struct {
+	ReportID string `json:"report_id"`
+	Name     string `json:"tag"`
+}
+
+type Tags []*Tag
+
+type Condition struct {
+	Key   string
+	Value string
+}
+
+type Conditions []*Condition
