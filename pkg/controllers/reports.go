@@ -33,16 +33,9 @@ func (ctrl *ReportController) UpdateDaily(rptID string) error {
 	from := now.AddDate(0, 0, -1)
 	query := fmt.Sprintf("created:>=%s", from.Format("2006-01-02"))
 
-	var items qiita.Items
-	for i := 0; i < 100; i++ {
-		rslt, err := ctrl.qiitaClient.GetItems(&qiita.GetItemsOptions{Page: i + 1, PerPage: 100, Query: query})
-		if err != nil {
-			return err
-		}
-		items = append(items, rslt.FilterWithMinLiked(1)...)
-		if len(rslt) < 100 {
-			break
-		}
+	items, err := ctrl.getAllItems(query)
+	if err != nil {
+		return err
 	}
 
 	for _, item := range items {
@@ -89,16 +82,9 @@ func (ctrl *ReportController) UpdateDailyByTag(rptID, tag string) error {
 	from := now.AddDate(0, 0, -1)
 	query := fmt.Sprintf("created:>=%s tag:%s", from.Format("2006-01-02"), tag)
 
-	var items qiita.Items
-	for i := 0; i < 100; i++ {
-		rslt, err := ctrl.qiitaClient.GetItems(&qiita.GetItemsOptions{Page: i + 1, PerPage: 100, Query: query})
-		if err != nil {
-			return err
-		}
-		items = append(items, rslt.FilterWithMinLiked(1)...)
-		if len(rslt) < 100 {
-			break
-		}
+	items, err := ctrl.getAllItems(query)
+	if err != nil {
+		return err
 	}
 
 	for _, item := range items {
@@ -146,16 +132,9 @@ func (ctrl *ReportController) UpdateWeekly(rptID string) error {
 	from := now.AddDate(0, 0, -7)
 	query := fmt.Sprintf("created:>=%s stocks:>=10", from.Format("2006-01-02"))
 
-	var items qiita.Items
-	for i := 0; i < 100; i++ {
-		rslt, err := ctrl.qiitaClient.GetItems(&qiita.GetItemsOptions{Page: i + 1, PerPage: 100, Query: query})
-		if err != nil {
-			return err
-		}
-		items = append(items, rslt.FilterWithMinLiked(1)...)
-		if len(rslt) < 100 {
-			break
-		}
+	items, err := ctrl.getAllItems(query)
+	if err != nil {
+		return err
 	}
 
 	for _, item := range items {
@@ -203,16 +182,9 @@ func (ctrl *ReportController) UpdateWeeklyByTag(rptID, tag string) error {
 	from := now.AddDate(0, 0, -7)
 	query := fmt.Sprintf("created:>=%s stocks:>=2 tag:%s", from.Format("2006-01-02"), tag)
 
-	var items qiita.Items
-	for i := 0; i < 100; i++ {
-		rslt, err := ctrl.qiitaClient.GetItems(&qiita.GetItemsOptions{Page: i + 1, PerPage: 100, Query: query})
-		if err != nil {
-			return err
-		}
-		items = append(items, rslt.FilterWithMinLiked(1)...)
-		if len(rslt) < 100 {
-			break
-		}
+	items, err := ctrl.getAllItems(query)
+	if err != nil {
+		return err
 	}
 
 	for _, item := range items {
@@ -254,6 +226,26 @@ func (ctrl *ReportController) UpdateWeeklyByTag(rptID, tag string) error {
 	}
 
 	return nil
+}
+
+func (ctrl *ReportController) getAllItems(query string) (qiita.Items, error) {
+	var items qiita.Items
+	for i := 0; i < 100; i++ {
+		rslt, err := ctrl.qiitaClient.GetItems(&qiita.GetItemsOptions{Page: i + 1, PerPage: 100, Query: query})
+		if err != nil {
+			return nil, err
+		}
+		if len(rslt) == 0 {
+			break
+		}
+
+		items = append(items, rslt.FilterWithMinLiked(1)...)
+		if len(rslt) < 100 {
+			break
+		}
+	}
+
+	return items, nil
 }
 
 func (ctrl *ReportController) loadTags(glob string) (report.Tags, error) {
