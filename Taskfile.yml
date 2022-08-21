@@ -5,6 +5,23 @@ tasks:
     cmds:
       - go test ./pkg/...
 
+  invokeDailyAll:
+    vars:
+      STAGE: '{{ default "dev" .STAGE }}'
+    cmds:
+      - |
+        yarn run serverless invoke -f updateDaily \
+          --stage {{ .STAGE }} \
+          --log \
+          --path ./events/updateDaily/input.{{ .STAGE }}.json
+      - |
+        for path in $(ls ./events/updateDailyByTag/*.{{ .STAGE }}.json); do
+          yarn run serverless invoke -f updateDailyByTag \
+            --stage {{ .STAGE }} \
+            --log \
+            --path "${path}"
+        done
+
   clean:
     cmds:
       - rm -rf ./build/
