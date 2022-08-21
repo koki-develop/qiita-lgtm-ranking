@@ -206,6 +206,7 @@ functions:
         - "!./**"
         - ./build/updateWeekly
         - ./src/static/**
+        - ./events/updateWeeklyByTag/*.prod.json
         - ./templates/**
     events:
       - schedule:
@@ -221,6 +222,7 @@ functions:
         - "!./**"
         - ./build/updateWeeklyByTag
         - ./src/static/**
+        - ./events/updateWeeklyByTag/*.prod.json
         - ./templates/**
     events:
       # AWS
