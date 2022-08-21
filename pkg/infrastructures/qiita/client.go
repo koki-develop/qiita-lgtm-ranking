@@ -44,21 +44,11 @@ func (cl *Client) GetItems(opts *GetItemsOptions) (Items, error) {
 	q.Add("query", opts.Query)
 	req.URL.RawQuery = q.Encode()
 
-	resp, err := cl.httpAPI.Do(req)
+	resp, err := cl.sendRequest(req)
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, err
 	}
 	defer resp.Body.Close()
-
-	fmt.Printf("rate limit remaining: %s\n", resp.Header.Get("rate-remaining"))
-
-	if resp.StatusCode != http.StatusOK {
-		b, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return nil, errors.WithStack(err)
-		}
-		return nil, errors.New(string(b))
-	}
 
 	var items Items
 	if err := json.NewDecoder(resp.Body).Decode(&items); err != nil {
@@ -74,9 +64,9 @@ func (cl *Client) GetStockersCount(itemid string) (int, error) {
 		return 0, errors.WithStack(err)
 	}
 
-	resp, err := cl.httpAPI.Do(req)
+	resp, err := cl.sendRequest(req)
 	if err != nil {
-		return 0, errors.WithStack(err)
+		return 0, err
 	}
 	defer resp.Body.Close()
 
@@ -106,19 +96,11 @@ func (cl *Client) UpdateItem(id string, p *UpdateItemPayload) error {
 		return errors.WithStack(err)
 	}
 
-	resp, err := cl.httpAPI.Do(req)
+	resp, err := cl.sendRequest(req)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		b, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		return errors.New(string(b))
-	}
 
 	return nil
 }
@@ -141,4 +123,25 @@ func (cl *Client) newRequest(method, p string, body io.Reader) (*http.Request, e
 	}
 
 	return req, nil
+}
+
+func (cl *Client) sendRequest(req *http.Request) (*http.Response, error) {
+	resp, err := cl.httpAPI.Do(req)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	fmt.Printf("rate limit remaining: %s\n", resp.Header.Get("rate-remaining"))
+
+	if resp.StatusCode != http.StatusOK {
+		defer resp.Body.Close()
+
+		b, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+		return nil, errors.New(string(b))
+	}
+
+	return resp, nil
 }
