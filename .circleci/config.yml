@@ -58,6 +58,9 @@ jobs:
       - run:
           name: build
           command: task build
+      - run:
+          name: sls package
+          command: yarn run serverless package --stage prod
 
   deploy:
     executor: ubuntu
