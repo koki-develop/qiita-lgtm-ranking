@@ -21,11 +21,11 @@ type BuildOptions struct {
 }
 
 func (b *Builder) Build(opts *BuildOptions) (string, error) {
-	tpl, err := template.New("daily.template.md").Funcs(template.FuncMap{
+	tpl, err := template.New("template.md").Funcs(template.FuncMap{
 		"inc": func(i int) int {
 			return i + 1
 		},
-	}).ParseFiles("./templates/daily.template.md")
+	}).ParseFiles("./templates/template.md")
 	if err != nil {
 		return "", errors.WithStack(err)
 	}
