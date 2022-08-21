@@ -3,7 +3,7 @@ version: '3'
 tasks:
   test:
     cmds:
-      - go test ./src/...
+      - go test ./pkg/...
 
   clean:
     cmds:
