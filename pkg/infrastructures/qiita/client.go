@@ -1,6 +1,7 @@
 package qiita
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -83,4 +84,40 @@ func (cl *Client) GetStockersCount(itemid string) (int, error) {
 	}
 
 	return c, nil
+}
+
+type UpdateItemPayload struct {
+	Title string `json:"title"`
+	Body  string `json:"body"`
+	Tags  Tags   `json:"tags"`
+}
+
+func (cl *Client) UpdateItem(id string, p *UpdateItemPayload) error {
+	b, err := json.Marshal(p)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, fmt.Sprintf("https://qiita.com/api/v2/items/%s", id), bytes.NewReader(b))
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cl.token))
+
+	resp, err := cl.httpAPI.Do(req)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		b, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		return errors.New(string(b))
+	}
+
+	return nil
 }
