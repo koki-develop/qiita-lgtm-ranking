@@ -38,14 +38,6 @@ func (ctrl *ReportController) UpdateDaily(rptID string) error {
 		return err
 	}
 
-	for _, item := range items {
-		cnt, err := ctrl.qiitaClient.GetStockersCount(item.ID)
-		if err != nil {
-			return err
-		}
-		item.StockersCount = cnt
-	}
-
 	tags, err := ctrl.loadTags("./events/updateDailyByTag/*.prod.json")
 	if err != nil {
 		return err
@@ -85,14 +77,6 @@ func (ctrl *ReportController) UpdateDailyByTag(rptID, tag string) error {
 	items, err := ctrl.getAllItems(query)
 	if err != nil {
 		return err
-	}
-
-	for _, item := range items {
-		cnt, err := ctrl.qiitaClient.GetStockersCount(item.ID)
-		if err != nil {
-			return err
-		}
-		item.StockersCount = cnt
 	}
 
 	tags, err := ctrl.loadTags("./events/updateDailyByTag/*.prod.json")
@@ -137,14 +121,6 @@ func (ctrl *ReportController) UpdateWeekly(rptID string) error {
 		return err
 	}
 
-	for _, item := range items {
-		cnt, err := ctrl.qiitaClient.GetStockersCount(item.ID)
-		if err != nil {
-			return err
-		}
-		item.StockersCount = cnt
-	}
-
 	tags, err := ctrl.loadTags("./events/updateWeeklyByTag/*.prod.json")
 	if err != nil {
 		return err
@@ -185,14 +161,6 @@ func (ctrl *ReportController) UpdateWeeklyByTag(rptID, tag string) error {
 	items, err := ctrl.getAllItems(query)
 	if err != nil {
 		return err
-	}
-
-	for _, item := range items {
-		cnt, err := ctrl.qiitaClient.GetStockersCount(item.ID)
-		if err != nil {
-			return err
-		}
-		item.StockersCount = cnt
 	}
 
 	tags, err := ctrl.loadTags("./events/updateWeeklyByTag/*.prod.json")
@@ -243,6 +211,14 @@ func (ctrl *ReportController) getAllItems(query string) (qiita.Items, error) {
 		if len(rslt) < 100 {
 			break
 		}
+	}
+
+	for _, item := range items {
+		cnt, err := ctrl.qiitaClient.GetStockersCount(item.ID)
+		if err != nil {
+			return nil, err
+		}
+		item.StockersCount = cnt
 	}
 
 	return items, nil
