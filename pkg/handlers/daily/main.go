@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -16,7 +17,12 @@ func Handler(e *Event) error {
 		QiitaAccessToken: os.Getenv("QIITA_ACCESS_TOKEN:"),
 	})
 
-	return ctrl.UpdateDaily(e.ReportID)
+	if err := ctrl.UpdateDaily(e.ReportID); err != nil {
+		fmt.Printf("err: %+v\n", err)
+		return err
+	}
+
+	return nil
 }
 
 func main() {
