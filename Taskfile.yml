@@ -19,7 +19,7 @@ tasks:
       - go build -ldflags="-s -w" -o build/updateDaily       ./pkg/handlers/daily
       - go build -ldflags="-s -w" -o build/updateDailyByTag  ./pkg/handlers/dailybytag
       - go build -ldflags="-s -w" -o build/updateWeekly      ./pkg/handlers/weekly
-      - go build -ldflags="-s -w" -o build/updateWeeklyByTag src/handlers/updateWeeklyByTag/main.go
+      - go build -ldflags="-s -w" -o build/updateWeeklyByTag ./pkg/handlers/weeklybytag
 
   diff:
     cmds:
