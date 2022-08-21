@@ -40,6 +40,7 @@ functions:
         - "!./**"
         - ./build/updateDaily
         - ./src/static/**
+        - ./templates/**
     events:
       - schedule:
           name: ${self:custom.prefix}-daily
@@ -54,6 +55,7 @@ functions:
         - "!./**"
         - ./build/updateDailyByTag
         - ./src/static/**
+        - ./templates/**
     events:
       # AWS
       - schedule:
@@ -202,6 +204,7 @@ functions:
         - "!./**"
         - ./build/updateWeekly
         - ./src/static/**
+        - ./templates/**
     events:
       - schedule:
           name: ${self:custom.prefix}-weekly
@@ -216,6 +219,7 @@ functions:
         - "!./**"
         - ./build/updateWeeklyByTag
         - ./src/static/**
+        - ./templates/**
     events:
       # AWS
       - schedule:
