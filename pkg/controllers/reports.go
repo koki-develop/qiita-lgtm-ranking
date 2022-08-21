@@ -213,15 +213,23 @@ func (ctrl *ReportController) getAllItems(query string) (qiita.Items, error) {
 		}
 	}
 
+	if err := ctrl.setStockersCount(items); err != nil {
+		return nil, err
+	}
+
+	return items, nil
+}
+
+func (ctrl *ReportController) setStockersCount(items qiita.Items) error {
 	for _, item := range items {
 		cnt, err := ctrl.qiitaClient.GetStockersCount(item.ID)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		item.StockersCount = cnt
 	}
 
-	return items, nil
+	return nil
 }
 
 func (ctrl *ReportController) loadTags(glob string) (report.Tags, error) {
