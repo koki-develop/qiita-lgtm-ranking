@@ -27,7 +27,6 @@ provider:
   timeout: 900
   stage: ${opt:stage, "dev"}
   environment:
-    STAGE: ${self:provider.stage}
     QIITA_ACCESS_TOKEN: ${env:QIITA_ACCESS_TOKEN}
 
 package:
