@@ -17,7 +17,7 @@ tasks:
       GOARCH: amd64
     cmds:
       - go build -ldflags="-s -w" -o build/updateDaily       ./pkg/handlers/daily
-      - go build -ldflags="-s -w" -o build/updateDailyByTag  src/handlers/updateDailyByTag/main.go
+      - go build -ldflags="-s -w" -o build/updateDailyByTag  ./pkg/handlers/dailybytag
       - go build -ldflags="-s -w" -o build/updateWeekly      src/handlers/updateWeekly/main.go
       - go build -ldflags="-s -w" -o build/updateWeeklyByTag src/handlers/updateWeeklyByTag/main.go
 
