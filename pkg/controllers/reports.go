@@ -53,23 +53,9 @@ func (ctrl *ReportController) UpdateDaily(rptID string) error {
 		item.StockersCount = cnt
 	}
 
-	files, err := filepath.Glob("./events/updateDailyByTag/*.prod.json")
+	tags, err := ctrl.loadTags("./events/updateDailyByTag/*.prod.json")
 	if err != nil {
-		return errors.WithStack(err)
-	}
-
-	var tags report.Tags
-	for _, file := range files {
-		f, err := os.Open(file)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		defer f.Close()
-		var tag report.Tag
-		if err := json.NewDecoder(f).Decode(&tag); err != nil {
-			return errors.WithStack(err)
-		}
-		tags = append(tags, &tag)
+		return err
 	}
 
 	rpt, err := ctrl.builder.Build(&report.BuildOptions{
@@ -123,23 +109,9 @@ func (ctrl *ReportController) UpdateDailyByTag(rptID, tag string) error {
 		item.StockersCount = cnt
 	}
 
-	files, err := filepath.Glob("./events/updateDailyByTag/*.prod.json")
+	tags, err := ctrl.loadTags("./events/updateDailyByTag/*.prod.json")
 	if err != nil {
-		return errors.WithStack(err)
-	}
-
-	var tags report.Tags
-	for _, file := range files {
-		f, err := os.Open(file)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		defer f.Close()
-		var tag report.Tag
-		if err := json.NewDecoder(f).Decode(&tag); err != nil {
-			return errors.WithStack(err)
-		}
-		tags = append(tags, &tag)
+		return err
 	}
 
 	rpt, err := ctrl.builder.Build(&report.BuildOptions{
@@ -194,23 +166,9 @@ func (ctrl *ReportController) UpdateWeekly(rptID string) error {
 		item.StockersCount = cnt
 	}
 
-	files, err := filepath.Glob("./events/updateWeeklyByTag/*.prod.json")
+	tags, err := ctrl.loadTags("./events/updateWeeklyByTag/*.prod.json")
 	if err != nil {
-		return errors.WithStack(err)
-	}
-
-	var tags report.Tags
-	for _, file := range files {
-		f, err := os.Open(file)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		defer f.Close()
-		var tag report.Tag
-		if err := json.NewDecoder(f).Decode(&tag); err != nil {
-			return errors.WithStack(err)
-		}
-		tags = append(tags, &tag)
+		return err
 	}
 
 	rpt, err := ctrl.builder.Build(&report.BuildOptions{
@@ -265,23 +223,9 @@ func (ctrl *ReportController) UpdateWeeklyByTag(rptID, tag string) error {
 		item.StockersCount = cnt
 	}
 
-	files, err := filepath.Glob("./events/updateWeeklyByTag/*.prod.json")
+	tags, err := ctrl.loadTags("./events/updateWeeklyByTag/*.prod.json")
 	if err != nil {
-		return errors.WithStack(err)
-	}
-
-	var tags report.Tags
-	for _, file := range files {
-		f, err := os.Open(file)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		defer f.Close()
-		var tag report.Tag
-		if err := json.NewDecoder(f).Decode(&tag); err != nil {
-			return errors.WithStack(err)
-		}
-		tags = append(tags, &tag)
+		return err
 	}
 
 	rpt, err := ctrl.builder.Build(&report.BuildOptions{
@@ -310,4 +254,27 @@ func (ctrl *ReportController) UpdateWeeklyByTag(rptID, tag string) error {
 	}
 
 	return nil
+}
+
+func (ctrl *ReportController) loadTags(glob string) (report.Tags, error) {
+	files, err := filepath.Glob(glob)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	var tags report.Tags
+	for _, file := range files {
+		f, err := os.Open(file)
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+		defer f.Close()
+		var tag report.Tag
+		if err := json.NewDecoder(f).Decode(&tag); err != nil {
+			return nil, errors.WithStack(err)
+		}
+		tags = append(tags, &tag)
+	}
+
+	return tags, nil
 }
