@@ -26,6 +26,8 @@ provider:
   memorySize: 128
   timeout: 900
   stage: ${opt:stage, "dev"}
+  stackTags:
+    App: qiita-lgtm-ranking
   environment:
     QIITA_ACCESS_TOKEN: ${env:QIITA_ACCESS_TOKEN}
 
