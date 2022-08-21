@@ -1,0 +1,51 @@
+version: '3'
+
+tasks:
+  test:
+    cmds:
+      - go test ./pkg/...
+
+  invokeDailyAll:
+    vars:
+      STAGE: '{{ default "dev" .STAGE }}'
+    cmds:
+      - |
+        yarn run serverless invoke -f updateDaily \
+          --stage {{ .STAGE }} \
+          --log \
+          --path ./events/updateDaily/input.{{ .STAGE }}.json
+      - |
+        for path in $(ls ./events/updateDailyByTag/*.{{ .STAGE }}.json); do
+          yarn run serverless invoke -f updateDailyByTag \
+            --stage {{ .STAGE }} \
+            --log \
+            --path "${path}"
+        done
+
+  clean:
+    cmds:
+      - rm -rf ./build/
+
+  build:
+    deps: [clean]
+    env:
+      GO111MODULE: on
+      GOOS: linux
+      GOARCH: amd64
+    cmds:
+      - go build -ldflags="-s -w" -o build/updateDaily       ./pkg/handlers/daily
+      - go build -ldflags="-s -w" -o build/updateDailyByTag  ./pkg/handlers/dailybytag
+      - go build -ldflags="-s -w" -o build/updateWeekly      ./pkg/handlers/weekly
+      - go build -ldflags="-s -w" -o build/updateWeeklyByTag ./pkg/handlers/weeklybytag
+
+  diff:
+    vars:
+      STAGE: '{{ default "dev" .STAGE }}'
+    cmds:
+      - yarn run serverless package --stage {{ .STAGE }}
+      - yarn run serverless diff --stage {{ .STAGE }}
+
+  deploy:
+    deps: [build]
+    cmds:
+      - yarn run serverless deploy --verbose {{.CLI_ARGS}}

@@ -6,6 +6,7 @@
   },
   "devDependencies": {
     "serverless": "^2.16.1",
+    "serverless-plugin-diff": "^3.0.0",
     "serverless-prune-plugin": "^1.5.1"
   }
 }
