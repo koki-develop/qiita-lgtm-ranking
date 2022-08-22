@@ -3924,10 +3924,10 @@ serverless-plugin-diff@3.0.0:
     fs-promise "^0.5.0"
     json-diff "^0.7.3"
 
-serverless-prune-plugin@1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/serverless-prune-plugin/-/serverless-prune-plugin-1.5.1.tgz#a628551151228eeee8da2f454d0b062d9c1dda40"
-  integrity sha512-lCxHNQXmGL0GEe7gBGOx1MdafYXAi9RkiuKPE4DDSSdrdbVnn0KLcbriKWGC2MdOpn/vs358MaeBuVSefuzMzA==
+serverless-prune-plugin@1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/serverless-prune-plugin/-/serverless-prune-plugin-1.6.1.tgz#633a34bd9b1878b05c53821319db745a058f440e"
+  integrity sha512-rTeaedrVRWFdfXgSsraxcCHpVzL3AqztcYSr7FY3Jc74PJ0/H6Ukf5nFKKYZSolnF3JkU8ddwQGY52YnJIxQqw==
   dependencies:
     bluebird "^3.4.7"
 
