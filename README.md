@@ -4,13 +4,13 @@
 [![LICENSE](https://img.shields.io/github/license/koki-develop/qiita-lgtm-ranking?style=plastic)](./LICENSE)
 [![Twitter Follow](https://img.shields.io/twitter/follow/koki_develop?style=social)](https://twitter.com/koki_develop)
 
-# Qiita LGTM Ranking
+# Qiita いいねランキング
 
-Qiita の LGTM ランキング記事を毎日自動更新するシステム。
+Qiita のいいねランキング記事を毎日自動更新するシステム。
 
 ## デイリーランキング
 
-[Qiita デイリー LGTM 数ランキング](https://qiita.com/items/fa223e1fa0ab057a54bc)
+[Qiita デイリーいいね数ランキング](https://qiita.com/items/fa223e1fa0ab057a54bc)
 
 ### タグ別
 
@@ -37,7 +37,7 @@ Qiita の LGTM ランキング記事を毎日自動更新するシステム。
 
 ## 週間ランキング
 
-[Qiita 週間 LGTM 数ランキング](https://qiita.com/items/b6cfc81906990b3a3e72)
+[Qiita 週間いいね数ランキング](https://qiita.com/items/b6cfc81906990b3a3e72)
 
 ### タグ別
 
