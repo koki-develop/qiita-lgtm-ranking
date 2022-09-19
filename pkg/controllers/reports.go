@@ -55,11 +55,12 @@ func (ctrl *ReportController) UpdateDaily(rptID string) error {
 	}
 
 	if err := ctrl.qiitaClient.UpdateItem(rptID, &qiita.UpdateItemPayload{
-		Title: "Qiita デイリー LGTM 数ランキング【自動更新】",
+		Title: "Qiita デイリーいいね数ランキング【自動更新】",
 		Body:  rpt,
 		Tags: qiita.Tags{
 			{Name: "Qiita"},
 			{Name: "lgtm"},
+			{Name: "いいね"},
 			{Name: "ランキング"},
 		},
 	}); err != nil {
@@ -96,11 +97,12 @@ func (ctrl *ReportController) UpdateDailyByTag(rptID, tag string) error {
 	}
 
 	if err := ctrl.qiitaClient.UpdateItem(rptID, &qiita.UpdateItemPayload{
-		Title: fmt.Sprintf("【%s】Qiita デイリー LGTM 数ランキング【自動更新】", tag),
+		Title: fmt.Sprintf("【%s】Qiita デイリーいいね数ランキング【自動更新】", tag),
 		Body:  rpt,
 		Tags: qiita.Tags{
 			{Name: "Qiita"},
 			{Name: "lgtm"},
+			{Name: "いいね"},
 			{Name: "ランキング"},
 			{Name: tag},
 		},
@@ -139,11 +141,12 @@ func (ctrl *ReportController) UpdateWeekly(rptID string) error {
 	}
 
 	if err := ctrl.qiitaClient.UpdateItem(rptID, &qiita.UpdateItemPayload{
-		Title: "Qiita 週間 LGTM 数ランキング【自動更新】",
+		Title: "Qiita 週間いいね数ランキング【自動更新】",
 		Body:  rpt,
 		Tags: qiita.Tags{
 			{Name: "Qiita"},
 			{Name: "lgtm"},
+			{Name: "いいね"},
 			{Name: "ランキング"},
 		},
 	}); err != nil {
@@ -181,11 +184,12 @@ func (ctrl *ReportController) UpdateWeeklyByTag(rptID, tag string) error {
 	}
 
 	if err := ctrl.qiitaClient.UpdateItem(rptID, &qiita.UpdateItemPayload{
-		Title: fmt.Sprintf("【%s】Qiita 週間 LGTM 数ランキング【自動更新】", tag),
+		Title: fmt.Sprintf("【%s】Qiita 週間いいね数ランキング【自動更新】", tag),
 		Body:  rpt,
 		Tags: qiita.Tags{
 			{Name: "Qiita"},
 			{Name: "lgtm"},
+			{Name: "いいね"},
 			{Name: "ランキング"},
 			{Name: tag},
 		},
