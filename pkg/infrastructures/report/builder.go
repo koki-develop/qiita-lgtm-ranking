@@ -2,7 +2,7 @@ package report
 
 import (
 	"bytes"
-	"text/template"
+	"html/template"
 
 	"github.com/koki-develop/qiita-lgtm-ranking/pkg/infrastructures/qiita"
 	"github.com/pkg/errors"
