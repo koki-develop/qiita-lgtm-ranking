@@ -31,7 +31,7 @@ func NewReportController(cfg *ReportControllerConfig) *ReportController {
 func (ctrl *ReportController) UpdateDaily(rptID string) error {
 	now := time.Now()
 	from := now.AddDate(0, 0, -1)
-	query := fmt.Sprintf("created:>=%s", from.Format("2006-01-02"))
+	query := fmt.Sprintf("created:>=%s stocks:>=2", from.Format("2006-01-02"))
 
 	items, err := ctrl.getAllItems(query)
 	if err != nil {
@@ -47,6 +47,7 @@ func (ctrl *ReportController) UpdateDaily(rptID string) error {
 		Tags: tags,
 		Conditions: report.Conditions{
 			{Key: "期間", Value: fmt.Sprintf("%s ~ %s", from.Format("2006-01-02"), now.Format("2006-01-02"))},
+			{Key: "条件", Value: "ストック数が **2** 以上の記事"},
 		},
 		Items: items,
 	})
