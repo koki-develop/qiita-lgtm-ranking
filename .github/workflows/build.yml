@@ -4,8 +4,8 @@ on:
     branches:
     - develop
 env:
-  AWS_IAM_ROLE_ARN: xxxxrole
-  QIITA_ACCESS_TOKEN: xxxxebf8
+  AWS_IAM_ROLE_ARN: ${{ secrets.AWS_IAM_ROLE_ARN }}
+  QIITA_ACCESS_TOKEN: ${{ secrets.QIITA_ACCESS_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-20.04
