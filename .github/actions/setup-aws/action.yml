@@ -1,0 +1,7 @@
+name: setup-aws
+runs:
+  using: composite
+  steps:
+
+#   # This item has no matching transformer
+#   - circleci_aws_cli_assume_role_with_web_identity:
