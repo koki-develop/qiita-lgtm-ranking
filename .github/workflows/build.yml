@@ -8,9 +8,6 @@ env:
   QIITA_ACCESS_TOKEN: ${{ secrets.QIITA_ACCESS_TOKEN }}
 jobs:
   build:
-    permissions:
-      id-token: write
-      contents: read
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3.3.0
@@ -32,6 +29,9 @@ jobs:
     steps:
     - run: echo 'approved'
   deploy:
+    permissions:
+      id-token: write
+      contents: read
     if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-20.04
     needs:
@@ -48,6 +48,9 @@ jobs:
     - name: deploy
       run: task deploy -- --stage ${{ env.stage }} --force
   deploy_1:
+    permissions:
+      id-token: write
+      contents: read
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-20.04
     needs:
