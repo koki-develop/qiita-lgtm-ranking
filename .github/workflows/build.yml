@@ -8,6 +8,9 @@ env:
   QIITA_ACCESS_TOKEN: ${{ secrets.QIITA_ACCESS_TOKEN }}
 jobs:
   build:
+    permissions:
+      id-token: write
+      contents: read
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3.3.0
