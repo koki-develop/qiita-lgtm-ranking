@@ -1,6 +1,9 @@
 name: koki-develop/qiita-lgtm-ranking/build
 on:
   push:
+    branches:
+    - develop
+    - main
 env:
   AWS_IAM_ROLE_ARN: ${{ secrets.AWS_IAM_ROLE_ARN }}
   QIITA_ACCESS_TOKEN: ${{ secrets.QIITA_ACCESS_TOKEN }}
