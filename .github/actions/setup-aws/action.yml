@@ -2,6 +2,10 @@ name: setup-aws
 runs:
   using: composite
   steps:
+  - uses: aws-actions/configure-aws-credentials@v1
+    with:
+      aws-region: 'us-east-1'
+      role-to-assume: '${{ env.AWS_IAM_ROLE_ARN }}'
 
 #   # This item has no matching transformer
 #   - circleci_aws_cli_assume_role_with_web_identity:
