@@ -1,0 +1,68 @@
+name: koki-develop/qiita-lgtm-ranking/build
+on:
+  push:
+    branches:
+    - develop
+env:
+  AWS_IAM_ROLE_ARN: ${{ secrets.AWS_IAM_ROLE_ARN }}
+  QIITA_ACCESS_TOKEN: ${{ secrets.QIITA_ACCESS_TOKEN }}
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3.3.0
+    - uses: "./.github/actions/setup-node"
+    - uses: "./.github/actions/setup-go"
+    - uses: "./.github/actions/setup-go-task"
+    - name: go test
+      run: task test
+    - name: build
+      run: task build
+    - name: sls package
+      run: yarn run serverless package --stage prod
+  approval_deploy:
+    environment:
+      name: approval
+    runs-on: ubuntu-latest
+    needs:
+    - build
+    steps:
+    - run: echo 'approved'
+  deploy:
+    permissions:
+      id-token: write
+      contents: read
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-20.04
+    needs:
+    - approval_deploy
+    env:
+      stage: dev
+    steps:
+    - uses: actions/checkout@v3.3.0
+    - uses: "./.github/actions/setup-aws"
+    - uses: "./.github/actions/create-dotenv"
+    - uses: "./.github/actions/setup-node"
+    - uses: "./.github/actions/setup-go"
+    - uses: "./.github/actions/setup-go-task"
+    - name: deploy
+      run: task deploy -- --stage ${{ env.stage }} --force
+  deploy_1:
+    permissions:
+      id-token: write
+      contents: read
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-20.04
+    needs:
+    - approval_deploy
+    env:
+      stage: prod
+    steps:
+    - uses: actions/checkout@v3.3.0
+    - uses: "./.github/actions/setup-aws"
+    - uses: "./.github/actions/create-dotenv"
+    - uses: "./.github/actions/setup-node"
+    - uses: "./.github/actions/setup-go"
+    - uses: "./.github/actions/setup-go-task"
+    - name: deploy
+      run: task deploy -- --stage ${{ env.stage }} --force

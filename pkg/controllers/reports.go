@@ -218,10 +218,6 @@ func (ctrl *ReportController) getAllItems(query string) (qiita.Items, error) {
 		}
 	}
 
-	if err := ctrl.setStockersCount(items); err != nil {
-		return nil, err
-	}
-
 	return items, nil
 }
 

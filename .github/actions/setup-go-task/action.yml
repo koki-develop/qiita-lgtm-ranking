@@ -1,0 +1,7 @@
+name: setup-go-task
+runs:
+  using: composite
+  steps:
+  - name: install go-task
+    run: go install github.com/go-task/task/v3/cmd/task@latest
+    shell: bash

@@ -1,3 +1,7 @@
+# タグ別
+
+{{ range .tags }}[`{{ .Name }}`](https://qiita.com/items/{{ .ReportID }}) {{ end }}
+
 # 集計について
 
 {{ range .conditions -}}

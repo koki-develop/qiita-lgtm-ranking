@@ -1,0 +1,7 @@
+name: create-dotenv
+runs:
+  using: composite
+  steps:
+  - name: create .env
+    run: echo "QIITA_ACCESS_TOKEN=${QIITA_ACCESS_TOKEN}" > .env
+    shell: bash

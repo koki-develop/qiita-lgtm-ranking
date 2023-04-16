@@ -6,15 +6,14 @@ import (
 )
 
 type Item struct {
-	ID         string    `json:"id"`
-	Title      string    `json:"title"`
-	LikesCount int       `json:"likes_count"`
-	URL        string    `json:"url"`
-	User       User      `json:"user"`
-	Tags       Tags      `json:"tags"`
-	CreatedAt  time.Time `json:"created_at"`
-
-	StockersCount int `json:"-"`
+	ID            string    `json:"id"`
+	Title         string    `json:"title"`
+	LikesCount    int       `json:"likes_count"`
+	StockersCount int       `json:"stocks_count"`
+	URL           string    `json:"url"`
+	User          User      `json:"user"`
+	Tags          Tags      `json:"tags"`
+	CreatedAt     time.Time `json:"created_at"`
 }
 
 type Items []*Item
