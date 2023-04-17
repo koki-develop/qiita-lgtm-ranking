@@ -5,7 +5,7 @@
     "deploy": "serverless deploy --verbose"
   },
   "devDependencies": {
-    "serverless": "2.72.3",
+    "serverless": "3.30.1",
     "serverless-plugin-diff": "3.0.0",
     "serverless-prune-plugin": "2.0.1"
   }
