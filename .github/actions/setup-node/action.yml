@@ -8,7 +8,7 @@ runs:
   - id: yarn-cache-dir-path
     run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
     shell: bash
-  - uses: actions/cache@v3.2.2
+  - uses: actions/cache@v3.3.1
     with:
       path: "${{ steps.yarn-cache-dir-path.outputs.dir }}"
       key: "${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}"
