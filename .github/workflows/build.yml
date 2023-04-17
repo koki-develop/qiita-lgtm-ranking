@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v3.3.0
+    - uses: actions/checkout@v3.5.2
     - uses: "./.github/actions/setup-node"
     - uses: "./.github/actions/setup-go"
     - uses: "./.github/actions/setup-go-task"
@@ -40,7 +40,7 @@ jobs:
     env:
       stage: dev
     steps:
-    - uses: actions/checkout@v3.3.0
+    - uses: actions/checkout@v3.5.2
     - uses: "./.github/actions/setup-aws"
     - uses: "./.github/actions/create-dotenv"
     - uses: "./.github/actions/setup-node"
@@ -59,7 +59,7 @@ jobs:
     env:
       stage: prod
     steps:
-    - uses: actions/checkout@v3.3.0
+    - uses: actions/checkout@v3.5.2
     - uses: "./.github/actions/setup-aws"
     - uses: "./.github/actions/create-dotenv"
     - uses: "./.github/actions/setup-node"
